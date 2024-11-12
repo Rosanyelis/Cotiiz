@@ -6,6 +6,7 @@
     var dt_ajax_table = $('.datatables-product');
     var category = $('#category_id');
     const numberFormat2 = new Intl.NumberFormat('de-DE');
+    const baseStorage = "http://newcotiiz.test/";
 $(function () {
 
     if (dt_ajax_table.length) {
@@ -14,9 +15,6 @@ $(function () {
             serverSide: true,
             ajax: {
                 url: "/productos/datatable",
-                data: function (d) {
-                    d.category_id = category.val();
-                }
             },
             // ajax: "",
             dataType: 'json',
@@ -31,8 +29,8 @@ $(function () {
             },
             columns: [
                 {
-                    data: 'code',
-                    name: 'code'
+                    data: 'photo',
+                    name: 'photo'
                 },
                 {
                     data: 'name',
@@ -41,20 +39,16 @@ $(function () {
                     searchable: true
                 },
                 {
-                    data: 'category.name',
-                    name: 'category.name'
-                },
-                {
-                    data: 'type',
-                    name: 'type'
-                },
-                {
-                    data: 'cost',
-                    name: 'cost'
-                },
-                {
                     data: 'price',
                     name: 'price'
+                },
+                {
+                    data: 'description',
+                    name: 'description'
+                },
+                {
+                    data: 'status',
+                    name: 'status'
                 },
                 {
                     data: 'actions',
@@ -63,32 +57,39 @@ $(function () {
                     searchable: false
                 },
             ],
-            columnDefs: [{
-                targets: [4,5],
+            columnDefs: [
+            {
+                targets: [0],
+                render: function (data) {
+                    if (data === null || data === "") {
+                        return '<img src="'+ baseStorage +'/assets/img/products/no-photo.jpg" alt="" class="rounded-circle avatar-sm" />';
+                    } else {
+                        return '<img src="' + baseStorage + data + '" alt="" class="rounded-circle avatar-sm" />';
+                    }
+                }
+            },
+            {
+                targets: [2],
                 render: function (data) {
                     return '$ ' + numberFormat2.format(data);
                 }
-            }]
+            },
+            {
+                targets: [4],
+                render: function (data) {
+                    if (data === 'Pendiente') {
+                        return '<span class="badge bg-warning">Por Aprobación</span>';
+                    } else if (data === 'Aprobado') {
+                        return '<span class="badge bg-success">Aprobado</span>';
+                    } else {
+                        return '<span class="badge bg-danger">Rechazado</span>';
+                    }
+                }
+            }
+            ],
         });
     }
 
-    category.on('change', function () {
-        dt_ajax_table.DataTable().ajax.reload();
-    });
-
-    $('#type').on('change', function () {
-        if ($(this).val() == 'Servicios') {
-            $('#quantity').prop('disabled', true);
-        }else {
-            $('#quantity').prop('disabled', false);
-        }
-    });
-
-    if ($('#type').val() == 'Servicios') {
-        $('#quantity').prop('disabled', true);
-    }else {
-        $('#quantity').prop('disabled', false);
-    }
 });
 function deleteRecord(id) {
     Swal.fire({

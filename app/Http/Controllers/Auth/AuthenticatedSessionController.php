@@ -26,6 +26,9 @@ class AuthenticatedSessionController extends Controller
     {
         $request->authenticate();
 
+        # logica para validar que el estatus del usuario es activo para que pueda ingresar
+        
+
         $request->session()->regenerate();
 
         return redirect()->intended(route('dashboard', absolute: false));

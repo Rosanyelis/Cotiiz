@@ -3,13 +3,14 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -17,8 +18,8 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'rol_id',
         'name',
+        'type',
         'email',
         'password',
     ];
@@ -46,15 +47,15 @@ class User extends Authenticatable
         ];
     }
 
-    public function rol()
+    public function rfcbussines()
     {
-        return $this->belongsTo(Rols::class, 'rol_id', 'id');
+        return $this->belongsToMany(RfcBussines::class, 'user_rfc_bussines', 'user_id', 'rfc_bussines_id')
+        ->withPivot('principal', 'status', 'observation', 'created_by');
     }
 
-    public function todolists()
+    public function rfcsuppliers()
     {
-        return $this->hasMany(TodoList::class, 'user_id', 'id');
+        return $this->belongsToMany(RfcSupplier::class, 'user_rfc_suppliers', 'user_id', 'rfc_suppliers_id');
     }
 
-    
 }

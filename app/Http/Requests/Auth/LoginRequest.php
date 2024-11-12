@@ -49,6 +49,22 @@ class LoginRequest extends FormRequest
             ]);
         }
 
+        $user = Auth::user();
+        if ($user->status == '0') {
+            Auth::logout();
+
+            throw ValidationException::withMessages([
+                'email' => trans('auth.user_disabled'),
+            ]);
+        }
+        if ($user->status == '2') {
+            Auth::logout();
+
+            throw ValidationException::withMessages([
+                'email' => trans('auth.user_disabled2'),
+            ]);
+        }
+
         RateLimiter::clear($this->throttleKey());
     }
 

@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\TypeProduct;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\Facades\DataTables;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
@@ -18,29 +19,15 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $category = Category::all();
-        return view('products.index', compact('category'));
+        return view('products.index');
     }
 
     public function datatable(Request $request)
     {
         if ($request->ajax()) {
-            $data = Product::with('category');
+            $data = Product::where('user_id', auth()->user()->id)
+            ->get();
             return DataTables::of($data)
-                ->filter(function ($query) use ($request) {
-                    if ($request->has('category_id') && $request->get('category_id') != '') {
-                        $query->where('category_id', $request->get('category_id'));
-                    }
-
-                    if ($request->has('search') && $request->get('search')['value'] != '') {
-                        $searchValue = $request->get('search')['value'];
-                        $query->where(function ($subQuery) use ($searchValue) {
-                            $subQuery->where('name', 'like', "%{$searchValue}%")
-                                     ->orWhere('code', 'like', "%{$searchValue}%")
-                                     ->orWhere('type', 'like', "%{$searchValue}%");
-                        });
-                    }
-                })
                 ->addColumn('actions', function ($data) {
                     return view('products.partials.actions', ['id' => $data->id]);
                 })
@@ -54,9 +41,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $category= Category::all();
-        $typeproduct = TypeProduct::all();
-        return view('products.create', compact('category', 'typeproduct'));
+        return view('products.create');
     }
 
     /**
@@ -65,25 +50,38 @@ class ProductController extends Controller
     public function store(StoreProductRequest $request)
     {
         $data = $request->all();
+        if($request->hasFile('photo'))
+        {
+            $file = $request->file('photo');
+            $fileName   = time().rand(111,699).'.' .$file->getClientOriginalExtension();
+            $uploadPath = public_path('/storage/rfc_supplier/products/');
+            $file->move($uploadPath, $fileName);
+            $data['photo'] = $url = '/storage/rfc_supplier/products/'.$fileName;
+        }
+
+        $data['user_id'] = auth()->user()->id;
+        $data['rfc_suppliers_id'] = Auth::user()->rfcsuppliers()->first()->id;
         $producto = Product::create($data);
 
-        return redirect()->route('product.index')->with('success', 'Producto creado con exito');
-
+        return redirect()->route('products.index')->with('success', 'Servicio creado con exito');
     }
 
 
     /**
      * Show the form for editing the specified resource.
      */
+    public function show($product)
+    {
+        $data = Product::find($product);
+        return view('products.show', compact('data'));
+    }
     /**
      * Show the form for editing the specified resource.
      */
     public function edit($product)
     {
-        $category= Category::all();
-        $typeproduct = TypeProduct::all();
-        $product = Product::find($product);
-        return view('products.edit', compact('product', 'category', 'typeproduct'));
+        $data = Product::find($product);
+        return view('products.edit', compact('data'));
     }
 
     /**
@@ -92,7 +90,16 @@ class ProductController extends Controller
     public function update(UpdateProductRequest $request, $product)
     {
         $data = $request->all();
-
+        if($request->hasFile('photo'))
+        {
+            $file = $request->file('photo');
+            $fileName   = time().rand(111,699).'.' .$file->getClientOriginalExtension();
+            $uploadPath = public_path('/storage/rfc_supplier/products/');
+            $file->move($uploadPath, $fileName);
+            $data['photo'] = $url = '/storage/rfc_supplier/products/'.$fileName;
+        }
+        $data['user_id'] = auth()->user()->id;
+        $data['rfc_suppliers_id'] = auth()->user()->rfcsuppliers()->first()->id;
         $product = Product::find($product);
         $product->update($data);
 

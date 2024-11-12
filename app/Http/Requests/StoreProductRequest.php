@@ -22,28 +22,21 @@ class StoreProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'code' => 'required',
-            'name' => 'required',
-            'category_id' => 'required',
-            'type' => 'required',
+            'name' => 'required|unique:products,name',
             'price' => 'required',
-            'cost' => 'required',
-            'image' => 'nullable|image|max:2048'
+            'description' => 'required',
+            'photo' => 'nullable|image|max:2048'
         ];
     }
 
     public function messages(): array
     {
         return [
-            'code.required' => 'El campo Codigo de producto es obligatorio',
-            'name.required' => 'El campo Nombre del Producto es obligatorio',
-            'category_id.required' => 'El campo Categoría del Producto es obligatorio',
-            'type.required' => 'El campo Tipo de Producto es obligatorio',
-            'price.required' => 'El campo Precio es obligatorio',
-            'cost.required' => 'El campo Costo es obligatorio',
-            'image.required' => 'El campo Imagen es obligatorio',
-            'image.image' => 'El campo Imagen debe ser una imagen',
-            'image.max' => 'El campo Imagen no debe ser mayor a 2 MB',
+            'name.required' => 'El nombre es requerido',
+            'price.required' => 'El precio es requerido',
+            'description.required' => 'La descripción es requerida',
+            'photo.max' => 'La imagen no debe ser mayor a 2 MB',
+            'photo.image' => 'La imagen debe ser una imagen',
         ];
     }
 }

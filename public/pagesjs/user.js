@@ -24,22 +24,54 @@ $(function () {
             },
             columns: [
                 {data: 'name', name: 'name'},
-                {data: 'rol.name', name: 'rol.name'},
+                {data: 'roles', name: 'roles'},
                 {data: 'email', name: 'email'},
+                {data: 'status', name: 'status'},
                 {data: 'actions', name: 'actions', orderable: false, searchable: false},
             ],
+            columnDefs: [
+                {
+                    targets: [1],
+                    render: function (data, type, row)
+                    {
+
+                        var roles = '';
+                        data.forEach(function (role) {
+                            roles += '<span class="badge bg-info">'+role.name+'</span>';
+                        });
+                        return roles;
+                    }
+                },
+                {
+                    targets: [3],
+                    render: function (data, type, row)
+                    {
+                        if (data == 1) {
+                            return '<span class="badge bg-success">Aprobado</span>';
+                        }
+                        if (data == 0) {
+                            return '<span class="badge bg-warning">Por Aprobacion</span>';
+                        }
+                        if (data == 2) {
+                            return '<span class="badge bg-danger">Bloqueado</span>';
+                        }
+                    }
+                },
+            ]
 
         });
     }
 
 });
-function deleteRecord(id) {
+function activated(id) {
+    console.log(id);
+
     Swal.fire({
-        title: '¿Está seguro de eliminar este Usuario?',
-        text: "No podra recuperar la información!",
+        title: '¿Está seguro de activar este usuario?',
+        text: "El usuario podra acceder al sistema con sus credenciales!",
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonText: 'Si, eliminar!',
+        confirmButtonText: 'Si, activar!',
         cancelButtonText: 'Cancelar',
         customClass: {
         confirmButton: 'btn btn-primary me-3 waves-effect waves-light',
@@ -49,7 +81,28 @@ function deleteRecord(id) {
     }).then((result) => {
         if (result.isConfirmed) {
             window.location.href =
-                "/usuarios/"+id+"/delete";
+                "/usuarios/"+id+"/activated";
+        }
+    })
+}
+
+function desactivarRecord(id) {
+    Swal.fire({
+        title: '¿Está seguro de Desactivar este Usuario?',
+        text: "No podra acceder al sistema!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Si, Desactivar!',
+        cancelButtonText: 'Cancelar',
+        customClass: {
+        confirmButton: 'btn btn-primary me-3 waves-effect waves-light',
+        cancelButton: 'btn btn-outline-danger waves-effect'
+        },
+        buttonsStyling: false
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href =
+                "/usuarios/"+id+"/desactivated";
         }
     })
 }

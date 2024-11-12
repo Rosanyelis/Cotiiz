@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', function () {
       chatSidebarLeftUserAbout = $('.chat-sidebar-left-user-about'),
       formSendMessage = document.querySelector('.form-send-message'),
       messageInput = document.querySelector('.message-input'),
+      messageFile = document.getElementById('attach-doc'),
       searchInput = document.querySelector('.chat-search-input'),
       speechToText = $('.speech-to-text'), // ! jQuery dependency for speech to text
       userStatusObj = {
@@ -162,13 +163,27 @@ document.addEventListener('DOMContentLoaded', function () {
     formSendMessage.addEventListener('submit', e => {
       e.preventDefault();
       if (messageInput.value) {
-        // Create a div and add a class
-        let renderMsg = document.createElement('div');
-        renderMsg.className = 'chat-message-text mt-2';
-        renderMsg.innerHTML = '<p class="mb-0 text-break">' + messageInput.value + '</p>';
-        document.querySelector('li:last-child .chat-message-wrapper').appendChild(renderMsg);
-        messageInput.value = '';
-        scrollToBottom();
+        if (messageFile.value == '') {
+            Swal.fire({
+                title: '¿Está seguro de enviar la Solicitud sin archivo?',
+                text: "No podra modificar la solicitud!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Si, estoy seguro!',
+                cancelButtonText: 'Cancelar',
+                customClass: {
+                confirmButton: 'btn btn-primary me-3 waves-effect waves-light',
+                cancelButton: 'btn btn-outline-danger waves-effect'
+                },
+                buttonsStyling: false
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // send form
+                    formSendMessage.submit();
+                }
+            })
+        }
+        formSendMessage.submit();
       }
     });
 
