@@ -1,12 +1,14 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\KambanController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ContractController;
 use App\Http\Controllers\CustomerController;
@@ -14,12 +16,23 @@ use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\TodoListController;
 use App\Http\Controllers\QuotationController;
+use App\Http\Controllers\SpecialtyController;
 use App\Http\Controllers\WorkOrderController;
+use App\Http\Controllers\OccupationController;
+use App\Http\Controllers\RfcBussinesController;
+use App\Http\Controllers\RfcSupplierController;
+use App\Http\Controllers\ProfessionalController;
 use App\Http\Controllers\PurchaseOrderController;
+use App\Http\Controllers\RequestSupplierController;
+use App\Http\Controllers\SupplierRequestController;
 
-Route::get('/', function () {
-    return redirect()->route('login');
-});
+
+
+Route::get('/', [HomeController::class, 'index'])->name('welcome');
+Route::get('/tipo', [HomeController::class, 'create'])->name('tipo.register');
+# Buscar rfc segun empresa o proveedor
+Route::get('/buscar-rfc/{tipo}', [HomeController::class, 'viewsearchRfc'])->name('tipo.viewsearchRfc');
+Route::get('/buscar-rfc/{tipo}/response', [HomeController::class, 'searchRfc'])->name('tipo.searchRfc');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -30,23 +43,26 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+    # Profesiones
+    Route::get('/profesiones', [OccupationController::class, 'index'])->name('occupation.index');
+    Route::get('/profesiones/create', [OccupationController::class, 'create'])->name('occupation.create');
+    Route::post('/profesiones/guardar', [OccupationController::class, 'store'])->name('occupation.store');
+    Route::get('/profesiones/{occupation}/editar', [OccupationController::class, 'edit'])->name('occupation.edit');
+    Route::put('/profesiones/{occupation}/actualizar', [OccupationController::class, 'update'])->name('occupation.update');
+    Route::get('/profesiones/{occupation}/eliminar', [OccupationController::class, 'destroy'])->name('occupation.destroy');
+    Route::get('/profesiones/importar-profesiones', [OccupationController::class, 'viewimport'])->name('occupation.viewimport');
+    Route::post('/profesiones/import-data', [OccupationController::class, 'storeimport'])->name('occupation.import');
 
-    # Task
-    Route::get('/tareas', [TodoListController::class, 'index'])->name('task.index');
-    Route::get('/tareas/create', [TodoListController::class, 'create'])->name('task.create');
-    Route::post('/tareas/store', [TodoListController::class, 'store'])->name('task.store');
-    Route::post('/tareas/cambiar-estado', [TodoListController::class, 'changeStatus'])->name('task.changeStatus');
-    Route::post('/tareas/destroy', [TodoListController::class, 'destroy'])->name('task.destroy');
+    # Especialidades
+    Route::get('/especialidades', [SpecialtyController::class, 'index'])->name('specialty.index');
+    Route::get('/especialidades/create', [SpecialtyController::class, 'create'])->name('specialty.create');
+    Route::post('/especialidades/guardar', [SpecialtyController::class, 'store'])->name('specialty.store');
+    Route::get('/especialidades/{specialty}/editar', [SpecialtyController::class, 'edit'])->name('specialty.edit');
+    Route::put('/especialidades/{specialty}/actualizar', [SpecialtyController::class, 'update'])->name('specialty.update');
+    Route::get('/especialidades/{specialty}/eliminar', [SpecialtyController::class, 'destroy'])->name('specialty.destroy');
+    Route::get('/especialidades/importar-especialidades', [SpecialtyController::class, 'viewimport'])->name('specialty.viewimport');
+    Route::post('/especialidades/import-data', [SpecialtyController::class, 'storeimport'])->name('specialty.import');
 
-    # Categories
-    Route::get('/categorias', [CategoryController::class, 'index'])->name('category.index');
-    Route::get('/categorias/create', [CategoryController::class, 'create'])->name('category.create');
-    Route::post('/categorias/guardar', [CategoryController::class, 'store'])->name('category.store');
-    Route::get('/categorias/{category}/editar', [CategoryController::class, 'edit'])->name('category.edit');
-    Route::put('/categorias/{category}/actualizar', [CategoryController::class, 'update'])->name('category.update');
-    Route::get('/categorias/{category}/eliminar', [CategoryController::class, 'destroy'])->name('category.destroy');
-    Route::get('/categorias/importar-categorias', [CategoryController::class, 'view_import'])->name('category.viewimport');
-    Route::post('/categorias/import-data', [CategoryController::class, 'import'])->name('category.import');
 
     # products
     Route::get('/productos', [ProductController::class, 'index'])->name('product.index');
@@ -58,26 +74,71 @@ Route::middleware('auth')->group(function () {
     Route::put('/productos/{product}/update', [ProductController::class, 'update'])->name('product.update');
     Route::get('/productos/{product}/delete', [ProductController::class, 'destroy'])->name('product.destroy');
 
+    # servicios
+    Route::get('/servicios', [ServiceController::class, 'index'])->name('service.index');
+    Route::get('/servicios/datatable', [ServiceController::class, 'datatable'])->name('service.datatable');
+    Route::get('/servicios/create', [ServiceController::class, 'create'])->name('service.create');
+    Route::post('/servicios', [ServiceController::class, 'store'])->name('service.store');
+    Route::get('/servicios/{service}/show', [ServiceController::class, 'show'])->name('service.show');
+    Route::get('/servicios/{service}/edit', [ServiceController::class, 'edit'])->name('service.edit');
+    Route::put('/servicios/{service}/update', [ServiceController::class, 'update'])->name('service.update');
+    Route::get('/servicios/{service}/delete', [ServiceController::class, 'destroy'])->name('service.destroy');
+
+    # Profesionales
+    Route::get('/profesionales', [ProfessionalController::class, 'index'])->name('professional.index');
+    Route::get('/profesionales/datatable', [ProfessionalController::class, 'datatable'])->name('professional.datatable');
+    Route::get('/profesionales/create', [ProfessionalController::class, 'create'])->name('professional.create');
+    Route::post('/profesionales', [ProfessionalController::class, 'store'])->name('professional.store');
+    Route::get('/profesionales/{professional}/show', [ProfessionalController::class, 'show'])->name('professional.show');
+    Route::get('/profesionales/{professional}/edit', [ProfessionalController::class, 'edit'])->name('professional.edit');
+    Route::put('/profesionales/{professional}/update', [ProfessionalController::class, 'update'])->name('professional.update');
+    Route::get('/profesionales/{professional}/delete', [ProfessionalController::class, 'destroy'])->name('professional.destroy');
+
     # Customers
-    Route::get('/clientes', [CustomerController::class, 'index'])->name('customer.index');
-    Route::get('/clientes/create', [CustomerController::class, 'create'])->name('customer.create');
-    Route::post('/clientes', [CustomerController::class, 'store'])->name('customer.store');
-    Route::get('/clientes/{cliente}/show', [CustomerController::class, 'show'])->name('customer.show');
-    Route::get('/clientes/{cliente}/edit', [CustomerController::class, 'edit'])->name('customer.edit');
-    Route::put('/clientes/{cliente}/update', [CustomerController::class, 'update'])->name('customer.update');
-    Route::get('/clientes/{cliente}/delete', [CustomerController::class, 'destroy'])->name('customer.destroy');
-    Route::get('/clientes/importar', [CustomerController::class, 'import'])->name('customer.import');
-    Route::post('/clientes/importar', [CustomerController::class, 'importData'])->name('customer.importData');
+    Route::get('/empresas', [RfcBussinesController::class, 'index'])->name('business.index');
+    Route::get('/empresas/create', [RfcBussinesController::class, 'create'])->name('business.create');
+    Route::post('/empresas', [RfcBussinesController::class, 'store'])->name('business.store');
+    Route::get('/empresas/{cliente}/show', [RfcBussinesController::class, 'show'])->name('business.show');
+    Route::get('/empresas/{cliente}/edit', [RfcBussinesController::class, 'edit'])->name('business.edit');
+    Route::put('/empresas/{cliente}/update', [RfcBussinesController::class, 'update'])->name('business.update');
+    Route::get('/empresas/{cliente}/activated', [RfcBussinesController::class, 'activated'])->name('business.activated');
+    Route::get('/empresas/{cliente}/desactivated', [RfcBussinesController::class, 'desactivated'])->name('business.desactivated');
+    Route::get('/empresas/{cliente}/users', [RfcBussinesController::class, 'rfcusers'])->name('business.users');
+    Route::get('/empresas/{cliente}/users/create', [RfcBussinesController::class, 'create_users'])->name('business.users.create_users');
+    Route::post('/empresas/{cliente}/users/store', [RfcBussinesController::class, 'store_users'])->name('business.users.store_users');
+    Route::get('/empresas/users/{user}/activated', [RfcBussinesController::class, 'ActivateUsers'])->name('business.users.activated');
+    Route::get('/empresas/users/{user}/desactivated', [RfcBussinesController::class, 'DesactivateUsers'])->name('business.users.desactivated');
 
+    Route::get('/proveedores', [RfcSupplierController::class, 'index'])->name('supplier.index');
+    Route::get('/proveedores/create', [RfcSupplierController::class, 'create'])->name('supplier.create');
+    Route::post('/proveedores', [RfcSupplierController::class, 'store'])->name('supplier.store');
+    Route::get('/proveedores/{cliente}/show', [RfcSupplierController::class, 'show'])->name('supplier.show');
+    Route::get('/proveedores/{cliente}/edit', [RfcSupplierController::class, 'edit'])->name('supplier.edit');
+    Route::put('/proveedores/{cliente}/update', [RfcSupplierController::class, 'update'])->name('supplier.update');
+    Route::get('/proveedores/{cliente}/activated', [RfcSupplierController::class, 'activated'])->name('supplier.activated');
+    Route::get('/proveedores/{cliente}/desactivated', [RfcSupplierController::class, 'desactivated'])->name('supplier.desactivated');
+    Route::get('/proveedores/{cliente}/users', [RfcSupplierController::class, 'rfcusers'])->name('supplier.users');
+    Route::get('/proveedores/{cliente}/users/create', [RfcSupplierController::class, 'create_users'])->name('supplier.users.create_users');
+    Route::post('/proveedores/{cliente}/users/store', [RfcSupplierController::class, 'store_users'])->name('supplier.users.store_users');
+    Route::get('/proveedores/users/{user}/activated', [RfcSupplierController::class, 'ActivateUsers'])->name('supplier.users.activated');
+    Route::get('/proveedores/users/{user}/desactivated', [RfcSupplierController::class, 'DesactivateUsers'])->name('supplier.users.desactivated');
 
-    # Suppliers
-    Route::get('/proveedores', [SupplierController::class, 'index'])->name('supplier.index');
-    Route::get('/proveedores/create', [SupplierController::class, 'create'])->name('supplier.create');
-    Route::post('/proveedores', [SupplierController::class, 'store'])->name('supplier.store');
-    Route::get('/proveedor/{proveedor}/show', [SupplierController::class, 'show'])->name('supplier.show');
-    Route::get('/proveedores/{proveedor}/edit', [SupplierController::class, 'edit'])->name('supplier.edit');
-    Route::put('/proveedores/{proveedor}/update', [SupplierController::class, 'update'])->name('supplier.update');
-    Route::get('/proveedores/{proveedor}/delete', [SupplierController::class, 'destroy'])->name('supplier.destroy');
+    # Requests Proveedores
+    Route::get('/solicitudes-de-proveedor', [SupplierRequestController::class, 'index'])->name('request-supplier.index');
+    Route::get('/solicitudes-de-proveedor/datatable', [SupplierRequestController::class, 'datatable'])->name('request-supplier.datatable');
+    Route::get('/solicitudes-de-proveedor/create', [SupplierRequestController::class, 'create'])->name('request-supplier.create');
+    Route::post('/solicitudes-de-proveedor', [SupplierRequestController::class, 'store'])->name('request-supplier.store');
+    Route::get('/solicitudes-de-proveedor/{request}/show', [SupplierRequestController::class, 'show'])->name('request-supplier.show');
+    Route::post('/solicitudes-de-proveedor/{request}/chat', [SupplierRequestController::class, 'storeChat'])->name('request-supplier.storeChat');
+    Route::post('/solicitudes-de-proveedor/{request}/cambiar-estatus', [SupplierRequestController::class, 'changeStatus'])->name('request-supplier.changeStatus');
+
+    # Requests panel de Proveedores
+    Route::get('/solicitudes', [RequestSupplierController::class, 'index'])->name('supplier-request.index');
+    Route::get('/solicitudes/datatable', [RequestSupplierController::class, 'datatable'])->name('supplier-request.datatable');
+    Route::post('/solicitudes', [RequestSupplierController::class, 'store'])->name('supplier-request.store');
+    Route::get('/solicitudes/{request}/show', [RequestSupplierController::class, 'show'])->name('supplier-request.show');
+    Route::post('/solicitudes/{request}/chat', [RequestSupplierController::class, 'storeChat'])->name('supplier-request.storeChat');
+    Route::post('/solicitudes/{request}/cambiar-estatus', [RequestSupplierController::class, 'changeStatus'])->name('supplier-request.changeStatus');
 
     # Expenses
     Route::get('/gastos', [ExpenseController::class, 'index'])->name('expense.index');
@@ -158,16 +219,15 @@ Route::middleware('auth')->group(function () {
     Route::get('/usuarios/{user}/edit', [UserController::class, 'edit'])->name('user.edit');
     Route::put('/usuarios/{user}/update', [UserController::class, 'update'])->name('user.update');
     Route::get('/usuarios/{user}/delete', [UserController::class, 'destroy'])->name('user.destroy');
+    Route::get('/usuarios/{user}/activated', [UserController::class, 'activated'])->name('users.activated');
+    Route::get('/usuarios/{user}/desactivated', [UserController::class, 'desactivated'])->name('users.desactivated');
 
-    # Kamban
-    Route::get('/kamban', [KambanController::class, 'index'])->name('kamban.index');
-    Route::get('/kamban/create', [KambanController::class, 'create'])->name('kamban.create');
-    Route::post('/kamban', [KambanController::class, 'store'])->name('kamban.store');
-    Route::get('/kamban/{kamban}/show', [KambanController::class, 'show'])->name('kamban.show');
-    Route::get('/kamban/{kamban}/edit', [KambanController::class, 'edit'])->name('kamban.edit');
-    Route::put('/kamban/{kamban}/update', [KambanController::class, 'update'])->name('kamban.update');
-    Route::get('/kamban/{kamban}/delete', [KambanController::class, 'destroy'])->name('kamban.destroy');
-
+     # Task
+     Route::get('/tareas', [TodoListController::class, 'index'])->name('task.index');
+     Route::get('/tareas/create', [TodoListController::class, 'create'])->name('task.create');
+     Route::post('/tareas/store', [TodoListController::class, 'store'])->name('task.store');
+     Route::post('/tareas/cambiar-estado', [TodoListController::class, 'changeStatus'])->name('task.changeStatus');
+     Route::post('/tareas/destroy', [TodoListController::class, 'destroy'])->name('task.destroy');
 });
 
 require __DIR__.'/auth.php';

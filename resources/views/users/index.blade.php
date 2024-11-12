@@ -23,8 +23,9 @@
                 <thead>
                     <tr>
                         <th>Usuario</th>
-                        <th>Rol</th>
+                        <th>Roles</th>
                         <th>Correo</th>
+                        <th>Estatus</th>
                         <th style="width: 10px"></th>
                     </tr>
                 </thead>

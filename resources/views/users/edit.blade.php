@@ -42,7 +42,7 @@
                                             placeholder="Selecione un Rol">
                                             <option value="">-- Seleccionar --</option>
                                             @foreach($roles as $rol)
-                                            <option value="{{ $rol->id }}" {{ $data->rol_id == $rol->id ? 'selected' : ''  }} >{{ $rol->name }}</option>
+                                            <option value="{{ $rol->id }}" {{ $data->getRoleNames()[0] == $rol->name ? 'selected' : ''  }} >{{ $rol->name }}</option>
                                             @endforeach
                                         </select>
                                         <label for="rol_id">Rol</label>

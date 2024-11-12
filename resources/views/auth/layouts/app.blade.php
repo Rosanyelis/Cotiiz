@@ -85,6 +85,9 @@
         <script src="{{ asset('assets/js/main.js') }}"></script>
 
         <!-- Page JS -->
-        <!-- <script src="{{ asset('assets/js/pages-auth.js') }}"></script> -->
+        <script>
+            @include('layouts.alerts-toarst')
+        </script>
+        @yield('scripts')
     </body>
 </html>

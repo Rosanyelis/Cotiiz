@@ -3,7 +3,7 @@
                 <a href="{{ route('dashboard') }}" class="app-brand-link">
                     <span class="app-brand-logo demo">
                         <span style="color: var(--bs-primary)">
-                            <img src="{{ asset('assets/img/TIGroup.png') }}" width="185" height="70" alt="" >
+                            <img src="{{ asset('assets/img/logo-cotiz.png') }}" width="185" height="70" alt="" >
                         </span>
                     </span>
                 </a>
@@ -30,80 +30,87 @@
                         <div data-i18n="Dashboard">Dashboard</div>
                     </a>
                 </li>
-                <li class="menu-item @if (Route::currentRouteName() == 'task.index') active @endif">
-                    <a href="{{ route('task.index') }}" class="menu-link">
-                        <i class="menu-icon tf-icons ri-list-check-3"></i>
-                        <div data-i18n="Tareas">Tareas</div>
+                <li class="menu-item
+                    @if (Route::currentRouteName() == 'business.index' ||
+                        Route::currentRouteName() == 'business.create' ||
+                        Route::currentRouteName() == 'business.edit' ||
+                        Route::currentRouteName() == 'business.show') active @endif">
+                    <a href="{{ route('business.index') }}" class="menu-link">
+                        <i class="menu-icon tf-icons ri-shield-user-line"></i>
+                        <div data-i18n="Empresas">Empresas</div>
                     </a>
                 </li>
-                <!-- <li class="menu-item @if (Route::currentRouteName() == 'kamban.index') active @endif">
-                    <a href="{{ route('kamban.index') }}" class="menu-link">
-                        <i class="menu-icon tf-icons ri-list-check-3"></i>
-                        <div data-i18n="Kanban">Kanban</div>
-                    </a>
-                </li> -->
+
                 <li class="menu-item
-                    @if (Route::currentRouteName() == 'contract.index' ||
-                        Route::currentRouteName() == 'contract.create' ||
-                        Route::currentRouteName() == 'contract.edit') active @endif">
-                    <a href="{{ route('contract.index') }}" class="menu-link">
-                        <i class="menu-icon tf-icons ri-file-shield-line"></i>
-                        <div data-i18n="Contratos">Contratos</div>
+                    @if (Route::currentRouteName() == 'supplier.index' ||
+                        Route::currentRouteName() == 'supplier.create' ||
+                        Route::currentRouteName() == 'supplier.edit' ||
+                        Route::currentRouteName() == 'supplier.show') active @endif">
+                    <a href="{{ route('supplier.index') }}" class="menu-link">
+                        <i class="menu-icon tf-icons ri-shield-user-line"></i>
+                        <div data-i18n="Proveedores">Proveedores</div>
                     </a>
                 </li>
+
+                <!-- solicitudes creadas por administrador -->
+                <li class="menu-header mt-5">
+                    <span class="menu-header-text" data-i18n="Solicitudes Proveedor">Solicitudes Proveedor</span>
+                </li>
+                <!-- solicitudes Proveedor -->
                 <li class="menu-item
-                    @if (Route::currentRouteName() == 'quote.index' ||
-                        Route::currentRouteName() == 'quote.create' ||
-                        Route::currentRouteName() == 'quote.edit') active @endif">
-                    <a href="{{ route('quote.index') }}" class="menu-link">
-                        <i class="menu-icon tf-icons ri-file-list-3-line"></i>
-                        <div data-i18n="Cotizaciones">Cotizaciones</div>
+                    @if (Route::currentRouteName() == 'request-supplier.index' ||
+                        Route::currentRouteName() == 'request-supplier.create' ||
+                        Route::currentRouteName() == 'request-supplier.show') active @endif">
+                    <a href="{{ route('request-supplier.index') }}" class="menu-link">
+                        <i class="menu-icon tf-icons ri-mail-check-line"></i>
+                        <div data-i18n="Solicitudes">Solicitudes</div>
                     </a>
                 </li>
-                <!-- <li class="menu-item
-                    @if (Route::currentRouteName() == 'invoice.index' ||
-                        Route::currentRouteName() == 'invoice.create' ||
-                        Route::currentRouteName() == 'invoice.edit') active @endif">
-                    <a href="{{ route('invoice.index') }}" class="menu-link">
-                        <i class="menu-icon tf-icons ri-file-list-line"></i>
-                        <div data-i18n="Facturas">Facturas</div>
-                    </a>
-                </li> -->
+
                 <li class="menu-item
-                    @if (Route::currentRouteName() == 'purchase.index' ||
-                        Route::currentRouteName() == 'purchase.create' ||
-                        Route::currentRouteName() == 'purchase.edit') active @endif">
-                    <a href="{{ route('purchase.index') }}" class="menu-link">
-                        <i class="menu-icon tf-icons ri-shopping-cart-line"></i>
-                        <div data-i18n="Compras">Compras</div>
+                    @if (Route::currentRouteName() == 'supplier-request.index' ||
+                        Route::currentRouteName() == 'supplier-request.show') active @endif">
+                    <a href="{{ route('supplier-request.index') }}" class="menu-link">
+                        <i class="menu-icon tf-icons ri-mail-check-line"></i>
+                        <div data-i18n="Solicitudes">Solicitudes</div>
                     </a>
                 </li>
+
+                <li class="menu-header mt-5">
+                    <span class="menu-header-text" data-i18n="Solicitudes Empresa">Solicitudes Empresa</span>
+                </li>
+                <!-- solicitudes empresa -->
                 <li class="menu-item
-                    @if (Route::currentRouteName() == 'purchaseorder.index' ||
-                        Route::currentRouteName() == 'purchaseorder.create' ||
-                        Route::currentRouteName() == 'purchaseorder.edit') active @endif">
-                    <a href="{{ route('purchaseorder.index') }}" class="menu-link">
-                        <i class="menu-icon tf-icons ri-refund-2-line"></i>
-                        <div data-i18n="Orden de Compra">Orden de Compra</div>
+                    ">
+                    <a href="javascript:void(0);" class="menu-link">
+                        <i class="menu-icon tf-icons ri-mail-check-line"></i>
+                        <div data-i18n="Solicitudes">Solicitudes</div>
                     </a>
                 </li>
+
+                <li class="menu-header mt-5">
+                    <span class="menu-header-text" data-i18n="Chats">Chats</span>
+                </li>
+                <!-- buzon proveedor -->
                 <li class="menu-item
-                    @if (Route::currentRouteName() == 'workorder.index' ||
-                        Route::currentRouteName() == 'workorder.create' ||
-                        Route::currentRouteName() == 'workorder.edit') active @endif">
-                    <a href="{{ route('workorder.index') }}" class="menu-link">
-                        <i class="menu-icon tf-icons ri-file-list-3-line"></i>
-                        <div data-i18n="Orden de Trabajo">Orden de Trabajo</div>
+                    ">
+                    <a href="javascript:void(0);" class="menu-link">
+                        <i class="menu-icon tf-icons ri-chat-1-line"></i>
+                        <div data-i18n="Buzón">Buzón</div>
                     </a>
                 </li>
+                <!-- buzon empresa -->
                 <li class="menu-item
-                    @if (Route::currentRouteName() == 'expense.index' ||
-                        Route::currentRouteName() == 'expense.create' ||
-                        Route::currentRouteName() == 'expense.edit') active @endif">
-                    <a href="{{ route('expense.index') }}" class="menu-link">
-                        <i class="menu-icon tf-icons ri-file-list-3-line"></i>
-                        <div data-i18n="Gastos">Gastos</div>
+                    ">
+                    <a href="javascript:void(0);" class="menu-link">
+                        <i class="menu-icon tf-icons ri-chat-1-line"></i>
+                        <div data-i18n="Buzón">Buzón</div>
                     </a>
+                </li>
+
+
+                <li class="menu-header mt-5">
+                    <span class="menu-header-text" data-i18n="Catálogos">Catálogos</span>
                 </li>
                 <li class="menu-item
                     @if (Route::currentRouteName() == 'product.index' ||
@@ -111,43 +118,63 @@
                         Route::currentRouteName() == 'product.edit' ||
                         Route::currentRouteName() == 'product.show') active @endif">
                     <a href="{{ route('product.index') }}" class="menu-link">
-                        <i class="menu-icon tf-icons ri-function-line"></i>
+                        <i class="menu-icon tf-icons ri-box-3-line"></i>
                         <div data-i18n="Productos">Productos</div>
                     </a>
                 </li>
-
                 <li class="menu-item
-                    @if (Route::currentRouteName() == 'category.index' ||
-                        Route::currentRouteName() == 'category.create' ||
-                        Route::currentRouteName() == 'category.edit') active @endif">
-                    <a href="{{ route('category.index') }}" class="menu-link">
-                        <i class="menu-icon tf-icons ri-stack-line"></i>
-                        <div data-i18n="Categorias">Categorias</div>
+                    @if (Route::currentRouteName() == 'service.index' ||
+                        Route::currentRouteName() == 'service.create' ||
+                        Route::currentRouteName() == 'service.edit' ||
+                        Route::currentRouteName() == 'service.show') active @endif">
+                    <a href="{{ route('service.index') }}" class="menu-link">
+                        <i class="menu-icon tf-icons ri-survey-line"></i>
+                        <div data-i18n="Servicios">Servicios</div>
                     </a>
                 </li>
                 <li class="menu-item
-                    @if (Route::currentRouteName() == 'customer.index' ||
-                        Route::currentRouteName() == 'customer.create' ||
-                        Route::currentRouteName() == 'customer.edit') active @endif">
-                    <a href="{{ route('customer.index') }}" class="menu-link">
-                        <i class="menu-icon tf-icons ri-group-line"></i>
-                        <div data-i18n="Clientes">Clientes</div>
-                    </a>
-                </li>
-                <li class="menu-item
-                    @if (Route::currentRouteName() == 'supplier.index' ||
-                        Route::currentRouteName() == 'supplier.create' ||
-                        Route::currentRouteName() == 'supplier.edit') active @endif">
-                    <a href="{{ route('supplier.index') }}" class="menu-link">
-                        <i class="menu-icon tf-icons ri-shield-user-line"></i>
-                        <div data-i18n="Proveedores">Proveedores</div>
+                    @if (Route::currentRouteName() == 'professional.index' ||
+                        Route::currentRouteName() == 'professional.create' ||
+                        Route::currentRouteName() == 'professional.edit' ||
+                        Route::currentRouteName() == 'professional.show') active @endif">
+                    <a href="{{ route('professional.index') }}" class="menu-link">
+                        <i class="menu-icon tf-icons ri-user-2-line"></i>
+                        <div data-i18n="Profesionales">Profesionales</div>
                     </a>
                 </li>
 
+                <li class="menu-header mt-5">
+                    <span class="menu-header-text" data-i18n="Configuración">Configuración</span>
+                </li>
+                <li class="menu-item
+                    @if (Route::currentRouteName() == 'occupation.index' ||
+                        Route::currentRouteName() == 'occupation.create' ||
+                        Route::currentRouteName() == 'occupation.edit') active @endif ">
+                    <a href="{{ route('occupation.index') }}" class="menu-link">
+                        <i class="menu-icon tf-icons ri-group-2-line"></i>
+                        <div data-i18n="Profesiones">Profesiones</div>
+                    </a>
+                </li>
+                <li class="menu-item
+                    @if (Route::currentRouteName() == 'specialty.index' ||
+                        Route::currentRouteName() == 'specialty.create' ||
+                        Route::currentRouteName() == 'specialty.edit') active @endif">
+                    <a href="{{ route('specialty.index') }}" class="menu-link">
+                        <i class="menu-icon tf-icons ri-group-2-line"></i>
+                        <div data-i18n="Especialidades">Especialidades</div>
+                    </a>
+                </li>
+                <li class="menu-item
+                   ">
+                    <a href="javascript:void(0);" class="menu-link">
+                        <i class="menu-icon tf-icons ri-group-2-line"></i>
+                        <div data-i18n="Roles">Roles</div>
+                    </a>
+                </li>
                 <li class="menu-item
                     @if (Route::currentRouteName() == 'user.index' ||
                         Route::currentRouteName() == 'user.create' ||
-                        Route::currentRouteName() == 'user.edit') active @endif"">
+                        Route::currentRouteName() == 'user.edit') active @endif">
                     <a href="{{ route('user.index') }}" class="menu-link">
                         <i class="menu-icon tf-icons ri-group-2-line"></i>
                         <div data-i18n="Usuarios">Usuarios</div>

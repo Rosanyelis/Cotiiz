@@ -1,5 +1,5 @@
 
-@if (session('success'))
+            @if (session('success'))
             Swal.fire({
                 position: 'top-center',
                 icon: 'success',

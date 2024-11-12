@@ -6,7 +6,7 @@
     class="light-style layout-navbar-fixed layout-menu-fixed layout-compact"
     dir="ltr"
     data-theme="theme-default"
-    data-assets-path="../../assets/"
+    data-assets-path="{{ asset('assets/') }}/"
     data-template="vertical-menu-template-no-customizer"
     data-style="light">
     <head>
@@ -16,7 +16,7 @@
             content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>TiGroup - @yield('title')</title>
+        <title>{{ config('app.name') }} - @yield('title')</title>
 
         <meta name="description" content="" />
 
@@ -41,7 +41,6 @@
         <link rel="stylesheet" href="{{ asset('assets/vendor/css/rtl/core.css') }}" class="template-customizer-core-css" />
         <link rel="stylesheet" href="{{ asset('assets/vendor/css/rtl/theme-default.css') }}"  class="template-customizer-theme-css"/>
         <link rel="stylesheet" href="{{ asset('assets/css/demo.css') }}" />
-        <link rel="stylesheet" href="{{ asset('assets/vendor/css/rtl/theme-semi-dark.css') }}" type="text/css" class="template-customizer-theme-css">
 
         <!-- Vendors CSS -->
         <link rel="stylesheet" href="{{ asset('assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css') }}" />

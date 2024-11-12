@@ -1,52 +1,35 @@
-<x-guest-layout>
-    <form method="POST" action="{{ route('register') }}">
-        @csrf
+@extends('auth.layouts.app')
+@section('title', 'Registrar '.$tipo)
+@section('content')
+    <div class="position-relative" style="background-image: url('{{ asset('web/images/bg-login.jpg') }}');background-repeat: no-repeat;background-size: cover;">
+        <div class="authentication-wrapper authentication-basic container-p-y p-4 p-sm-0" >
+            <div class="authentication-inner py-6" style="max-width: 800px;">
+                <!-- Login -->
+                <div class="card p-md-7 p-1">
+                    <!-- Logo -->
+                    <div class="app-brand justify-content-center mt-5">
+                        <img  src="{{ asset('assets/img/logo-cotiz.png') }}" width="25%" alt="logo" />
+                    </div>
+                    <!-- /Logo -->
+                    @if ($tipo === 'empresa' && $registrado === 0)
+                    @include('auth.partials.form-empresa-new')
+                    @endif
 
-        <!-- Name -->
-        <div>
-            <x-input-label for="name" :value="__('Name')" />
-            <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
-            <x-input-error :messages="$errors->get('name')" class="mt-2" />
+                    @if ($tipo === 'empresa' && $registrado === 1)
+                    @include('auth.partials.form-usuario-empresa')
+                    @endif
+
+                    @if ($tipo === 'proveedor' && $registrado === 0)
+                    @include('auth.partials.form-proveedor-new')
+                    @endif
+
+                    @if ($tipo === 'proveedor' && $registrado === 1)
+                    @include('auth.partials.form-usuario-proveedor')
+                    @endif
+                </div>
+                <!-- /Login -->
+            </div>
         </div>
+    </div>
 
-        <!-- Email Address -->
-        <div class="mt-4">
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-        </div>
-
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="new-password" />
-
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
-
-        <!-- Confirm Password -->
-        <div class="mt-4">
-            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
-
-            <x-text-input id="password_confirmation" class="block mt-1 w-full"
-                            type="password"
-                            name="password_confirmation" required autocomplete="new-password" />
-
-            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
-        </div>
-
-        <div class="flex items-center justify-end mt-4">
-            <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">
-                {{ __('Already registered?') }}
-            </a>
-
-            <x-primary-button class="ms-4">
-                {{ __('Register') }}
-            </x-primary-button>
-        </div>
-    </form>
-</x-guest-layout>
+    @endsection

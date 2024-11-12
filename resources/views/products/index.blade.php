@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Productos')
+@section('title', 'Catálogo - Productos')
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/datatables-bs5/datatables.bootstrap5.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css') }}" />
@@ -18,29 +18,14 @@
             </div>
         </div>
         <div class="card-datatable text-nowrap">
-            <div class="row my-3 ">
-                <div class="col-md-3">
-                    <div class="form-floating form-floating-outline">
-                        <select id="category_id" name="category_id" class="form-select"
-                        placeholder="Selecione una categoria">
-                            <option value="">-- Seleccionar --</option>
-                            @foreach($category as $item)
-                            <option value="{{ $item->id }}" >{{ $item->name }}</option>
-                            @endforeach
-                        </select>
-                        <label for="code">Filtrar por Categoria</label>
-                    </div>
-                </div>
-            </div>
             <table class="datatables-product table table-sm">
                 <thead>
                     <tr>
-                        <th>Código</th>
+                        <th>Foto</th>
                         <th>Producto</th>
-                        <th>Categoría</th>
-                        <th>Tipo</th>
-                        <th>Costo</th>
                         <th>Precio</th>
+                        <th>Descripción</th>
+                        <th>Estatus</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
