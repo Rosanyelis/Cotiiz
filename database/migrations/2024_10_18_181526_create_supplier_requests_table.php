@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('type');
             $table->enum('status', ['Solicitando', 'En proceso', 'Aprobado', 'Rechazado', 'Contestada', 'Examinada'])->default('Solicitando');
             $table->string('observation')->nullable();
+            $table->string('file')->nullable();
+            $table->string('name_file')->nullable();
             $table->timestamps();
         });
     }

@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('rfc_bussines', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('name_fantasy');
             $table->string('file_positive_opinion')->nullable();
             $table->string('file_bank_information')->nullable();
             $table->string('file_fiscal_constancy')->nullable();
@@ -31,7 +32,7 @@ return new class extends Migration
             $table->string('municipality')->nullable();
             $table->string('state')->nullable();
             $table->string('country')->nullable();
-            $table->string('main_activity')->nullable();
+            $table->text('main_activity')->nullable();
             $table->enum('status', ['0', '1', '2'])->default('0'); // 0 = pendiente, 1 = aprobado, 2 = bloqueado
             $table->timestamps();
         });

@@ -19,14 +19,15 @@ class UserSeeder extends Seeder
             'type' => 'admin',
             'email' => 'rosanyelismendoza@gmail.com',
             'password' => Hash::make('admin'),
+            'status' => '1'
         ]);
-
         $dev->assignRole('Desarrollador');
         $user = User::factory()->create([
             'name' => 'Administrador',
             'type' => 'admin',
             'email' => 'administrador@gmail.com',
             'password' => Hash::make('admin'),
+            'status' => '1'
         ]);
         $user->assignRole('Administrador');
 

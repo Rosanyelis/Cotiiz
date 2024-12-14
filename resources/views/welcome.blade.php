@@ -20,7 +20,7 @@
     <!-- Css -->
     <link href="{{ asset('web/libs/tiny-slider/tiny-slider.css') }}" rel="stylesheet">
     <link rel="stylesheet"
-        href="{{ asset('web/libs/choices.js/public/assets/styles/choices.min.css') }}">
+        href="{{ asset('web/libs/choicesjs/choices.min.css') }}">
     <!-- Main Css -->
     <link rel="stylesheet" href="{{ asset('web/libs/@iconscout/unicons/css/line.css') }}"
         type="text/css" />
@@ -164,7 +164,7 @@
 
     <!-- JAVASCRIPTS -->
     <script src="{{ asset('web/libs/tiny-slider/min/tiny-slider.js') }}"></script>
-    <script src="{{ asset('web/libs/choices.js/public/assets/scripts/choices.min.j') }}s">
+    <script src="{{ asset('web/libs/choicesjs/choices.min.j') }}s">
     </script>
     <script src="{{ asset('web/libs/feather-icons/feather.min.js') }}"></script>
     <script src="{{ asset('web/js/plugins.init.js') }}"></script>

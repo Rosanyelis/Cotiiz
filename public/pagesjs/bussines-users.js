@@ -6,6 +6,7 @@
     var dt_ajax_table = $('.datatables-bussines-user');
     var idrfc = $('.datatables-bussines-user').data('rfc');
     var url = "/empresas/"+idrfc+"/users";
+
 $(function () {
 
     if (dt_ajax_table.length) {
@@ -63,8 +64,6 @@ $(function () {
 });
 
 function activated(id) {
-    console.log(id);
-
     Swal.fire({
         title: '¿Está seguro de activar este usuario?',
         text: "El usuario podra acceder al sistema con sus credenciales!",

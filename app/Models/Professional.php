@@ -20,4 +20,14 @@ class Professional extends Model
     {
         return $this->belongsTo(Specialty::class, 'specialty_id', 'id');
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+    public function rfcsupplier()
+    {
+        return $this->belongsTo(RfcSupplier::class, 'rfc_suppliers_id', 'id');
+    }
 }

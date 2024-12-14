@@ -2,29 +2,24 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\KambanController;
-use App\Http\Controllers\ExpenseController;
-use App\Http\Controllers\InvoiceController;
-use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\ServiceController;
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\ContractController;
-use App\Http\Controllers\CustomerController;
-use App\Http\Controllers\PurchaseController;
-use App\Http\Controllers\SupplierController;
-use App\Http\Controllers\TodoListController;
-use App\Http\Controllers\QuotationController;
-use App\Http\Controllers\SpecialtyController;
-use App\Http\Controllers\WorkOrderController;
-use App\Http\Controllers\OccupationController;
-use App\Http\Controllers\RfcBussinesController;
-use App\Http\Controllers\RfcSupplierController;
-use App\Http\Controllers\ProfessionalController;
-use App\Http\Controllers\PurchaseOrderController;
-use App\Http\Controllers\RequestSupplierController;
-use App\Http\Controllers\SupplierRequestController;
+use App\Http\Controllers\Admin\SpecialtyController;
+use App\Http\Controllers\Admin\AdminUsersController;
+use App\Http\Controllers\Admin\OccupationController;
+use App\Http\Controllers\Supplier\ProductController;
+use App\Http\Controllers\Admin\RfcBussinesController;
+use App\Http\Controllers\Admin\RfcSupplierController;
+use App\Http\Controllers\Admin\AdminProductController;
+use App\Http\Controllers\Admin\AdminServiceController;
+use App\Http\Controllers\Bussines\SubAccountController;
+use App\Http\Controllers\Admin\SupplierRequestController;
+use App\Http\Controllers\Bussines\BussinesChatController;
+use App\Http\Controllers\Supplier\SupplierChatController;
+use App\Http\Controllers\Bussines\BussinesUsersController;
+use App\Http\Controllers\Admin\AdminProfessionalController;
+use App\Http\Controllers\Bussines\BussinesRequestController;
+use App\Http\Controllers\Supplier\RequestSupplierController;
+use App\Http\Controllers\Bussines\BussinesRequestChatController;
 
 
 
@@ -43,6 +38,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+    ####### Administrador #######
     # Profesiones
     Route::get('/profesiones', [OccupationController::class, 'index'])->name('occupation.index');
     Route::get('/profesiones/create', [OccupationController::class, 'create'])->name('occupation.create');
@@ -63,6 +59,76 @@ Route::middleware('auth')->group(function () {
     Route::get('/especialidades/importar-especialidades', [SpecialtyController::class, 'viewimport'])->name('specialty.viewimport');
     Route::post('/especialidades/import-data', [SpecialtyController::class, 'storeimport'])->name('specialty.import');
 
+    # Requests Proveedores
+    Route::get('/solicitudes-de-proveedor', [SupplierRequestController::class, 'index'])->name('request-supplier.index');
+    Route::get('/solicitudes-de-proveedor/datatable', [SupplierRequestController::class, 'datatable'])->name('request-supplier.datatable');
+    Route::get('/solicitudes-de-proveedor/create', [SupplierRequestController::class, 'create'])->name('request-supplier.create');
+    Route::post('/solicitudes-de-proveedor', [SupplierRequestController::class, 'store'])->name('request-supplier.store');
+    Route::get('/solicitudes-de-proveedor/{request}/show', [SupplierRequestController::class, 'show'])->name('request-supplier.show');
+    Route::post('/solicitudes-de-proveedor/{request}/chat', [SupplierRequestController::class, 'storeChat'])->name('request-supplier.storeChat');
+    Route::post('/solicitudes-de-proveedor/{request}/cambiar-estatus', [SupplierRequestController::class, 'changeStatus'])->name('request-supplier.changeStatus');
+
+    Route::get('/empresas', [RfcBussinesController::class, 'index'])->name('business.index');
+    Route::get('/empresas/create', [RfcBussinesController::class, 'create'])->name('business.create');
+    Route::post('/empresas', [RfcBussinesController::class, 'store'])->name('business.store');
+    Route::get('/empresas/{cliente}/show', [RfcBussinesController::class, 'show'])->name('business.show');
+    Route::get('/empresas/{cliente}/edit', [RfcBussinesController::class, 'edit'])->name('business.edit');
+    Route::put('/empresas/{cliente}/update', [RfcBussinesController::class, 'update'])->name('business.update');
+    Route::get('/empresas/{cliente}/activated', [RfcBussinesController::class, 'activated'])->name('business.activated');
+    Route::get('/empresas/{cliente}/desactivated', [RfcBussinesController::class, 'desactivated'])->name('business.desactivated');
+    Route::get('/empresas/{cliente}/users', [RfcBussinesController::class, 'rfcusers'])->name('business.users');
+    Route::get('/empresas/{cliente}/users/create', [RfcBussinesController::class, 'create_users'])->name('business.users.create_users');
+    Route::post('/empresas/{cliente}/users/store', [RfcBussinesController::class, 'store_users'])->name('business.users.store_users');
+    Route::get('/empresas/users/{user}/activated', [RfcBussinesController::class, 'ActivateUsers'])->name('business.users.activated');
+    Route::get('/empresas/users/{user}/desactivated', [RfcBussinesController::class, 'DesactivateUsers'])->name('business.users.desactivated');
+
+    Route::get('/proveedores', [RfcSupplierController::class, 'index'])->name('supplier.index');
+    Route::get('/proveedores/create', [RfcSupplierController::class, 'create'])->name('supplier.create');
+    Route::post('/proveedores', [RfcSupplierController::class, 'store'])->name('supplier.store');
+    Route::get('/proveedores/{cliente}/show', [RfcSupplierController::class, 'show'])->name('supplier.show');
+    Route::get('/proveedores/{cliente}/edit', [RfcSupplierController::class, 'edit'])->name('supplier.edit');
+    Route::put('/proveedores/{cliente}/update', [RfcSupplierController::class, 'update'])->name('supplier.update');
+    Route::get('/proveedores/{cliente}/activated', [RfcSupplierController::class, 'activated'])->name('supplier.activated');
+    Route::get('/proveedores/{cliente}/desactivated', [RfcSupplierController::class, 'desactivated'])->name('supplier.desactivated');
+    Route::get('/proveedores/{cliente}/users', [RfcSupplierController::class, 'rfcusers'])->name('supplier.users');
+    Route::get('/proveedores/{cliente}/users/create', [RfcSupplierController::class, 'create_users'])->name('supplier.users.create_users');
+    Route::post('/proveedores/{cliente}/users/store', [RfcSupplierController::class, 'store_users'])->name('supplier.users.store_users');
+    Route::get('/proveedores/users/{user}/activated', [RfcSupplierController::class, 'ActivateUsers'])->name('supplier.users.activated');
+    Route::get('/proveedores/users/{user}/desactivated', [RfcSupplierController::class, 'DesactivateUsers'])->name('supplier.users.desactivated');
+
+    # users
+    Route::get('/gestion-de-usuarios', [AdminUsersController::class, 'index'])->name('admin.users.index');
+    Route::get('/gestion-de-usuarios/create', [AdminUsersController::class, 'create'])->name('admin.users.create');
+    Route::post('/gestion-de-usuarios', [AdminUsersController::class, 'store'])->name('admin.users.store');
+    Route::get('/gestion-de-usuarios/{user}/edit', [AdminUsersController::class, 'edit'])->name('admin.users.edit');
+    Route::put('/gestion-de-usuarios/{user}/update', [AdminUsersController::class, 'update'])->name('admin.users.update');
+    Route::get('/gestion-de-usuarios/{user}/delete', [AdminUsersController::class, 'destroy'])->name('admin.users.destroy');
+    Route::get('/gestion-de-usuarios/{user}/activated', [AdminUsersController::class, 'activated'])->name('admin.users.activated');
+    Route::get('/gestion-de-usuarios/{user}/desactivated', [AdminUsersController::class, 'desactivated'])->name('admin.users.desactivated');
+
+    # Gestion de productos de proveedores
+    Route::get('/gestion-de-productos', [AdminProductController::class, 'index'])->name('admin.product.index');
+    Route::get('/gestion-de-productos/{id}/show', [AdminProductController::class, 'show'])->name('admin.product.show');
+    Route::get('/gestion-de-productos/{id}/aprove', [AdminProductController::class, 'aprove'])->name('admin.product.aprove');
+    Route::get('/gestion-de-productos/{id}/reject', [AdminProductController::class, 'reject'])->name('admin.product.reject');
+
+    # Gestion de servicios de proveedores
+    Route::get('/gestion-de-servicios', [AdminServiceController::class, 'index'])->name('admin.service.index');
+    Route::get('/gestion-de-servicios/{id}/show', [AdminServiceController::class, 'show'])->name('admin.service.show');
+    Route::get('/gestion-de-servicios/{id}/aprove', [AdminServiceController::class, 'aprove'])->name('admin.service.aprove');
+    Route::get('/gestion-de-servicios/{id}/reject', [AdminServiceController::class, 'reject'])->name('admin.service.reject');
+
+    # Gestion de Profesinales de proveedores
+    Route::get('/gestion-de-profesionales', [AdminProfessionalController::class, 'index'])->name('admin.professional.index');
+    Route::get('/gestion-de-profesionales/{id}/show', [AdminProfessionalController::class, 'show'])->name('admin.professional.show');
+    Route::get('/gestion-de-profesionales/{id}/aprove', [AdminProfessionalController::class, 'aprove'])->name('admin.professional.aprove');
+    Route::get('/gestion-de-profesionales/{id}/reject', [AdminProfessionalController::class, 'reject'])->name('admin.professional.reject');
+
+
+    #### FIN ADMINISTRADOR ####
+
+
+    ##### PROVEEDOR ######
 
     # products
     Route::get('/productos', [ProductController::class, 'index'])->name('product.index');
@@ -94,140 +160,44 @@ Route::middleware('auth')->group(function () {
     Route::put('/profesionales/{professional}/update', [ProfessionalController::class, 'update'])->name('professional.update');
     Route::get('/profesionales/{professional}/delete', [ProfessionalController::class, 'destroy'])->name('professional.destroy');
 
-    # Customers
-    Route::get('/empresas', [RfcBussinesController::class, 'index'])->name('business.index');
-    Route::get('/empresas/create', [RfcBussinesController::class, 'create'])->name('business.create');
-    Route::post('/empresas', [RfcBussinesController::class, 'store'])->name('business.store');
-    Route::get('/empresas/{cliente}/show', [RfcBussinesController::class, 'show'])->name('business.show');
-    Route::get('/empresas/{cliente}/edit', [RfcBussinesController::class, 'edit'])->name('business.edit');
-    Route::put('/empresas/{cliente}/update', [RfcBussinesController::class, 'update'])->name('business.update');
-    Route::get('/empresas/{cliente}/activated', [RfcBussinesController::class, 'activated'])->name('business.activated');
-    Route::get('/empresas/{cliente}/desactivated', [RfcBussinesController::class, 'desactivated'])->name('business.desactivated');
-    Route::get('/empresas/{cliente}/users', [RfcBussinesController::class, 'rfcusers'])->name('business.users');
-    Route::get('/empresas/{cliente}/users/create', [RfcBussinesController::class, 'create_users'])->name('business.users.create_users');
-    Route::post('/empresas/{cliente}/users/store', [RfcBussinesController::class, 'store_users'])->name('business.users.store_users');
-    Route::get('/empresas/users/{user}/activated', [RfcBussinesController::class, 'ActivateUsers'])->name('business.users.activated');
-    Route::get('/empresas/users/{user}/desactivated', [RfcBussinesController::class, 'DesactivateUsers'])->name('business.users.desactivated');
-
-    Route::get('/proveedores', [RfcSupplierController::class, 'index'])->name('supplier.index');
-    Route::get('/proveedores/create', [RfcSupplierController::class, 'create'])->name('supplier.create');
-    Route::post('/proveedores', [RfcSupplierController::class, 'store'])->name('supplier.store');
-    Route::get('/proveedores/{cliente}/show', [RfcSupplierController::class, 'show'])->name('supplier.show');
-    Route::get('/proveedores/{cliente}/edit', [RfcSupplierController::class, 'edit'])->name('supplier.edit');
-    Route::put('/proveedores/{cliente}/update', [RfcSupplierController::class, 'update'])->name('supplier.update');
-    Route::get('/proveedores/{cliente}/activated', [RfcSupplierController::class, 'activated'])->name('supplier.activated');
-    Route::get('/proveedores/{cliente}/desactivated', [RfcSupplierController::class, 'desactivated'])->name('supplier.desactivated');
-    Route::get('/proveedores/{cliente}/users', [RfcSupplierController::class, 'rfcusers'])->name('supplier.users');
-    Route::get('/proveedores/{cliente}/users/create', [RfcSupplierController::class, 'create_users'])->name('supplier.users.create_users');
-    Route::post('/proveedores/{cliente}/users/store', [RfcSupplierController::class, 'store_users'])->name('supplier.users.store_users');
-    Route::get('/proveedores/users/{user}/activated', [RfcSupplierController::class, 'ActivateUsers'])->name('supplier.users.activated');
-    Route::get('/proveedores/users/{user}/desactivated', [RfcSupplierController::class, 'DesactivateUsers'])->name('supplier.users.desactivated');
-
-    # Requests Proveedores
-    Route::get('/solicitudes-de-proveedor', [SupplierRequestController::class, 'index'])->name('request-supplier.index');
-    Route::get('/solicitudes-de-proveedor/datatable', [SupplierRequestController::class, 'datatable'])->name('request-supplier.datatable');
-    Route::get('/solicitudes-de-proveedor/create', [SupplierRequestController::class, 'create'])->name('request-supplier.create');
-    Route::post('/solicitudes-de-proveedor', [SupplierRequestController::class, 'store'])->name('request-supplier.store');
-    Route::get('/solicitudes-de-proveedor/{request}/show', [SupplierRequestController::class, 'show'])->name('request-supplier.show');
-    Route::post('/solicitudes-de-proveedor/{request}/chat', [SupplierRequestController::class, 'storeChat'])->name('request-supplier.storeChat');
-    Route::post('/solicitudes-de-proveedor/{request}/cambiar-estatus', [SupplierRequestController::class, 'changeStatus'])->name('request-supplier.changeStatus');
-
     # Requests panel de Proveedores
     Route::get('/solicitudes', [RequestSupplierController::class, 'index'])->name('supplier-request.index');
     Route::get('/solicitudes/datatable', [RequestSupplierController::class, 'datatable'])->name('supplier-request.datatable');
-    Route::post('/solicitudes', [RequestSupplierController::class, 'store'])->name('supplier-request.store');
     Route::get('/solicitudes/{request}/show', [RequestSupplierController::class, 'show'])->name('supplier-request.show');
     Route::post('/solicitudes/{request}/chat', [RequestSupplierController::class, 'storeChat'])->name('supplier-request.storeChat');
-    Route::post('/solicitudes/{request}/cambiar-estatus', [RequestSupplierController::class, 'changeStatus'])->name('supplier-request.changeStatus');
 
-    # Expenses
-    Route::get('/gastos', [ExpenseController::class, 'index'])->name('expense.index');
-    Route::get('/gastos/create', [ExpenseController::class, 'create'])->name('expense.create');
-    Route::post('/gastos', [ExpenseController::class, 'store'])->name('expense.store');
-    Route::get('/gastos/{gasto}/show', [ExpenseController::class, 'show'])->name('expense.show');
-    Route::get('/gastos/{gasto}/edit', [ExpenseController::class, 'edit'])->name('expense.edit');
-    Route::put('/gastos/{gasto}/update', [ExpenseController::class, 'update'])->name('expense.update');
-    Route::get('/gastos/{gasto}/delete', [ExpenseController::class, 'destroy'])->name('expense.destroy');
+    # Chat con administracion
+    Route::get('/buzon-de-mensajes', [SupplierChatController::class, 'index'])->name('supplier-chat.index');
+    Route::post('/buzon-de-mensajes/store', [SupplierChatController::class, 'store'])->name('supplier-chat.store');
+    ###### FIN PROVEEDOR ######
 
-    # Quotation
-    Route::get('/cotizaciones', [QuotationController::class, 'index'])->name('quote.index');
-    Route::get('/cotizaciones/datatable', [QuotationController::class, 'datatable'])->name('quote.datatable');
-    Route::get('/cotizaciones/create', [QuotationController::class, 'create'])->name('quote.create');
-    Route::post('/cotizaciones', [QuotationController::class, 'store'])->name('quote.store');
-    Route::get('/cotizaciones/{quotation}/show', [QuotationController::class, 'show'])->name('quote.show');
-    Route::get('/cotizaciones/{quotation}/edit', [QuotationController::class, 'edit'])->name('quote.edit');
-    Route::post('/cotizaciones/{quotation}/update', [QuotationController::class, 'update'])->name('quote.update');
-    Route::get('/cotizaciones/{quotation}/delete', [QuotationController::class, 'destroy'])->name('quote.destroy');
-    Route::get('/cotizaciones/{quotation}/productjson', [QuotationController::class, 'productjson'])->name('quote.productjson');
-    Route::get('/cotizaciones/{quotation}/quotepdf', [QuotationController::class, 'quotepdf'])->name('quote.quotepdf');
-    Route::get('/cotizaciones/{quotation}/enviar-cotizacion', [QuotationController::class, 'sendEmailQuotepdf'])->name('quote.sendEmailQuotepdf');
-    Route::post('/cotizaciones/cambiar-status', [QuotationController::class, 'cambiarStatus'])->name('quote.cambiarStatus');
-    Route::post('/cotizaciones/agregar-numero-de-factura', [QuotationController::class, 'addReferencias'])->name('quote.addReferencias');
 
-    # Contract
-    Route::get('/contratos', [ContractController::class, 'index'])->name('contract.index');
-    Route::get('/contratos/create', [ContractController::class, 'create'])->name('contract.create');
-    Route::post('/contratos', [ContractController::class, 'store'])->name('contract.store');
-    Route::get('/contratos/{contract}/show', [ContractController::class, 'show'])->name('contract.show');
-    Route::get('/contratos/{contract}/edit', [ContractController::class, 'edit'])->name('contract.edit');
-    Route::put('/contratos/{contract}/update', [ContractController::class, 'update'])->name('contract.update');
-    Route::get('/contratos/{contract}/delete', [ContractController::class, 'destroy'])->name('contract.destroy');
+    ###### EMPRESA ######
 
-    # Invoices
-    Route::get('/facturas', [InvoiceController::class, 'index'])->name('invoice.index');
-    Route::get('/facturas/create', [InvoiceController::class, 'create'])->name('invoice.create');
-    Route::post('/facturas', [InvoiceController::class, 'store'])->name('invoice.store');
-    Route::get('/facturas/{invoice}/show', [InvoiceController::class, 'show'])->name('invoice.show');
-    Route::get('/facturas/{invoice}/edit', [InvoiceController::class, 'edit'])->name('invoice.edit');
-    Route::put('/facturas/{invoice}/update', [InvoiceController::class, 'update'])->name('invoice.update');
-    Route::get('/facturas/{invoice}/delete', [InvoiceController::class, 'destroy'])->name('invoice.destroy');
+    # Requests panel de Empresas
+    Route::get('/mis-solicitudes', [BussinesRequestController::class, 'index'])->name('bussines-request.index');
+    Route::get('/mis-solicitudes/datatable', [BussinesRequestController::class, 'datatable'])->name('bussines-request.datatable');
+    Route::get('/mis-solicitudes/create-product', [BussinesRequestController::class, 'createProduct'])->name('bussines-request.createProduct');
+    Route::post('/mis-solicitudes/store-product', [BussinesRequestController::class, 'storeProduct'])->name('bussines-request.storeProduct');
+    Route::get('/mis-solicitudes/create-service', [BussinesRequestController::class, 'createService'])->name('bussines-request.createService');
+    Route::post('/mis-solicitudes/store-service', [BussinesRequestController::class, 'storeService'])->name('bussines-request.storeService');
+    Route::get('/mis-solicitudes/create-professional', [BussinesRequestController::class, 'createProfessional'])->name('bussines-request.createProfessional');
+    Route::post('/mis-solicitudes/store-professional', [BussinesRequestController::class, 'storeProfessional'])->name('bussines-request.storeProfessional');
+    # Chat de solicitud
+    Route::get('/mis-solicitudes/{request}/chat', [BussinesRequestChatController::class, 'index'])->name('bussines-request.chat');
+    Route::post('/mis-solicitudes/{request}/chat', [BussinesRequestChatController::class, 'storeChat'])->name('bussines-request.storeChat');
+    Route::post('/mis-solicitudes/{request}/cambiar-estatus', [BussinesRequestChatController::class, 'changeStatus'])->name('bussines-request.changeStatus');
+    # Chat con administracion
+    Route::get('/buzon', [BussinesChatController::class, 'index'])->name('bussines-chat.index');
+    Route::post('/buzon/store', [BussinesChatController::class, 'store'])->name('bussines-chat.store');
 
-    # Compras
-    Route::get('/compras', [PurchaseController::class, 'index'])->name('purchase.index');
-    Route::get('/compras/datatable', [PurchaseController::class, 'datatable'])->name('purchase.datatable');
-    Route::get('/compras/{product}/productjson', [PurchaseController::class, 'productjson'])->name('purchase.productjson');
-    Route::get('/compras/create', [PurchaseController::class, 'create'])->name('purchase.create');
-    Route::post('/compras', [PurchaseController::class, 'store'])->name('purchase.store');
-    Route::get('/compras/{purchase}/show', [PurchaseController::class, 'show'])->name('purchase.show');
-    Route::get('/compras/{purchase}/edit', [PurchaseController::class, 'edit'])->name('purchase.edit');
-    Route::put('/compras/{purchase}/update', [PurchaseController::class, 'update'])->name('purchase.update');
-    Route::get('/compras/{purchase}/delete', [PurchaseController::class, 'destroy'])->name('purchase.destroy');
+    # Subcuentas
+    Route::get('/subcuentas', [SubAccountController::class, 'index'])->name('subaccount.index');
 
-    # Purchase Order
-    Route::get('/ordenes-de-compra', [PurchaseOrderController::class, 'index'])->name('purchaseorder.index');
-    Route::get('/ordenes-de-compra/datatable', [PurchaseOrderController::class, 'datatable'])->name('purchaseorder.datatable');
-    Route::get('/ordenes-de-compra/create', [PurchaseOrderController::class, 'create'])->name('purchaseorder.create');
-    Route::post('/ordenes-de-compra', [PurchaseOrderController::class, 'store'])->name('purchaseorder.store');
-    Route::get('/ordenes-de-compra/{purchaseorder}/show', [PurchaseOrderController::class, 'show'])->name('purchaseorder.show');
-    Route::get('/ordenes-de-compra/{purchaseorder}/edit', [PurchaseOrderController::class, 'edit'])->name('purchaseorder.edit');
-    Route::put('/ordenes-de-compra/{purchaseorder}/update', [PurchaseOrderController::class, 'update'])->name('purchaseorder.update');
-    Route::get('/ordenes-de-compra/{purchaseorder}/delete', [PurchaseOrderController::class, 'destroy'])->name('purchaseorder.destroy');
+    # Usuarios
+    Route::get('/usuarios', [BussinesUsersController::class, 'index'])->name('bussines-users.index');
+    ###### FIN EMPRESA ######
 
-    # work order
-    Route::get('/ordenes-de-trabajo', [WorkOrderController::class, 'index'])->name('workorder.index');
-    Route::get('/ordenes-de-trabajo/create', [WorkOrderController::class, 'create'])->name('workorder.create');
-    Route::post('/ordenes-de-trabajo', [WorkOrderController::class, 'store'])->name('workorder.store');
-    Route::get('/ordenes-de-trabajo/{workorder}/show', [WorkOrderController::class, 'show'])->name('workorder.show');
-    Route::get('/ordenes-de-trabajo/{workorder}/edit', [WorkOrderController::class, 'edit'])->name('workorder.edit');
-    Route::put('/ordenes-de-trabajo/{workorder}/update', [WorkOrderController::class, 'update'])->name('workorder.update');
-    Route::post('/ordenes-de-trabajo/delete', [WorkOrderController::class, 'destroy'])->name('workorder.destroy');
-
-    # users
-    Route::get('/usuarios', [UserController::class, 'index'])->name('user.index');
-    Route::get('/usuarios/create', [UserController::class, 'create'])->name('user.create');
-    Route::post('/usuarios', [UserController::class, 'store'])->name('user.store');
-    Route::get('/usuarios/{user}/edit', [UserController::class, 'edit'])->name('user.edit');
-    Route::put('/usuarios/{user}/update', [UserController::class, 'update'])->name('user.update');
-    Route::get('/usuarios/{user}/delete', [UserController::class, 'destroy'])->name('user.destroy');
-    Route::get('/usuarios/{user}/activated', [UserController::class, 'activated'])->name('users.activated');
-    Route::get('/usuarios/{user}/desactivated', [UserController::class, 'desactivated'])->name('users.desactivated');
-
-     # Task
-     Route::get('/tareas', [TodoListController::class, 'index'])->name('task.index');
-     Route::get('/tareas/create', [TodoListController::class, 'create'])->name('task.create');
-     Route::post('/tareas/store', [TodoListController::class, 'store'])->name('task.store');
-     Route::post('/tareas/cambiar-estado', [TodoListController::class, 'changeStatus'])->name('task.changeStatus');
-     Route::post('/tareas/destroy', [TodoListController::class, 'destroy'])->name('task.destroy');
 });
 
 require __DIR__.'/auth.php';

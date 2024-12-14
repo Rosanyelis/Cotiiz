@@ -7,6 +7,7 @@
     dir="ltr"
     data-theme="theme-default"
     data-assets-path="{{ asset('assets/') }}/"
+    data-base-url="{{ url('/') }}"
     data-template="vertical-menu-template-no-customizer"
     data-style="light">
     <head>
@@ -144,6 +145,7 @@
     <!-- Page JS -->
     <script src="{{ asset('assets/vendor/libs/sweetalert2/sweetalert2.js') }}"></script>
     <script src="{{ asset('assets/js/dashboards-analytics.js') }}"></script>
+    <script src="{{ asset('assets/vendor/libs/toastr/toastr.js') }}"></script>
     <script>
         @include('layouts.alerts')
     </script>

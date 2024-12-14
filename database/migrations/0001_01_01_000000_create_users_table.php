@@ -18,8 +18,28 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('passwordshow')->nullable();
             $table->rememberToken();
             $table->enum('status', ['0', '1', '2'])->default('0'); // 0 = pendiente, 1 = aprobado, 2 = bloqueado
+            $table->string('photo')->nullable();
+            $table->string('firstname')->nullable();
+            $table->string('lastname')->nullable();
+            $table->string('second_name')->nullable();
+            $table->string('second_lastname')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('address')->nullable();
+            $table->string('street')->nullable();
+            $table->string('street_number')->nullable();
+            $table->string('colony')->nullable();
+            $table->string('postal_code')->nullable();
+            $table->string('municipality')->nullable();
+            $table->string('state')->nullable();
+            $table->string('country')->nullable();
+            $table->string('area_work')->nullable();
+            $table->string('file_gafete')->nullable();
+            $table->string('file_gafete2')->nullable();
+            $table->string('file_credential')->nullable();
+            $table->string('file_credential2')->nullable();
             $table->timestamps();
         });
 

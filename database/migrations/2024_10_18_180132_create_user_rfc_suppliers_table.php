@@ -15,8 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('rfc_suppliers_id')->constrained('rfc_suppliers')->onDelete('cascade');
-            $table->enum('status', ['Activo', 'Inactivo'])->default('Activo');
-            $table->string('observation')->nullable();
+            $table->enum('principal', ['Si', 'No'])->default('Si');
             $table->timestamps();
         });
     }

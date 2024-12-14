@@ -23,13 +23,14 @@ $(function () {
                 }
             },
             columns: [
+                {data: 'supplier.name', name: 'supplier.name'},
                 {data: 'type', name: 'type'},
                 {data: 'status', name: 'status'},
                 {data: 'actions', name: 'actions', orderable: false, searchable: false},
             ],
             columnDefs: [
                 {
-                    targets: [1],
+                    targets: [2],
                     render: function (data) {
                         if (data == 'Solicitando') {
                             return `<span class="badge bg-warning">${data}</span>`;

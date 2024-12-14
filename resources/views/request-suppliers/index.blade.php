@@ -12,7 +12,7 @@
         <div class="card-header header-elements border-bottom">
             <h5 class="mb-0 me-2">Solicitudes</h5>
         </div>
-        
+
         <div class="card-datatable text-nowrap">
             <table class="datatables-supplier-request table table-sm">
                 <thead>

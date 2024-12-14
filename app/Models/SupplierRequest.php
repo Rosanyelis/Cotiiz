@@ -21,11 +21,6 @@ class SupplierRequest extends Model
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
-    public function bussines()
-    {
-        return $this->belongsTo(RfcBussines::class, 'rfc_bussines_id', 'id');
-    }
-
     public function chats()
     {
         return $this->hasMany(SupplierRequestChat::class, 'supplier_request_id', 'id');

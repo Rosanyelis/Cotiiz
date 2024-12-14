@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('rfc_suppliers_id')->constrained('rfc_suppliers')->onDelete('cascade');
+            $table->string('photo')->nullable();
             $table->string('name');
             $table->string('description')->nullable();
             $table->string('price');

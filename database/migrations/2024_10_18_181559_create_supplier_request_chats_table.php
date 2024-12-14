@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreignId('user_admin_id')->nullable()->constrained('users')->onDelete('cascade');
             $table->string('message');
             $table->string('file')->nullable();
+            $table->string('name_file')->nullable();
             $table->enum('status', ['Leido', 'No Leido'])->default('No Leido');
             $table->timestamps();
         });

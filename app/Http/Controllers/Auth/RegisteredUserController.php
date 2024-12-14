@@ -175,6 +175,12 @@ class RegisteredUserController extends Controller
                 'rfc_bussines_id' => $bussines->id,
                 'principal' => $count == 0 ? true : false,
             ]);
+
+            # Correo para notificar al usuario registrado que se ha creado su cuenta
+            // Mail::to($user->email)->send(new UserRegistered($user));
+
+            // return redirect()->intended(RouteServiceProvider::HOME);
+
         } else if ($request->tipo == 'proveedor')
         {
 
@@ -247,10 +253,11 @@ class RegisteredUserController extends Controller
                 'rfc_suppliers_id' => $supplier->id,
                 'principal' => $count == 0 ? true : false,
             ]);
+
+            # Correo para notificar al usuario registrado que se ha creado su cuenta
+            // Mail::to($user->email)->send(new UserRegistered($user));
         }
 
-        # Correo para notificar al usuario registrado que se ha creado su cuenta
-        # Correo para notificar al administrador que se ha registrado un nuevo usuario
 
         return redirect()->route('welcome')->with('success', 'Registrado con exito');
     }
@@ -283,6 +290,11 @@ class RegisteredUserController extends Controller
                 'user_id' => $user->id,
                 'rfc_suppliers_id' => $provider->id,
             ]);
+
+            # Correo para notificar al usuario registrado que se ha creado su cuenta
+
+
+            # Correo para notificar al administrador que se ha registrado un nuevo usuario
         }
         if ($data['tipo'] == 'empresa') {
             $data['type'] = 'business-operador';
@@ -298,6 +310,10 @@ class RegisteredUserController extends Controller
                 'user_id' => $user->id,
                 'rfc_bussines_id' => $bussines->id,
             ]);
+
+            # Correo para notificar al usuario registrado que se ha creado su cuenta
+
+            # Correo para notificar al administrador que se ha registrado un nuevo usuario
         }
 
         return redirect()->route('welcome')->with('success', 'Usuario creado con exito');

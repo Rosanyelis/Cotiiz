@@ -11,7 +11,7 @@ class StoreBussinesRequestChatRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,14 @@ class StoreBussinesRequestChatRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'message' => 'required',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'message.required' => 'El mensaje es requerido.',
         ];
     }
 }

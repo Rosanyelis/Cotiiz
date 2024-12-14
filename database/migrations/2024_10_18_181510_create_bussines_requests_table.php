@@ -16,8 +16,11 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('rfc_bussines_id')->constrained('rfc_bussines')->onDelete('cascade');
             $table->string('type');
+            $table->enum('type_solicitude', ['Producto', 'Servicio', 'Profesional'])->default('Producto');
             $table->enum('status', ['Solicitando', 'En proceso', 'Aprobado', 'Rechazado', 'Contestada', 'Examinada'])->default('Solicitando');
             $table->string('observation')->nullable();
+            $table->string('file')->nullable();
+            $table->string('name_file')->nullable();
             $table->timestamps();
         });
     }
