@@ -13,6 +13,12 @@ class RfcSupplier extends Model
 
     public function users()
     {
-        return $this->belongsToMany(User::class, 'user_rfc_suppliers', 'rfc_supplier_id', 'user_id');
+        return $this->belongsToMany(User::class, 'user_rfc_suppliers', 'rfc_suppliers_id', 'user_id')
+        ->withPivot( 'principal');
+    }
+
+    public function chats()
+    {
+        return $this->hasMany(SuppliersChat::class, 'rfc_suppliers_id', 'id');
     }
 }

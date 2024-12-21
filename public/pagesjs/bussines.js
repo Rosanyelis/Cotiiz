@@ -4,7 +4,7 @@
 
 'use strict';
     var dt_ajax_table = $('.datatables-bussines');
-
+    const numberFormat2 = new Intl.NumberFormat('es-MX');
 $(function () {
 
     if (dt_ajax_table.length) {
@@ -24,13 +24,24 @@ $(function () {
             },
             columns: [
                 {data: 'name', name: 'name'},
-                {data: 'phone', name: 'phone'},
+                {data: 'name_fantasy', name: 'name_fantasy'},
+                {data: 'street', name: 'street'},
+                {data: 'street_number', name: 'street_number'},
+                {data: 'colony', name: 'colony'},
+                {data: 'cashback', name: 'cashback'},
                 {data: 'status', name: 'status'},
                 {data: 'actions', name: 'actions', orderable: false, searchable: false},
             ],
             columnDefs: [
                 {
-                    targets: [2],
+                    targets: [5],
+                    render: function (data) {
+                        return '$ ' + numberFormat2.format(data);
+                    }
+                },
+                {
+                    targets: [6],
+
                     render: function (data) {
                         if (data == 0) {
                             return '<span class="badge bg-warning">Por Aprobacion</span>';
@@ -49,9 +60,12 @@ $(function () {
 
 });
 
+function addCashback(id) {
+    $('#rfc').val(id);
+    $("#modalCashback").modal('show');
+}
 
 function activated(id) {
-    console.log(id);
 
     Swal.fire({
         title: '¿Está seguro de Activar esta Empresa?',

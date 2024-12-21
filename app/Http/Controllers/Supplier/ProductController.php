@@ -6,6 +6,7 @@ use App\Models\Product;
 use App\Models\Category;
 use App\Models\TypeProduct;
 use Illuminate\Support\Str;
+use App\Models\Notification;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -63,6 +64,16 @@ class ProductController extends Controller
         $data['user_id'] = auth()->user()->id;
         $data['rfc_suppliers_id'] = Auth::user()->rfcsuppliers()->first()->id;
         $producto = Product::create($data);
+
+        Notification::create([
+            'rfc_suppliers_id' => auth()->user()->rfcsuppliers()->first()->id,
+            'type' => 'Admin',
+            'user_id' => auth()->user()->id,
+            'title' => 'Nuevo Producto de Proveedor ',
+            'message' => 'El usuario ' . auth()->user()->name . '
+             del proveedor ' . auth()->user()->rfcsuppliers()->first()->name . '
+              se ha registrado un producto en el sistema',
+        ]);
 
         return redirect()->route('product.index')->with('success', 'Producto creado con exito');
     }

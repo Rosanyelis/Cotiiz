@@ -24,7 +24,58 @@
             </div>
         </div>
         <!-- ventas del mes -->
+        <div class="col-lg-12">
+            <div class="card h-100">
+                <div class="card-body d-flex justify-content-between flex-wrap gap-4">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="avatar">
+                            <div class="avatar-initial bg-label-success rounded">
+                                <i class="ri-money-dollar-circle-fill ri-24px"></i>
+                            </div>
+                        </div>
+                        <div class="card-info">
+                            <h5 class="mb-0" id="empresas">0</h5>
+                            <p class="mb-0">Empresas</p>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="avatar">
+                            <div class="avatar-initial bg-label-info rounded">
+                                <i class="ri-money-dollar-circle-fill ri-24px"></i>
+                            </div>
+                        </div>
+                        <div class="card-info">
+                            <h5 class="mb-0" id="proveedores">0</h5>
+                            <p class="mb-0">Proveedores</p>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="avatar">
+                            <div class="avatar-initial bg-label-warning rounded">
+                                <i class="ri-money-dollar-circle-fill ri-24px"></i>
+                            </div>
+                        </div>
+                        <div class="card-info">
+                            <h5 class="mb-0" id="solicitudes">0</h5>
+                            <p class="mb-0">Solicitudes</p>
+                        </div>
+                    </div>
 
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="avatar">
+                            <div class="avatar-initial bg-label-info rounded">
+                                <i class="ri-money-dollar-circle-fill ri-24px"></i>
+                            </div>
+                        </div>
+                        <div class="card-info">
+                            <h5 class="mb-0" id="catalogos">0</h5>
+                            <p class="mb-0">Catalogos</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
 
     </div>
 </div>

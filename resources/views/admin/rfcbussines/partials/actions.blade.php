@@ -8,6 +8,11 @@
             Ver Empresa
         </a>
 
+        <a class="dropdown-item text-info" href="#" onclick="addCashback({{ $data->id }})" >
+            <i class="ri-money-dollar-circle-line ri-20px"></i>
+            Agregar/Actualizar CashBack
+        </a>
+
         @if ($data->status == 0)
         <a class="dropdown-item text-danger" href="#" onclick="activated({{ $data->id }})" >
             <i class="ri-delete-bin-fill ri-20px"></i>

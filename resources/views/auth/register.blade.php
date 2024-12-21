@@ -19,6 +19,10 @@
                     @include('auth.partials.form-usuario-empresa')
                     @endif
 
+                    @if ($tipo === 'Empresa-Prueba' && $registrado === 0)
+                    @include('auth.partials.form-prueba-new')
+                    @endif
+
                     @if ($tipo === 'proveedor' && $registrado === 0)
                     @include('auth.partials.form-proveedor-new')
                     @endif

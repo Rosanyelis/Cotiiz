@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Supplier;
 
+use App\Models\Notification;
 use Illuminate\Http\Request;
 use App\Models\SuppliersChat;
 use App\Http\Controllers\Controller;
@@ -43,6 +44,15 @@ class SupplierChatController extends Controller
             'file' => $urlfile,
             'name_file' => $nameFile
         ]);
+
+        Notification::create([
+            'rfc_suppliers_id' => auth()->user()->rfcsuppliers()->first()->id,
+            'type' => 'Admin',
+            'user_id' => auth()->user()->id,
+            'title' => 'Nuevo Mensaje de Proveedor ',
+            'message' => 'El usuario ' . auth()->user()->name . ' del proveedor ' . auth()->user()->rfcsuppliers()->first()->name . ' le ha enviado un mensaje',
+        ]);
+
         return redirect()->back()->with('success', 'Mensaje enviado con exito');
     }
 

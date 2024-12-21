@@ -2,23 +2,27 @@
 
 namespace App\Mail;
 
+use App\Mail\UserRegistered;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Mail\Mailables\Content;
-use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Mail\Mailables\Envelope;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
 class UserRegistered extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public $user;
+
     /**
      * Create a new message instance.
      */
-    public function __construct()
+    public function __construct($user)
     {
-        //
+        $this->user = $user;
     }
 
     /**
@@ -37,7 +41,10 @@ class UserRegistered extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'view.name',
+            view: 'templates-mails.welcome',
+            with: [
+                'user' => $this->user
+            ]
         );
     }
 

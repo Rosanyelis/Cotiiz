@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Supplier;
 
 use App\Models\Specialty;
 use App\Models\Occupation;
+use App\Models\Notification;
 use App\Models\Professional;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -108,6 +109,14 @@ class ProfessionalController extends Controller
         $data['user_id'] = auth()->user()->id;
         $data['rfc_suppliers_id'] = auth()->user()->rfcsuppliers()->first()->id;
         $producto = Professional::create($data);
+
+        Notification::create([
+            'rfc_suppliers_id' => auth()->user()->rfcsuppliers()->first()->id,
+            'type' => 'Admin',
+            'user_id' => auth()->user()->id,
+            'title' => 'Nuevo Profesional de Proveedor ',
+            'message' => 'El usuario ' . auth()->user()->name . ' del proveedor ' . auth()->user()->rfcsuppliers()->first()->name . ' ha registrado un Profesional en el sistema',
+        ]);
 
         return redirect()->route('professional.index')->with('success', 'Profesional creado con exito');
     }

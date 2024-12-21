@@ -50,7 +50,7 @@
                     <div class="chat-history-body">
                         <ul class="list-unstyled chat-history">
                         @foreach ($data as $msj)
-                            @if ($msj->user_bussines_id != '')
+                            @if ($msj->bussines_id != '')
                             <li class="chat-message chat-message-right">
                                 <div class="d-flex overflow-hidden">
                                     <div class="chat-message-wrapper flex-grow-1">

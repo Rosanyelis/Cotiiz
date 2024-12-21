@@ -41,5 +41,5 @@
 @section('scripts')
     <script src="{{ asset('assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js') }}"></script>
     <!-- Page JS -->
-    <script src="{{ asset('pagesjs/bussines-users.js') }}"></script>
+    <script src="{{ asset('pagesjs/bussines-usuarios.js') }}"></script>
 @endsection

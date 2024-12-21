@@ -20,15 +20,15 @@ class RfcSupplierController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = RfcSupplier::all();
+            $data = RfcSupplier::orderBy('id', 'desc');
             return DataTables::of($data)
                 ->addColumn('actions', function ($data) {
-                    return view('rfcsupplier.partials.actions', ['data' => $data]);
+                    return view('admin.rfcsupplier.partials.actions', ['data' => $data]);
                 })
                 ->rawColumns(['actions'])
                 ->make(true);
         }
-        return view('rfcsupplier.index');
+        return view('admin.rfcsupplier.index');
     }
 
     public function rfcusers($rfc, Request $request)
@@ -39,7 +39,7 @@ class RfcSupplierController extends Controller
                 ->select('users.*', 'user_rfc_suppliers.principal');
             return DataTables::of($dato )
                 ->addColumn('actions', function ($dato) {
-                    return view('rfcbussines.partials.actionusers', [ 'data' => $dato]);
+                    return view('admin.rfcbussines.partials.actionusers', [ 'data' => $dato]);
                 })
                 ->rawColumns(['actions'])
                 ->make(true);
@@ -49,7 +49,7 @@ class RfcSupplierController extends Controller
 
     public function create_users($rfc)
     {
-        return view('rfcsupplier.users.create-user', ['rfc' => $rfc]);
+        return view('admin.rfcsupplier.users.create-user', ['rfc' => $rfc]);
     }
 
     public function store_users($rfc, StoreUserRfcSupplierRequest $request)
@@ -106,7 +106,7 @@ class RfcSupplierController extends Controller
     public function show($id)
     {
         $data = RfcSupplier::find($id);
-        return view('rfcsupplier.show', compact('data'));
+        return view('admin.rfcsupplier.show', compact('data'));
     }
 
     /**

@@ -8,7 +8,7 @@
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Ver Servicios</h5>
 
-                    <a href="{{ route('product.index') }}" class="btn btn-sm btn-secondary"><i
+                    <a href="{{ route('admin.service.index') }}" class="btn btn-sm btn-secondary"><i
                             class="ri-arrow-left-line me-1"></i> Regresar</a>
                 </div>
                 <div class="card-body">

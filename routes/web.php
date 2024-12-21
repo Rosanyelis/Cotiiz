@@ -7,18 +7,27 @@ use App\Http\Controllers\Admin\SpecialtyController;
 use App\Http\Controllers\Admin\AdminUsersController;
 use App\Http\Controllers\Admin\OccupationController;
 use App\Http\Controllers\Supplier\ProductController;
+use App\Http\Controllers\Supplier\ServiceController;
 use App\Http\Controllers\Admin\RfcBussinesController;
 use App\Http\Controllers\Admin\RfcSupplierController;
+use App\Http\Controllers\Admin\UsersPruebaController;
 use App\Http\Controllers\Admin\AdminProductController;
 use App\Http\Controllers\Admin\AdminServiceController;
+use App\Http\Controllers\Admin\NotificationController;
+use App\Http\Controllers\Admin\UsersBussinesController;
+use App\Http\Controllers\Admin\UsersSupplierController;
 use App\Http\Controllers\Bussines\SubAccountController;
+use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\SupplierRequestController;
 use App\Http\Controllers\Bussines\BussinesChatController;
+use App\Http\Controllers\Supplier\ProfessionalController;
 use App\Http\Controllers\Supplier\SupplierChatController;
 use App\Http\Controllers\Bussines\BussinesUsersController;
 use App\Http\Controllers\Admin\AdminProfessionalController;
+use App\Http\Controllers\Admin\AdminSupplierChatController;
 use App\Http\Controllers\Bussines\BussinesRequestController;
 use App\Http\Controllers\Supplier\RequestSupplierController;
+use App\Http\Controllers\Admin\AdminBussinesRequestController;
 use App\Http\Controllers\Bussines\BussinesRequestChatController;
 
 
@@ -28,6 +37,11 @@ Route::get('/tipo', [HomeController::class, 'create'])->name('tipo.register');
 # Buscar rfc segun empresa o proveedor
 Route::get('/buscar-rfc/{tipo}', [HomeController::class, 'viewsearchRfc'])->name('tipo.viewsearchRfc');
 Route::get('/buscar-rfc/{tipo}/response', [HomeController::class, 'searchRfc'])->name('tipo.searchRfc');
+
+Route::get('/notificaciones-de-administrador', [NotificationController::class, 'get_notifications'])->name('notifications');
+Route::get('/notificaciones-de-administrador/{notification}/read', [NotificationController::class, 'read_notification'])->name('notifications.read');
+Route::get('/notificaciones-de-administrador/marcar-leido', [NotificationController::class, 'markedAsRead'])->name('notifications.markedAsRead');
+Route::get('/notificaciones-de-administrador/{notification}/delete', [NotificationController::class, 'delete'])->name('notifications.delete');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -39,6 +53,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     ####### Administrador #######
+
+    # dashboard y nav
+    Route::get('/metricas-admin', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
+
+
     # Profesiones
     Route::get('/profesiones', [OccupationController::class, 'index'])->name('occupation.index');
     Route::get('/profesiones/create', [OccupationController::class, 'create'])->name('occupation.create');
@@ -68,6 +87,15 @@ Route::middleware('auth')->group(function () {
     Route::post('/solicitudes-de-proveedor/{request}/chat', [SupplierRequestController::class, 'storeChat'])->name('request-supplier.storeChat');
     Route::post('/solicitudes-de-proveedor/{request}/cambiar-estatus', [SupplierRequestController::class, 'changeStatus'])->name('request-supplier.changeStatus');
 
+    # Requests EMpresas
+    Route::get('/solicitudes-de-empresa', [AdminBussinesRequestController::class, 'index'])->name('admin-request-bussines.index');
+    Route::get('/solicitudes-de-empresa/datatable', [AdminBussinesRequestController::class, 'datatable'])->name('admin-request-bussines.datatable');
+    Route::get('/solicitudes-de-empresa/create', [AdminBussinesRequestController::class, 'create'])->name('admin-request-bussines.create');
+    Route::post('/solicitudes-de-empresa', [AdminBussinesRequestController::class, 'store'])->name('admin-request-bussines.store');
+    Route::get('/solicitudes-de-empresa/{request}/show', [AdminBussinesRequestController::class, 'show'])->name('admin-request-bussines.show');
+    Route::post('/solicitudes-de-empresa/{request}/chat', [AdminBussinesRequestController::class, 'storeChat'])->name('admin-request-bussines.storeChat');
+    Route::post('/solicitudes-de-empresa/{request}/cambiar-estatus', [AdminBussinesRequestController::class, 'changeStatus'])->name('admin-request-bussines.changeStatus');
+
     Route::get('/empresas', [RfcBussinesController::class, 'index'])->name('business.index');
     Route::get('/empresas/create', [RfcBussinesController::class, 'create'])->name('business.create');
     Route::post('/empresas', [RfcBussinesController::class, 'store'])->name('business.store');
@@ -81,6 +109,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/empresas/{cliente}/users/store', [RfcBussinesController::class, 'store_users'])->name('business.users.store_users');
     Route::get('/empresas/users/{user}/activated', [RfcBussinesController::class, 'ActivateUsers'])->name('business.users.activated');
     Route::get('/empresas/users/{user}/desactivated', [RfcBussinesController::class, 'DesactivateUsers'])->name('business.users.desactivated');
+    Route::get('/empresas/create-user', [RfcBussinesController::class, 'create_user_bussines'])->name('business.create_user_bussines');
+    Route::post('/empresas/store-user', [RfcBussinesController::class, 'store_user_bussines'])->name('business.store_user_bussines');
+    Route::post('/empresas/store-cashback', [RfcBussinesController::class, 'store_cashback'])->name('business.store_cashback');
 
     Route::get('/proveedores', [RfcSupplierController::class, 'index'])->name('supplier.index');
     Route::get('/proveedores/create', [RfcSupplierController::class, 'create'])->name('supplier.create');
@@ -123,6 +154,35 @@ Route::middleware('auth')->group(function () {
     Route::get('/gestion-de-profesionales/{id}/show', [AdminProfessionalController::class, 'show'])->name('admin.professional.show');
     Route::get('/gestion-de-profesionales/{id}/aprove', [AdminProfessionalController::class, 'aprove'])->name('admin.professional.aprove');
     Route::get('/gestion-de-profesionales/{id}/reject', [AdminProfessionalController::class, 'reject'])->name('admin.professional.reject');
+
+    # Usuarios de Empresas
+    Route::get('/gestion-de-usuarios-empresas', [UsersBussinesController::class, 'index'])->name('admin.bussines-users.index');
+    Route::get('/gestion-de-usuarios-empresas/{id}/show', [UsersBussinesController::class, 'show'])->name('admin.bussines-users.show');
+    Route::post('/gestion-de-usuarios-empresas/change-password', [UsersBussinesController::class, 'changePasword'])->name('admin.bussines-users.changePasword');
+    Route::get('/gestion-de-usuarios-empresas/{id}/activated', [UsersBussinesController::class, 'activated'])->name('admin.bussines-users.activated');
+    Route::get('/gestion-de-usuarios-empresas/{id}/desactivated', [UsersBussinesController::class, 'desactivated'])->name('admin.bussines-users.desactivated');
+
+    # Usuarios de Proveedores
+    Route::get('/gestion-de-usuarios-proveedores', [UsersSupplierController::class, 'index'])->name('admin.supplier-users.index');
+    Route::get('/gestion-de-usuarios-proveedores/{id}/show', [UsersSupplierController::class, 'show'])->name('admin.supplier-users.show');
+    Route::post('/gestion-de-usuarios-proveedores/change-password', [UsersSupplierController::class, 'changePasword'])->name('admin.supplier-users.changePasword');
+    Route::get('/gestion-de-usuarios-proveedores/{id}/activated', [UsersSupplierController::class, 'activated'])->name('admin.supplier-users.activated');
+    Route::get('/gestion-de-usuarios-proveedores/{id}/desactivated', [UsersSupplierController::class, 'desactivated'])->name('admin.supplier-users.desactivated');
+
+    # Usuarios de Prueba
+    Route::get('/gestion-de-usuarios-prueba', [UsersPruebaController::class, 'index'])->name('admin.prueba-users.index');
+    Route::get('/gestion-de-usuarios-prueba/{id}/show', [UsersPruebaController::class, 'show'])->name('admin.prueba-users.show');
+    Route::post('/gestion-de-usuarios-prueba/change-password', [UsersPruebaController::class, 'changePasword'])->name('admin.prueba-users.changePasword');
+    Route::get('/gestion-de-usuarios-prueba/{id}/activated', [UsersPruebaController::class, 'activated'])->name('admin.prueba-users.activated');
+    Route::get('/gestion-de-usuarios-prueba/{id}/desactivated', [UsersPruebaController::class, 'desactivated'])->name('admin.prueba-users.desactivated');
+
+    # chat con proveedores
+    Route::get('/buzon-de-mensajes-proveedores', [AdminSupplierChatController::class, 'index'])->name('admin.supplier-chat.index');
+    Route::get('/buzon-de-mensajes-proveedores/create', [AdminSupplierChatController::class, 'create'])->name('admin.supplier-chat.create');
+    Route::post('/buzon-de-mensajes-proveedores/store', [AdminSupplierChatController::class, 'store'])->name('admin.supplier-chat.store');
+    Route::get('/buzon-de-mensajes-proveedores/{id}/show', [AdminSupplierChatController::class, 'show'])->name('admin.supplier-chat.show');
+    Route::post('/buzon-de-mensajes-proveedores/{id}/store', [AdminSupplierChatController::class, 'store'])->name('admin.supplier-chat.store');
+
 
 
     #### FIN ADMINISTRADOR ####
@@ -195,7 +255,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/subcuentas', [SubAccountController::class, 'index'])->name('subaccount.index');
 
     # Usuarios
-    Route::get('/usuarios', [BussinesUsersController::class, 'index'])->name('bussines-users.index');
+    Route::get('/gestion-de-usuarios', [BussinesUsersController::class, 'index'])->name('bussines-users.index');
     ###### FIN EMPRESA ######
 
 });

@@ -9,6 +9,8 @@ class BussinesRequestChat extends Model
 {
     use HasFactory;
 
+    protected $table = 'bussines_request_chats';
+
     protected $guarded = [];
 
     public function bussinesRequest()

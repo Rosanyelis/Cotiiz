@@ -22,6 +22,7 @@ class BussinesUsersController extends Controller
                     ->where('rfc_bussines.id',  Auth::user()->rfcbussines()->first()->id)
                     ->select(
                         'users.id as id',
+                        'users.name as name',
                         DB::raw('CONCAT(users.firstname, " ", users.lastname) as fullname'),
                         'users.email as email',
                         'users.phone as phone',

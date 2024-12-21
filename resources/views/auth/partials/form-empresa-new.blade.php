@@ -1,24 +1,41 @@
 <div class="card-body mt-1">
                         <h4 class="mb-5 text-center">Regístrese en Cotiz</h4>
-                        <form id="formAuthentication" class="mb-5 needs-validation row" method="POST" action="{{ route('register.store') }}"
+                        <form id="formAuthentication" class="mb-5 needs-validation row"
+                        method="POST" action="{{ route('register.store.bussines') }}"
                             enctype="multipart/form-data">
                             @csrf
-                            <!-- <div class="col-md-6">
-                                <div class="form-floating form-floating-outline mb-5">
-                                    <select class="form-select" name="tipo_registro"  aria-label="Default select example">
-                                        <option value="Empresa" selected>Como Empresa</option>
-                                        <option value="Prueba">Como Empresa de Prueba</option>
-                                    </select>
-                                    <label for="tipo_registro">¿Como desea registrarse?</label>
-                                </div>
-                            </div>
-                            <div class="w-100"></div> -->
+
                             <hr class="my-6 mx-n4">
                             <h6>1. Información de la Empresa</h6>
 
-                            <input type="hidden" name="rfc" value="{{ $rfc }}">
                             <input type="hidden" name="tipo" value="{{ $tipo }}">
 
+                            <div class="col-md-12">
+                                <div class="form-floating form-floating-outline mb-5">
+                                    <input type="text"
+                                    class="form-control @if($errors->has('rfc')) is-invalid @endif"
+                                    id="rfc" name="rfc" value="{{ old('rfc', $rfc) }}" readonly  />
+                                    <label for="rfc">RFC</label>
+                                    @if($errors->has('rfc'))
+                                        <div class="invalid-feedback">
+                                            {{ $errors->first('rfc') }}
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-floating form-floating-outline mb-5">
+                                    <input type="text"
+                                    class="form-control @if($errors->has('name_fantasy')) is-invalid @endif"
+                                    id="name_fantasy" name="name_fantasy" value="{{ old('name_fantasy') }}"/>
+                                    <label for="name_fantasy">Nombre</label>
+                                    @if($errors->has('name_fantasy'))
+                                        <div class="invalid-feedback">
+                                            {{ $errors->first('name_fantasy') }}
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
                             <div class="col-md-6">
                                 <div class="form-floating form-floating-outline mb-5">
                                     <input type="text"

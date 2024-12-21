@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Supplier;
 
 use App\Models\Service;
+use App\Models\Notification;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Yajra\DataTables\Facades\DataTables;
@@ -60,6 +61,16 @@ class ServiceController extends Controller
         $data['user_id'] = auth()->user()->id;
         $data['rfc_suppliers_id'] = auth()->user()->rfcsuppliers()->first()->id;
         $producto = Service::create($data);
+
+        Notification::create([
+            'rfc_suppliers_id' => auth()->user()->rfcsuppliers()->first()->id,
+            'type' => 'Admin',
+            'user_id' => auth()->user()->id,
+            'title' => 'Nuevo Servicio de Proveedor ',
+            'message' => 'El usuario ' . auth()->user()->name . '
+            del proveedor ' . auth()->user()->rfcsuppliers()->first()->name . '
+             se ha registrado un servicio en el sistema',
+        ]);
 
         return redirect()->route('service.index')->with('success', 'Servicio creado con exito');
     }

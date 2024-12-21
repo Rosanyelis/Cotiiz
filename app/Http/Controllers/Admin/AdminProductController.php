@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Product;
+use App\Models\Notification;
 use Illuminate\Http\Request;
+use App\Mail\NotifyStatusCatalogo;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Mail;
 use Yajra\DataTables\Facades\DataTables;
 
 class AdminProductController extends Controller
@@ -37,6 +40,19 @@ class AdminProductController extends Controller
         $product = Product::find($request->id);
         $product->status = 'Aprobado';
         $product->save();
+
+        $data = Product::find($request->id);
+        # enviar el correo de notificacion
+        Mail::to($data->user->email)->send(new NotifyStatusCatalogo($data));
+
+        Notification::create([
+            'rfc_suppliers_id' => $data->rfc_suppliers_id,
+            'type' => 'Proveedor',
+            'user_id' => $data->user->id,
+            'title' => 'Producto Aprobada',
+            'message' => 'El producto ' . $data->name . ' ha sido aprobada.'
+        ]);
+
         return redirect()->back()->with('success', 'Producto aprobado con exito');
     }
 
@@ -45,6 +61,19 @@ class AdminProductController extends Controller
         $product = Product::find($request->id);
         $product->status = 'Rechazado';
         $product->save();
+
+        $data = Product::find($request->id);
+        # enviar el correo de notificacion
+        Mail::to($data->user->email)->send(new NotifyStatusCatalogo($data));
+
+        Notification::create([
+            'rfc_suppliers_id' => $data->rfc_suppliers_id,
+            'type' => 'Proveedor',
+            'user_id' => $data->user->id,
+            'title' => 'Producto Rechazado',
+            'message' => 'El producto ' . $data->name . ' ha sido rechazada.'
+        ]);
+
         return redirect()->back()->with('success', 'Producto rechazado con exito');
     }
 }

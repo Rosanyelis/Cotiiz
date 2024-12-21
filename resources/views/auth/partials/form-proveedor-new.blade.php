@@ -1,33 +1,50 @@
                     <div class="card-body mt-1">
                         <h4 class="mb-5 text-center">Regístrese en Cotiz</h4>
-                        <form id="formAuthentication" class="mb-5 needs-validation row" method="POST" action="{{ route('register.store') }}"
+                        <form id="formAuthentication" class="mb-5 needs-validation row" method="POST"
+                        action="{{ route('register.store.supplier') }}"
                             enctype="multipart/form-data">
                             @csrf
-                            <!-- <div class="col-md-6">
-                                <div class="form-floating form-floating-outline mb-5">
-                                    <select class="form-select" name="tipo_registro"  aria-label="Default select example">
-                                        <option value="Empresa" selected>Como Empresa</option>
-                                        <option value="Prueba">Como Empresa de Prueba</option>
-                                    </select>
-                                    <label for="tipo_registro">¿Como desea registrarse?</label>
-                                </div>
-                            </div>
-                            <div class="w-100"></div> -->
                             <hr class="my-6 mx-n4">
                             <h6>1. Información del Proveedor</h6>
 
-                            <input type="hidden" name="rfc" value="{{ $rfc }}">
                             <input type="hidden" name="tipo" value="{{ $tipo }}">
+
+                            <div class="col-md-12">
+                                <div class="form-floating form-floating-outline mb-5">
+                                    <input type="text"
+                                    class="form-control @if($errors->has('rfc')) is-invalid @endif"
+                                    id="rfc" name="rfc" value="{{ old('rfc', $rfc) }}" readonly  />
+                                    <label for="rfc">RFC</label>
+                                    @if($errors->has('rfc'))
+                                        <div class="invalid-feedback">
+                                            {{ $errors->first('rfc') }}
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-floating form-floating-outline mb-5">
+                                    <input type="text"
+                                    class="form-control @if($errors->has('name_fantasy')) is-invalid @endif"
+                                    id="name_fantasy" name="name_fantasy" value="{{ old('name_fantasy') }}"/>
+                                    <label for="name_fantasy">Nombre de Empresa</label>
+                                    @if($errors->has('name_fantasy'))
+                                        <div class="invalid-feedback">
+                                            {{ $errors->first('name_fantasy') }}
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
 
                             <div class="col-md-6">
                                 <div class="form-floating form-floating-outline mb-5">
-                                    <input type="text"
-                                    class="form-control @if($errors->has('number_plant')) is-invalid @endif"
-                                    id="number_plant" name="number_plant" value="{{ old('number_plant') }}"  />
-                                    <label for="number_plant">Numero de Planta Industrial</label>
-                                    @if($errors->has('number_plant'))
+                                    <input type="file"
+                                    class="form-control @if($errors->has('file_fiscal_constancy')) is-invalid @endif"
+                                    id="file_fiscal_constancy" name="file_fiscal_constancy"  />
+                                    <label for="file_fiscal_constancy">PDF Constancia de Situación Fiscal</label>
+                                    @if($errors->has('file_fiscal_constancy'))
                                         <div class="invalid-feedback">
-                                            {{ $errors->first('number_plant') }}
+                                            {{ $errors->first('file_fiscal_constancy') }}
                                         </div>
                                     @endif
                                 </div>
@@ -38,7 +55,7 @@
                                     <input type="file"
                                     class="form-control @if($errors->has('file_positive_opinion')) is-invalid @endif"
                                     id="file_positive_opinion" name="file_positive_opinion"  />
-                                    <label for="file_positive_opinion">PDF Opinión Positiva</label>
+                                    <label for="file_positive_opinion">PDF Opinión Positiva Actualizada</label>
                                     @if($errors->has('file_positive_opinion'))
                                         <div class="invalid-feedback">
                                             {{ $errors->first('file_positive_opinion') }}
@@ -64,12 +81,12 @@
                             <div class="col-md-6">
                                 <div class="form-floating form-floating-outline mb-5">
                                     <input type="file"
-                                    class="form-control @if($errors->has('file_fiscal_constancy')) is-invalid @endif"
-                                    id="file_fiscal_constancy" name="file_fiscal_constancy"  />
-                                    <label for="file_fiscal_constancy">PDF Constancia de Situación Fiscal</label>
-                                    @if($errors->has('file_fiscal_constancy'))
+                                    class="form-control @if($errors->has('file_credit_acceptance_letter')) is-invalid @endif"
+                                    id="file_credit_acceptance_letter" name="file_credit_acceptance_letter"  />
+                                    <label for="file_credit_acceptance_letter">PDF Carta de Aceptación de Crédito</label>
+                                    @if($errors->has('file_credit_acceptance_letter'))
                                         <div class="invalid-feedback">
-                                            {{ $errors->first('file_fiscal_constancy') }}
+                                            {{ $errors->first('file_credit_acceptance_letter') }}
                                         </div>
                                     @endif
                                 </div>
@@ -78,12 +95,12 @@
                             <div class="col-md-6">
                                 <div class="form-floating form-floating-outline mb-5">
                                     <input type="file"
-                                    class="form-control @if($errors->has('file_fiscal_address')) is-invalid @endif"
-                                    id="file_fiscal_address" name="file_fiscal_address"  />
-                                    <label for="file_fiscal_address">PDF Registro de Domicilio Fiscal</label>
-                                    @if($errors->has('file_fiscal_address'))
+                                    class="form-control @if($errors->has('file_list_product_service')) is-invalid @endif"
+                                    id="file_list_product_service" name="file_list_product_service"  />
+                                    <label for="file_list_product_service">PDF Listado de Productos y Servicios</label>
+                                    @if($errors->has('file_list_product_service'))
                                         <div class="invalid-feedback">
-                                            {{ $errors->first('file_fiscal_address') }}
+                                            {{ $errors->first('file_list_product_service') }}
                                         </div>
                                     @endif
                                 </div>

@@ -17,8 +17,11 @@
             <table class="datatables-bussines table table-sm">
                 <thead>
                     <tr>
-                        <th>Razón Social o RFC</th>
-                        <th>Teléfono</th>
+                        <th>RFC</th>
+                        <th>Nombre</th>
+                        <th>Calle</th>
+                        <th>N° Calle</th>
+                        <th>Colonia</th>
                         <th>Estatus</th>
                         <th style="width: 10px"></th>
                     </tr>

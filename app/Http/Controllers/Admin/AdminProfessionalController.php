@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Notification;
 use App\Models\Professional;
 use Illuminate\Http\Request;
+use App\Mail\NotifyStatusCatalogo;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Mail;
 use Yajra\DataTables\Facades\DataTables;
 
 class AdminProfessionalController extends Controller
@@ -53,6 +56,19 @@ class AdminProfessionalController extends Controller
         $product = Professional::find($request->id);
         $product->status = 'Aprobado';
         $product->save();
+
+        $data = Professional::find($request->id);
+        # enviar el correo de notificacion
+        Mail::to($data->user->email)->send(new NotifyStatusCatalogo($data));
+
+        Notification::create([
+            'rfc_suppliers_id' => $data->rfc_suppliers_id,
+            'type' => 'Proveedor',
+            'user_id' => $data->user->id,
+            'title' => 'Profesional aprobado',
+            'message' => 'El profesional ' . $data->firstname . ' ' . $data->second_name . ' ' . $data->lastname . ' ' . $data->second_lastname . ' ha sido aprobada.'
+        ]);
+
         return redirect()->back()->with('success', 'Profesional aprobado con exito');
     }
 
@@ -61,6 +77,19 @@ class AdminProfessionalController extends Controller
         $product = Professional::find($request->id);
         $product->status = 'Rechazado';
         $product->save();
+
+        $data = Professional::find($request->id);
+        # enviar el correo de notificacion
+        Mail::to($data->user->email)->send(new NotifyStatusCatalogo($data));
+
+        Notification::create([
+            'rfc_suppliers_id' => $data->rfc_suppliers_id,
+            'type' => 'Proveedor',
+            'user_id' => $data->user->id,
+            'title' => 'Profesional rechazado',
+            'message' => 'El profesional ' . $data->firstname . ' ' . $data->second_name . ' ' . $data->lastname . ' ' . $data->second_lastname . ' ha sido rechazado.'
+        ]);
+
         return redirect()->back()->with('success', 'Profesional rechazado con exito');
     }
 }

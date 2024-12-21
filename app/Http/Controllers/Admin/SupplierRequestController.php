@@ -3,11 +3,16 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\RfcSupplier;
+use App\Models\Notification;
 use Illuminate\Http\Request;
 use App\Models\SupplierRequest;
 use App\Models\SupplierRequestChat;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\SendNotifyRequestSupplier;
+use App\Mail\SendMessageRequestSupplier;
 use Yajra\DataTables\Facades\DataTables;
+use App\Mail\ChangeStatusRequestSupplier;
 use App\Http\Requests\StoreSupplierRequestRequest;
 use App\Http\Requests\UpdateSupplierRequestRequest;
 use App\Http\Requests\StoreSupplierRequestChatRequest;
@@ -48,7 +53,7 @@ class SupplierRequestController extends Controller
      */
     public function store(StoreSupplierRequestRequest $request)
     {
-        $dato = SupplierRequest::create([
+        $data = SupplierRequest::create([
             'rfc_suppliers_id' => $request->rfc_suppliers_id,
             'user_id' => auth()->user()->id,
             'type' => $request->type,
@@ -67,10 +72,21 @@ class SupplierRequestController extends Controller
 
         SupplierRequestChat::create([
             'rfc_suppliers_id' => $request->rfc_suppliers_id,
-            'supplier_request_id' => $dato->id,
+            'supplier_request_id' => $data->id,
             'user_admin_id' => auth()->user()->id,
             'message' => $request->message,
             'file' => $request->file
+        ]);
+
+        # enviar el correo de notificacion
+        Mail::to($data->user->email)->send(new SendNotifyRequestSupplier($data));
+
+        Notification::create([
+            'rfc_suppliers_id' => $data->rfc_suppliers_id,
+            'type' => 'Proveedor',
+            'user_id' => $data->user->id,
+            'title' => 'Nueva Solicitud',
+            'message' => 'Ha recibido una nueva solicitud de ' . $data->type.'.'
         ]);
 
         return redirect()->route('request-supplier.index')->with('success', 'Solicitud creada con exito');
@@ -106,40 +122,50 @@ class SupplierRequestController extends Controller
             'user_admin_id' => auth()->user()->id,
             'message' => $request->message,
             'file' => $urlfile,
-            'file_name' => $nameFile
+            'name_file' => $nameFile
         ]);
+
+        $data = SupplierRequest::with('user')->find($supplierRequest);
+
+        # enviar el correo de notificacion
+        Mail::to($data->user->email)->send(new SendMessageRequestSupplier($data));
+
+        Notification::create([
+            'rfc_suppliers_id' => $data->rfc_suppliers_id,
+            'type' => 'Proveedor',
+            'user_id' => $data->user->id,
+            'title' => 'Nuevo mensaje en solicitud',
+            'message' => 'La solicitud ' . $data->type . ' tiene un nuevo mensaje.'
+        ]);
+
         return redirect()->back()->with('success', 'Mensaje enviado con exito');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(SupplierRequest $supplierRequest)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateSupplierRequestRequest $request, SupplierRequest $supplierRequest)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(SupplierRequest $supplierRequest)
-    {
-        //
-    }
 
     public function changeStatus(Request $request, $supplierRequest)
     {
         $data = SupplierRequest::find($supplierRequest);
         $data->update([
             'status' => $request->status
+        ]);
+
+        # enviar el correo de notificacion
+        Mail::to($data->user->email)->send(new ChangeStatusRequestSupplier($data));
+
+        Notification::create([
+            'rfc_suppliers_id' => $data->rfc_suppliers_id,
+            'type' => 'Admin',
+            'user_id' => $data->user->id,
+            'title' => 'Cambio de estatus de solicitud',
+            'message' => 'La solicitud ' . $data->type . ' ha cambiado de estatus.'
+        ]);
+
+        Notification::create([
+            'rfc_suppliers_id' => $data->rfc_suppliers_id,
+            'type' => 'Proveedor',
+            'user_id' => $data->user->id,
+            'title' => 'Cambio de estatus de solicitud',
+            'message' => 'La solicitud ' . $data->type . ' ha cambiado de estatus.'
         ]);
 
         return redirect()->back()->with('success', 'Estatus cambiado con exito');

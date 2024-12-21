@@ -52,7 +52,7 @@
         <!-- Page CSS -->
         <link rel="stylesheet" href="{{ asset('assets/vendor/css/pages/cards-statistics.css') }}" />
         <link rel="stylesheet" href="{{ asset('assets/vendor/css/pages/cards-analytics.css') }}" />
-
+        <link rel="stylesheet" href="{{ asset('assets/vendor/libs/toastr/toastr.css') }}" />
         <!-- Helpers -->
         <script src="{{ asset('assets/vendor/js/helpers.js') }}"></script>
         <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
@@ -146,9 +146,13 @@
     <script src="{{ asset('assets/vendor/libs/sweetalert2/sweetalert2.js') }}"></script>
     <script src="{{ asset('assets/js/dashboards-analytics.js') }}"></script>
     <script src="{{ asset('assets/vendor/libs/toastr/toastr.js') }}"></script>
+    <script src="{{ asset('assets/vendor/libs/moment/moment.js') }}"></script>
     <script>
         @include('layouts.alerts')
     </script>
+    @if(auth()->user()->hasRole('Administrador') || auth()->user()->hasRole('Desarrollador'))
+    <script src="{{ asset('pagesjs/notificaciones.js') }}" ></script>
+    @endif
     @yield('scripts')
   </body>
 </html>

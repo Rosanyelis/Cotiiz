@@ -3,28 +3,24 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
-use Illuminate\Queue\SerializesModels;
 use Illuminate\Mail\Mailables\Envelope;
-use Illuminate\Mail\Mailables\Attachment;
-use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Queue\SerializesModels;
 
-class SendQuotation extends Mailable
+class ChangeStatusRequestBussines extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $quotation;
-    public $urlquotation;
-    public $namepdf;
+    public $data;
+
     /**
      * Create a new message instance.
      */
-    public function __construct($quotation, $urlquotation, $namepdf)
+    public function __construct($data)
     {
-        $this->quotation = $quotation;
-        $this->urlquotation = $urlquotation;
-        $this->namepdf = $namepdf;
+        $this->data = $data;
     }
 
     /**
@@ -33,7 +29,7 @@ class SendQuotation extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'TIGroup - Cotización',
+            subject: 'Cambio de Estatus de Solicitud ',
         );
     }
 
@@ -43,9 +39,9 @@ class SendQuotation extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'quotes.mail.email-quotation',
+            view: 'templates-mails.changeStatusRequest',
             with: [
-                'quotation' => $this->quotation
+                'data' => $this->data
             ]
         );
     }
@@ -57,10 +53,6 @@ class SendQuotation extends Mailable
      */
     public function attachments(): array
     {
-        return [
-            Attachment::fromPath($this->urlquotation)
-                ->as($this->namepdf)
-                ->withMime('application/pdf'),
-        ];
+        return [];
     }
 }

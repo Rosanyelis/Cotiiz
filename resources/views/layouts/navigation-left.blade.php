@@ -23,7 +23,8 @@
             <div class="menu-inner-shadow"></div>
 
             <ul class="menu-inner py-1">
-                @if(auth()->user()->hasRole('Administrador') || auth()->user()->hasRole('Desarrollador'))
+                @if(auth()->user()->hasRole('Administrador') || auth()->user()->hasRole('Desarrollador')
+                || auth()->user()->hasRole('Operador'))
                     <!-- Dashboards -->
                     <li class="menu-item @if (Route::currentRouteName() == 'dashboard') active @endif">
                         <a href="{{ route('dashboard') }}" class="menu-link">
@@ -35,11 +36,34 @@
                         @if (Route::currentRouteName() == 'business.index' ||
                             Route::currentRouteName() == 'business.create' ||
                             Route::currentRouteName() == 'business.edit' ||
-                            Route::currentRouteName() == 'business.show') active @endif">
-                        <a href="{{ route('business.index') }}" class="menu-link">
+                            Route::currentRouteName() == 'business.show')
+                            active open
+                        @endif">
+                        <a href="javascript:void(0);" class="menu-link menu-toggle">
                             <i class="menu-icon tf-icons ri-shield-user-line"></i>
                             <div data-i18n="Empresas">Empresas</div>
+                            <div id="nav-empresa" class="badge bg-danger rounded-pill ms-auto">0</div>
                         </a>
+                        <ul class="menu-sub">
+                            <li class="menu-item
+                                @if (Route::currentRouteName() == 'business.index') active @endif">
+                                <a href="{{ route('business.index') }}" class="menu-link">
+                                    <div data-i18n="Listado">Listado</div>
+                                </a>
+                            </li>
+                            <li class="menu-item
+                                @if (Route::currentRouteName() == 'business.create') active @endif">
+                                <a href="{{ route('business.create') }}" class="menu-link">
+                                    <div data-i18n="Agregar Empresa">Agregar Empresa</div>
+                                </a>
+                            </li>
+                            <li class="menu-item
+                                @if (Route::currentRouteName() == 'business.create_user_bussines') active @endif">
+                                <a href="{{ route('business.create_user_bussines') }}" class="menu-link">
+                                    <div data-i18n="Agregar Usuario">Agregar Usuario</div>
+                                </a>
+                            </li>
+                        </ul>
                     </li>
 
                     <li class="menu-item
@@ -50,125 +74,208 @@
                         <a href="{{ route('supplier.index') }}" class="menu-link">
                             <i class="menu-icon tf-icons ri-shield-user-line"></i>
                             <div data-i18n="Proveedores">Proveedores</div>
+                            <div id="nav-proveedor" class="badge bg-danger rounded-pill ms-auto">0</div>
                         </a>
                     </li>
                     <!-- solicitudes creadas por administrador -->
-                    <li class="menu-header mt-5">
-                        <span class="menu-header-text" data-i18n="Solicitudes Proveedor">Solicitudes Proveedor</span>
+                    <li class="menu-header mt-1">
+                        <span class="menu-header-text" data-i18n="Usuarios">Usuarios</span>
                     </li>
-                    <!-- solicitudes Proveedor -->
+                    <li class="menu-item
+                        @if (Route::currentRouteName() == 'admin.bussines-users.index' ||
+                            Route::currentRouteName() == 'admin.bussines-users.show' ||
+                            Route::currentRouteName() == 'admin.supplier-users.index'||
+                            Route::currentRouteName() == 'admin.supplier-users.show' ||
+                            Route::currentRouteName() == 'admin.prueba-users.index' ||
+                            Route::currentRouteName() == 'admin.prueba-users.show'
+                            )
+                            active open
+                        @endif
+                    ">
+                        <a href="javascript:void(0);" class="menu-link menu-toggle">
+                            <i class="menu-icon tf-icons ri-group-2-fill"></i>
+                            <div data-i18n="Usuarios">Usuarios</div>
+                            <div id="nav-usuarios" class="badge bg-danger rounded-pill ms-auto">0</div>
+                        </a>
+                        <ul class="menu-sub">
+                            <li class="menu-item
+                                @if (Route::currentRouteName() == 'admin.bussines-users.index'
+                                    || Route::currentRouteName() == 'admin.bussines-users.show') active @endif">
+                                <a href="{{ route('admin.bussines-users.index') }}" class="menu-link">
+                                    <div data-i18n="Empresas">Empresas</div>
+                                    <div id="nav-usersempresa" class="badge bg-danger rounded-pill ms-auto">0</div>
+                                </a>
+                            </li>
+                            <li class="menu-item
+                                @if (Route::currentRouteName() == 'admin.supplier-users.index'
+                                    || Route::currentRouteName() == 'admin.supplier-users.show') active @endif">
+                                <a href="{{ route('admin.supplier-users.index') }}" class="menu-link">
+                                    <div data-i18n="Proveedores">Proveedores</div>
+                                    <div id="nav-usersproveedor" class="badge bg-danger rounded-pill ms-auto">0</div>
+                                </a>
+                            </li>
+                            <li class="menu-item
+                                @if (Route::currentRouteName() == 'admin.prueba-users.index'
+                                || Route::currentRouteName() == 'admin.prueba-users.show') active @endif">
+                                <a href="{{ route('admin.prueba-users.index') }}" class="menu-link">
+                                    <div data-i18n="Prueba">Prueba</div>
+                                    <div id="nav-usersprueba" class="badge bg-danger rounded-pill ms-auto">0</div>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- solicitudes creadas por administrador -->
+                    <li class="menu-header mt-1">
+                        <span class="menu-header-text" data-i18n="Solicitudes">Solicitudes</span>
+                    </li>
                     <li class="menu-item
                         @if (Route::currentRouteName() == 'request-supplier.index' ||
                             Route::currentRouteName() == 'request-supplier.create' ||
-                            Route::currentRouteName() == 'request-supplier.show') active @endif">
-                        <a href="{{ route('request-supplier.index') }}" class="menu-link">
-                            <i class="menu-icon tf-icons ri-mail-check-line"></i>
-                            <div data-i18n="Solicitudes de Proveedor">Solicitudes de Proveedor</div>
+                            Route::currentRouteName() == 'request-supplier.show'
+                            || Route::currentRouteName() == 'admin.supplier-users.index'
+                            || Route::currentRouteName() == 'admin-request-bussines.show')
+                            active open
+                        @endif
+                    ">
+                        <a href="javascript:void(0);" class="menu-link menu-toggle">
+                            <i class="menu-icon tf-icons ri-list-view"></i>
+                            <div data-i18n="Solicitudes">Solicitudes</div>
+                            <div id="nav-solicitudes" class="badge bg-danger rounded-pill ms-auto">0</div>
                         </a>
+                        <ul class="menu-sub">
+                            <li class="menu-item
+                                @if (Route::currentRouteName() == 'request-supplier.index'
+                                    || Route::currentRouteName() == 'request-supplier.show'
+                                    || Route::currentRouteName() == 'request-supplier.create') active @endif">
+                                <a href="{{ route('request-supplier.index') }}" class="menu-link">
+                                    <div data-i18n="Solicitudes de Proveedor">Solicitudes de Proveedor</div>
+                                    <div id="nav-solicitudesproveedor" class="badge bg-danger rounded-pill ms-auto">0</div>
+                                </a>
+                            </li>
+                            <li class="menu-item
+                                @if (Route::currentRouteName() == 'admin-request-bussines.index'
+                                || Route::currentRouteName() == 'admin-request-bussines.show') active @endif">
+                                <a href="{{ route('admin-request-bussines.index') }}" class="menu-link">
+                                    <div data-i18n="Solicitudes de Empresa">Solicitudes de Empresa</div>
+                                    <div id="nav-solicitudesempresa" class="badge bg-danger rounded-pill ms-auto">0</div>
+                                </a>
+                            </li>
+                        </ul>
                     </li>
-                    <li class="menu-header mt-5">
-                        <span class="menu-header-text" data-i18n="Solicitudes Empresa">Solicitudes Empresa</span>
-                    </li>
-                    <!-- solicitudes empresa -->
-                    <li class="menu-item
-                        ">
-                        <a href="javascript:void(0);" class="menu-link">
-                            <i class="menu-icon tf-icons ri-mail-check-line"></i>
-                            <div data-i18n="Solicitudes de Empresa">Solicitudes de Empresa</div>
-                        </a>
-                    </li>
-                    <li class="menu-header mt-5">
+
+                    <li class="menu-header mt-1">
                         <span class="menu-header-text" data-i18n="Catálogos">Catálogos</span>
                     </li>
                     <li class="menu-item
-                        @if (Route::currentRouteName() == 'admin.product.index' ||
-                            Route::currentRouteName() == 'admin.product.create' ||
-                            Route::currentRouteName() == 'admin.product.edit' ||
-                            Route::currentRouteName() == 'admin.product.show') active @endif">
-                        <a href="{{ route('admin.product.index') }}" class="menu-link">
-                            <i class="menu-icon tf-icons ri-box-3-line"></i>
-                            <div data-i18n="Productos">Productos</div>
+                        @if (Route::currentRouteName() == 'admin.product.index'     ||
+                                Route::currentRouteName() == 'admin.product.create' ||
+                                Route::currentRouteName() == 'admin.product.edit'   ||
+                                Route::currentRouteName() == 'admin.product.show'   ||
+                                Route::currentRouteName() == 'admin.service.index'  ||
+                                Route::currentRouteName() == 'admin.service.create' ||
+                                Route::currentRouteName() == 'admin.service.edit'   ||
+                                Route::currentRouteName() == 'admin.service.show '  ||
+                                Route::currentRouteName() == 'admin.professional.index' ||
+                                Route::currentRouteName() == 'admin.professional.create' ||
+                                Route::currentRouteName() == 'admin.professional.edit' ||
+                                Route::currentRouteName() == 'admin.professional.show')
+                            active open
+                        @endif
+                    ">
+                        <a href="javascript:void(0);" class="menu-link menu-toggle">
+                            <i class="menu-icon tf-icons ri-box-3-fill"></i>
+                            <div data-i18n="Catálogos">Catálogos</div>
+                            <div id="nav-catalogo" class="badge bg-danger rounded-pill ms-auto">0</div>
                         </a>
+                        <ul class="menu-sub">
+                            <li class="menu-item
+                                @if (Route::currentRouteName() == 'admin.product.index' ||
+                                    Route::currentRouteName() == 'admin.product.create' ||
+                                    Route::currentRouteName() == 'admin.product.edit' ||
+                                    Route::currentRouteName() == 'admin.product.show') active @endif">
+                                <a href="{{ route('admin.product.index') }}" class="menu-link">
+                                    <div data-i18n="Productos">Productos</div>
+                                    <div id="nav-productos" class="badge bg-danger rounded-pill ms-auto">0</div>
+                                </a>
+                            </li>
+                            <li class="menu-item
+                                @if (Route::currentRouteName() == 'admin.service.index' ||
+                                        Route::currentRouteName() == 'admin.service.create' ||
+                                        Route::currentRouteName() == 'admin.service.edit' ||
+                                        Route::currentRouteName() == 'admin.service.show') active @endif">
+                                <a href="{{ route('admin.service.index') }}" class="menu-link">
+                                    <div data-i18n="Servicios">Servicios</div>
+                                    <div id="nav-servicios" class="badge bg-danger rounded-pill ms-auto">0</div>
+                                </a>
+                            </li>
+                            <li class="menu-item
+                               @if (Route::currentRouteName() == 'admin.professional.index' ||
+                                    Route::currentRouteName() == 'admin.professional.create' ||
+                                    Route::currentRouteName() == 'admin.professional.edit' ||
+                                    Route::currentRouteName() == 'admin.professional.show') active @endif">
+                                <a href="{{ route('admin.professional.index') }}" class="menu-link">
+                                    <div data-i18n="Profesionales">Profesionales</div>
+                                    <div id="nav-profesional" class="badge bg-danger rounded-pill ms-auto">0</div>
+                                </a>
+                            </li>
+                        </ul>
                     </li>
+                    <li class="menu-header mt-1">
+                        <span class="menu-header-text" data-i18n="Chats">Chats</span>
+                    </li>
+                    <!-- buzon proveedor -->
                     <li class="menu-item
-                        @if (Route::currentRouteName() == 'admin.service.index' ||
-                            Route::currentRouteName() == 'admin.service.create' ||
-                            Route::currentRouteName() == 'admin.service.edit' ||
-                            Route::currentRouteName() == 'admin.service.show') active @endif">
-                        <a href="{{ route('admin.service.index') }}" class="menu-link">
-                            <i class="menu-icon tf-icons ri-survey-line"></i>
-                            <div data-i18n="Servicios">Servicios</div>
+                        @if (Route::currentRouteName() == 'admin.supplier-chat.index' ||
+                            Route::currentRouteName() == 'admin.supplier-chat.show' ||
+                            Route::currentRouteName() == 'admin.supplier-chat.chat')
+                            active
+                        @endif
+                        ">
+                        <a href="{{ route('admin.supplier-chat.index') }} " class="menu-link">
+                            <i class="menu-icon tf-icons ri-chat-1-line"></i>
+                            <div data-i18n="Buzón Proveedores">Buzón Proveedores</div>
+                            <div id="nav-buzon" class="badge bg-danger rounded-pill ms-auto">0</div>
                         </a>
                     </li>
-                    <li class="menu-item
-                        @if (Route::currentRouteName() == 'admin.professional.index' ||
-                            Route::currentRouteName() == 'admin.professional.create' ||
-                            Route::currentRouteName() == 'admin.professional.edit' ||
-                            Route::currentRouteName() == 'admin.professional.show') active @endif">
-                        <a href="{{ route('admin.professional.index') }}" class="menu-link">
-                            <i class="menu-icon tf-icons ri-user-2-line"></i>
-                            <div data-i18n="Profesionales">Profesionales</div>
-                        </a>
-                    </li>
-                    <li class="menu-header mt-5">
+                    <li class="menu-header mt-1">
                         <span class="menu-header-text" data-i18n="Configuración">Configuración</span>
                     </li>
                     <li class="menu-item
                         @if (Route::currentRouteName() == 'occupation.index' ||
                             Route::currentRouteName() == 'occupation.create' ||
-                            Route::currentRouteName() == 'occupation.edit') active @endif ">
-                        <a href="{{ route('occupation.index') }}" class="menu-link">
-                            <i class="menu-icon tf-icons ri-group-2-line"></i>
-                            <div data-i18n="Profesiones">Profesiones</div>
-                        </a>
-                    </li>
-                    <li class="menu-item
-                        @if (Route::currentRouteName() == 'specialty.index' ||
+                            Route::currentRouteName() == 'occupation.edit' ||
+                            Route::currentRouteName() == 'specialty.index' ||
                             Route::currentRouteName() == 'specialty.create' ||
-                            Route::currentRouteName() == 'specialty.edit') active @endif">
-                        <a href="{{ route('specialty.index') }}" class="menu-link">
-                            <i class="menu-icon tf-icons ri-group-2-line"></i>
-                            <div data-i18n="Especialidades">Especialidades</div>
-                        </a>
-                    </li>
-                    <li class="menu-item
+                            Route::currentRouteName() == 'specialty.edit')
+                            active open
+                        @endif
                     ">
-                        <a href="javascript:void(0);" class="menu-link">
-                            <i class="menu-icon tf-icons ri-group-2-line"></i>
-                            <div data-i18n="Roles">Roles</div>
+                        <a href="javascript:void(0);" class="menu-link menu-toggle">
+                            <i class="menu-icon tf-icons ri-settings-4-fill"></i>
+                            <div data-i18n="Configuración">Configuración</div>
                         </a>
-                    </li>
-                    <li class="menu-item
-                        @if (Route::currentRouteName() == 'admin.users.index' ||
-                            Route::currentRouteName() == 'admin.users.create' ||
-                            Route::currentRouteName() == 'admin.users.edit') active @endif">
-                        <a href="{{ route('admin.users.index') }}" class="menu-link">
-                            <i class="menu-icon tf-icons ri-group-2-line"></i>
-                            <div data-i18n="Usuarios">Usuarios</div>
-                        </a>
-                    </li>
-                    <li class="menu-header mt-5">
-                        <span class="menu-header-text" data-i18n="Chats">Chats</span>
-                    </li>
-                    <!-- buzon proveedor -->
-                    <li class="menu-item
-                        ">
-                        <a href="javascript:void(0);" class="menu-link">
-                            <i class="menu-icon tf-icons ri-chat-1-line"></i>
-                            <div data-i18n="Buzón">Buzón</div>
-                        </a>
-                    </li>
-                    <!-- buzon empresa -->
-                    <li class="menu-item
-                        ">
-                        <a href="javascript:void(0);" class="menu-link">
-                            <i class="menu-icon tf-icons ri-chat-1-line"></i>
-                            <div data-i18n="Buzón">Buzón</div>
-                        </a>
+                        <ul class="menu-sub">
+                            <li class="menu-item
+                                @if (Route::currentRouteName() == 'occupation.index'
+                                    || Route::currentRouteName() == 'occupation.create'
+                                    || Route::currentRouteName() == 'occupation.edit') active @endif">
+                                <a href="{{ route('occupation.index') }}" class="menu-link">
+                                    <div data-i18n="Profesiones">Profesiones</div>
+                                </a>
+                            </li>
+                            <li class="menu-item
+                                @if (Route::currentRouteName() == 'specialty.index'
+                                || Route::currentRouteName() == 'specialty.create'
+                                || Route::currentRouteName() == 'specialty.edit') active @endif">
+                                <a href="{{ route('specialty.index') }}" class="menu-link">
+                                    <div data-i18n="Especialiadades">Especialiadades</div>
+                                </a>
+                            </li>
+                        </ul>
                     </li>
                 @endif
 
-                @if(auth()->user()->hasRole('Empresa'))
+                @if(auth()->user()->hasRole('Empresa')|| auth()->user()->hasRole('Empresa-Prueba'))
                     <!-- Dashboards -->
                     <li class="menu-item @if (Route::currentRouteName() == 'dashboard') active @endif">
                         <a href="{{ route('dashboard') }}" class="menu-link">
@@ -208,20 +315,6 @@
                         <a href="{{ route('bussines-users.index') }}" class="menu-link">
                             <i class="menu-icon tf-icons ri-group-3-fill"></i>
                             <div data-i18n="Usuarios">Usuarios</div>
-                        </a>
-                    </li>
-                    <li class="menu-header mt-5">
-                        <span class="menu-header-text" data-i18n="Chats">Chats</span>
-                    </li>
-                    <!-- buzon proveedor -->
-                    <li class="menu-item
-                        @if (Route::currentRouteName() == 'bussines-chat.index')
-                            active
-                        @endif
-                        ">
-                        <a href="{{ route('bussines-chat.index') }}" class="menu-link">
-                            <i class="menu-icon tf-icons ri-chat-1-line"></i>
-                            <div data-i18n="Buzón">Buzón</div>
                         </a>
                     </li>
                 @endif
