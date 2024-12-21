@@ -333,6 +333,7 @@
                         <a href="{{ route('supplier-request.index') }}" class="menu-link">
                             <i class="menu-icon tf-icons ri-mail-check-line"></i>
                             <div data-i18n="Solicitudes">Solicitudes</div>
+                            <div id="prov-solicitudes" class="badge bg-danger rounded-pill ms-auto">0</div>
                         </a>
                     </li>
                     <li class="menu-header mt-5">
@@ -346,6 +347,7 @@
                         <a href="{{ route('product.index') }}" class="menu-link">
                             <i class="menu-icon tf-icons ri-box-3-line"></i>
                             <div data-i18n="Productos">Productos</div>
+                            <div id="prov-productos" class="badge bg-danger rounded-pill ms-auto">0</div>
                         </a>
                     </li>
                     <li class="menu-item
@@ -356,6 +358,7 @@
                         <a href="{{ route('service.index') }}" class="menu-link">
                             <i class="menu-icon tf-icons ri-survey-line"></i>
                             <div data-i18n="Servicios">Servicios</div>
+                            <div id="prov-servicios" class="badge bg-danger rounded-pill ms-auto">0</div>
                         </a>
                     </li>
                     <li class="menu-item
@@ -366,6 +369,7 @@
                         <a href="{{ route('professional.index') }}" class="menu-link">
                             <i class="menu-icon tf-icons ri-user-2-line"></i>
                             <div data-i18n="Profesionales">Profesionales</div>
+                            <div id="prov-profesionales" class="badge bg-danger rounded-pill ms-auto">0</div>
                         </a>
                     </li>
                     <li class="menu-header mt-5">
@@ -380,6 +384,7 @@
                         <a href="{{ route('supplier-chat.index') }}" class="menu-link">
                             <i class="menu-icon tf-icons ri-chat-1-line"></i>
                             <div data-i18n="Buzón">Buzón</div>
+                            <div id="prov-buzon" class="badge bg-danger rounded-pill ms-auto">0</div>
                         </a>
                     </li>
                 @endif

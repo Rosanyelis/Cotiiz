@@ -15,7 +15,7 @@ class SupplierChatController extends Controller
      */
     public function index()
     {
-        $data = SuppliersChat::where('supplier_id', Auth::user()->id)->get();
+        $data = SuppliersChat::where('rfc_suppliers_id', Auth::user()->rfcsuppliers()->first()->id)->get();
         return view('supplier-chat.index', compact('data'));
     }
 

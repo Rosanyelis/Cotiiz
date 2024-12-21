@@ -23,6 +23,8 @@
                 </div>
             </div>
         </div>
+        @if(auth()->user()->hasRole('Administrador') || auth()->user()->hasRole('Desarrollador')
+        || auth()->user()->hasRole('Operador'))
         <!-- ventas del mes -->
         <div class="col-lg-12">
             <div class="card h-100">
@@ -76,6 +78,7 @@
                 </div>
             </div>
         </div>
+        @endif
 
     </div>
 </div>

@@ -226,7 +226,7 @@
                                                             <div
                                                                 style="font-size: 14px; line-height: 160%; text-align: center; word-wrap: break-word;">
                                                                 <p style="line-height: 160%;"><span
-                                                                        style="font-size: 22px; line-height: 35.2px;">Hola! {{ $data->supplier->name }},</span>
+                                                                        style="font-size: 22px; line-height: 35.2px;">Hola! {{ $username }},</span>
                                                                 </p>
                                                                 <br>
                                                                 <p style="line-height: 160%;"><span

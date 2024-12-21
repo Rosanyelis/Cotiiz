@@ -13,14 +13,14 @@ class NotifyMessageSupplier extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $data;
+    public $username;
 
     /**
      * Create a new message instance.
      */
-    public function __construct($data)
+    public function __construct($username)
     {
-        $this->data = $data;
+        $this->username = $username;
     }
     /**
      * Get the message envelope.
@@ -39,7 +39,7 @@ class NotifyMessageSupplier extends Mailable
     {
         return new Content(
             view: 'templates-mails.notify-message-buzon',
-            with: ['data' => $this->data]
+            with: ['username' => $this->username]
         );
     }
 

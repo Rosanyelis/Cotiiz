@@ -28,7 +28,9 @@ use App\Http\Controllers\Admin\AdminSupplierChatController;
 use App\Http\Controllers\Bussines\BussinesRequestController;
 use App\Http\Controllers\Supplier\RequestSupplierController;
 use App\Http\Controllers\Admin\AdminBussinesRequestController;
+use App\Http\Controllers\Supplier\SupplierDashboardController;
 use App\Http\Controllers\Bussines\BussinesRequestChatController;
+use App\Http\Controllers\Supplier\SupplierNotificactionController;
 
 
 
@@ -38,10 +40,7 @@ Route::get('/tipo', [HomeController::class, 'create'])->name('tipo.register');
 Route::get('/buscar-rfc/{tipo}', [HomeController::class, 'viewsearchRfc'])->name('tipo.viewsearchRfc');
 Route::get('/buscar-rfc/{tipo}/response', [HomeController::class, 'searchRfc'])->name('tipo.searchRfc');
 
-Route::get('/notificaciones-de-administrador', [NotificationController::class, 'get_notifications'])->name('notifications');
-Route::get('/notificaciones-de-administrador/{notification}/read', [NotificationController::class, 'read_notification'])->name('notifications.read');
-Route::get('/notificaciones-de-administrador/marcar-leido', [NotificationController::class, 'markedAsRead'])->name('notifications.markedAsRead');
-Route::get('/notificaciones-de-administrador/{notification}/delete', [NotificationController::class, 'delete'])->name('notifications.delete');
+
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -54,6 +53,10 @@ Route::middleware('auth')->group(function () {
 
     ####### Administrador #######
 
+    Route::get('/notificaciones-de-administrador', [NotificationController::class, 'get_notifications'])->name('notifications');
+Route::get('/notificaciones-de-administrador/{notification}/read', [NotificationController::class, 'read_notification'])->name('notifications.read');
+Route::get('/notificaciones-de-administrador/marcar-leido', [NotificationController::class, 'markedAsRead'])->name('notifications.markedAsRead');
+Route::get('/notificaciones-de-administrador/{notification}/delete', [NotificationController::class, 'delete'])->name('notifications.delete');
     # dashboard y nav
     Route::get('/metricas-admin', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
 
@@ -179,7 +182,7 @@ Route::middleware('auth')->group(function () {
     # chat con proveedores
     Route::get('/buzon-de-mensajes-proveedores', [AdminSupplierChatController::class, 'index'])->name('admin.supplier-chat.index');
     Route::get('/buzon-de-mensajes-proveedores/create', [AdminSupplierChatController::class, 'create'])->name('admin.supplier-chat.create');
-    Route::post('/buzon-de-mensajes-proveedores/store', [AdminSupplierChatController::class, 'store'])->name('admin.supplier-chat.store');
+    Route::post('/buzon-de-mensajes-proveedores/store', [AdminSupplierChatController::class, 'storeBuzon'])->name('admin.supplier-chat.storeBuzon');
     Route::get('/buzon-de-mensajes-proveedores/{id}/show', [AdminSupplierChatController::class, 'show'])->name('admin.supplier-chat.show');
     Route::post('/buzon-de-mensajes-proveedores/{id}/store', [AdminSupplierChatController::class, 'store'])->name('admin.supplier-chat.store');
 
@@ -189,6 +192,14 @@ Route::middleware('auth')->group(function () {
 
 
     ##### PROVEEDOR ######
+
+    Route::get('/notificaciones-de-proveedor', [SupplierNotificactionController::class, 'get_notifications'])->name('notifications-supplier');
+    Route::get('/notificaciones-de-proveedor/{notification}/read', [SupplierNotificactionController::class, 'read_notification'])->name('notifications-supplier.read');
+    Route::get('/notificaciones-de-proveedor/marcar-leido', [SupplierNotificactionController::class, 'markedAsRead'])->name('notifications-supplier.markedAsRead');
+    Route::get('/notificaciones-de-proveedor/{notification}/delete', [SupplierNotificactionController::class, 'delete'])->name('notifications-supplier.delete');
+    # dashboard y nav
+    Route::get('/metricas-proveedor', [SupplierDashboardController::class, 'index'])->name('supplier.dashboard');
+
 
     # products
     Route::get('/productos', [ProductController::class, 'index'])->name('product.index');

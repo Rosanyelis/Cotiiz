@@ -6,6 +6,7 @@ use App\Models\RfcSupplier;
 use App\Models\Notification;
 use Illuminate\Http\Request;
 use App\Models\SuppliersChat;
+use App\Models\UserRfcSupplier;
 use App\Mail\NotifyMessageSupplier;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Mail;
@@ -40,7 +41,7 @@ class AdminSupplierChatController extends Controller
         return view('admin.suppliers-chats.create', compact('rfcs'));
     }
 
-    public function storeBuzon(Request $request)
+    public function storeBuzon(StoreChatSupplierRequest $request)
     {
         $urlfile = null;
         $nameFile = null;
@@ -63,22 +64,23 @@ class AdminSupplierChatController extends Controller
             'name_file' => $nameFile
         ]);
 
-        $data = SuppliersChat::with(['supplier'])
+        $data = UserRfcSupplier::with(['user'])
             ->where('rfc_suppliers_id', $request->rfc_suppliers_id)
-            ->where('supplier_id', '!=', 'null')
             ->first();
+
+        $username = $data->user->name;
         # enviar el correo de notificacion
-        Mail::to($data->supplier->email)->send(new NotifyMessageSupplier($data));
+        Mail::to($data->user->email)->send(new NotifyMessageSupplier($username));
 
         Notification::create([
-            'rfc_suppliers_id' => $data->id,
+            'rfc_suppliers_id' => $request->rfc_suppliers_id,
             'type' => 'Proveedor',
-            'user_id' => $data->supplier->id,
+            'user_id' => $data->user->id,
             'title' => 'Nuevo mensaje en Buzón',
-            'message' => 'En Buzón de proveedores tiene un nuevo mensaje.'
+            'message' => 'En Buzón tiene un nuevo mensaje.'
         ]);
 
-        return redirect()->route('admin.suppliers-chats.index')->with('success', 'Mensaje enviado con exito');
+        return redirect()->route('admin.supplier-chat.index')->with('success', 'Mensaje enviado con exito');
     }
 
     /**
@@ -117,8 +119,10 @@ class AdminSupplierChatController extends Controller
             ->where('rfc_suppliers_id', $id)
             ->where('supplier_id', '!=', 'null')
             ->first();
+
+        $username = $data->supplier->name;
         # enviar el correo de notificacion
-        Mail::to($data->supplier->email)->send(new NotifyMessageSupplier($data));
+        Mail::to($data->supplier->email)->send(new NotifyMessageSupplier($username));
 
         Notification::create([
             'rfc_suppliers_id' => $data->id,

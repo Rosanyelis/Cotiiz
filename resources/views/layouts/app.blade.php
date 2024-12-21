@@ -153,6 +153,9 @@
     @if(auth()->user()->hasRole('Administrador') || auth()->user()->hasRole('Desarrollador'))
     <script src="{{ asset('pagesjs/notificaciones.js') }}" ></script>
     @endif
+    @if(auth()->user()->hasRole('Proveedor'))
+    <script src="{{ asset('pagesjs/notificaciones-supplier.js') }}" ></script>
+    @endif
     @yield('scripts')
   </body>
 </html>

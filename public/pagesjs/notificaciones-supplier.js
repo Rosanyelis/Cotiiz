@@ -17,7 +17,7 @@ toastr.options = {
 }
 function notify() {
     $.ajax({
-        url: "/notificaciones-de-administrador",
+        url: "/notificaciones-de-proveedor",
         type: "GET",
         success: function (response) {
             $('#list-notify').empty();
@@ -97,7 +97,7 @@ function notify() {
 
 function markAsRead() {
     $.ajax({
-        url: "/notificaciones-de-administrador/marcar-leido",
+        url: "/notificaciones-de-proveedor/marcar-leido",
         type: "GET",
         success: function (response) {
             $('#list-notify').empty();
@@ -115,7 +115,7 @@ function markAsRead() {
 
 function readNotification(id) {
     $.ajax({
-        url: "/notificaciones-de-administrador/" + id + "/read",
+        url: "/notificaciones-de-proveedor/" + id + "/read",
         type: "GET",
         success: function (response) {
             $('#list-notify').empty();
@@ -133,7 +133,7 @@ function readNotification(id) {
 
 function deleteNotification(id) {
     $.ajax({
-        url: "/notificaciones-de-administrador/" + id + "/delete",
+        url: "/notificaciones-de-proveedor/" + id + "/delete",
         type: "GET",
         success: function (response) {
             $('#list-notify').empty();
@@ -151,27 +151,17 @@ function deleteNotification(id) {
 
 function navDashboardToNotify() {
     $.ajax({
-        url: "/metricas-admin",
+        url: "/metricas-proveedor",
         type: "GET",
         success: function (response) {
+            console.log(response);
 
-            $('#catalogos').text(response.totalcatalago);
-            $('#nav-catalogo').text(response.totalcatalogonav);
-            $('#nav-productos').text(response.totalproductos);
-            $('#nav-servicios').text(response.totalservicios);
-            $('#nav-profesional').text(response.totalprofesionales);
-            $('#solicitudes').text(response.totalsolicitud);
-            $('#proveedores').text(response.totalproveedores);
-            $('#empresas').text(response.totalempresas);
-            $('#nav-empresa').text(response.totalempresasnav);
-            $('#nav-proveedor').text(response.totalproveedoresnav);
-            $('#nav-usuarios').text(response.totalusuarios);
-            $('#nav-usersempresa').text(response.totaluserempresas);
-            $('#nav-usersproveedor').text(response.totalusersproveedores);
-            $('#nav-usersprueba').text(response.totaluserprueba);
-            $('#nav-solicitudes').text(response.totalsolicitud);
-            $('#nav-solicitudesproveedor').text(response.totalsolicitudproveedor);
-            $('#nav-solicitudesempresa').text(response.totalsolicitudempresa);
+            $('#prov-buzon').text(response.totalmensajes);
+            $('#prov-solicitudes').text(response.totalsolicitudproveedor);
+            $('#prov-productos').text(response.totalproductos);
+            $('#prov-servicios').text(response.totalservicios);
+            $('#prov-profesionales').text(response.totalprofesionales);
+
 
         }
     });
