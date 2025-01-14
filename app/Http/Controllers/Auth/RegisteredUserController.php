@@ -3,12 +3,14 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
+use App\Models\RfcPrueba;
 use Illuminate\View\View;
 use App\Models\RfcBussines;
 use App\Models\RfcSupplier;
 use App\Mail\UserRegistered;
 use App\Models\Notification;
 use Illuminate\Http\Request;
+use App\Models\UserRfcPrueba;
 use App\Models\UserRfcBussines;
 use App\Models\UserRfcSupplier;
 use Illuminate\Validation\Rules;
@@ -132,6 +134,7 @@ class RegisteredUserController extends Controller
         ]);
 
         $user = User::create([
+            'type'          => 'Provider',
             'name'          => $request->name,
             'email'         => $request->email,
             'password'      => Hash::make($request->password),
@@ -301,8 +304,8 @@ class RegisteredUserController extends Controller
             $file_credential2 = $url = '/storage/rfc_bussines/'.$fileName;
         }
 
-        $count = RfcBussines::where('name', $request->rfc)->count();
-        $bussines = RfcBussines::create([
+        $count = RfcPrueba::where('name', $request->rfc)->count();
+        $bussines = RfcPrueba::create([
             'name'                      => $request->rfc,
             'name_fantasy'              => $request->name_fantasy,
             'phone'                     => $request->phone,
@@ -334,14 +337,14 @@ class RegisteredUserController extends Controller
         $user->assignRole('Empresa-Prueba');
 
 
-        UserRfcBussines::create([
+        UserRfcPrueba::create([
             'user_id' => $user->id,
-            'rfc_bussines_id' => $bussines->id,
+            'rfc_prueba_id' => $bussines->id,
             'principal' => $count == 0 ? 'Si' : 'No',
         ]);
 
         Notification::create([
-            'rfc_bussines_id' => $bussines->id,
+            'rfc_prueba_id' => $bussines->id,
             'type' => 'Admin',
             'user_id' => $user->id,
             'title' => 'Nuevo Usuario de Prueba',
@@ -356,58 +359,142 @@ class RegisteredUserController extends Controller
 
         return redirect()->route('welcome')->with('success', 'Usuario creado con exito');
     }
-    public function storeUsers(Request $request)
+    public function storeUsers(StoreBussinesPruebaRequest $request)
     {
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required'],
-        ],
-        [
-            'name.required' => 'El nombre es obligatorio',
-            'email.required' => 'El correo es obligatorio',
-            'password.required' => 'La contraseña es obligatoria',
-        ]);
 
-        $data = $request->all();
-        if ($data['tipo'] == 'proveedor') {
-            $data['type'] = 'provider-operador';
-            $role = 'Proveedor-Operador';
+        $file_gafete = "";
+        $file_gafete2 = "";
+        $file_credential = "";
+        $file_credential2 = "";
 
-            $user = User::create($data);
 
-            $user->assignRole($role);
+        if ($request->tipo == 'empresa')
+        {
+            if($request->hasFile('file_gafete'))
+            {
+                $file = $request->file('file_gafete');
+                $fileName   = time().rand(111,699).'.' .$file->getClientOriginalExtension();
+                $uploadPath = public_path('/storage/rfc_bussines/');
+                $file->move($uploadPath, $fileName);
+                $file_gafete = $url = '/storage/rfc_bussines/'.$fileName;
+            }
+            if($request->hasFile('file_gafete2'))
+            {
+                $file = $request->file('file_gafete2');
+                $fileName   = time().rand(111,699).'.' .$file->getClientOriginalExtension();
+                $uploadPath = public_path('/storage/rfc_bussines/');
+                $file->move($uploadPath, $fileName);
+                $file_gafete2 = $url = '/storage/rfc_bussines/'.$fileName;
+            }
 
-            $provider = RfcSupplier::where('name', $data['rfc'])->first();
+            if($request->hasFile('file_credential'))
+            {
+                $file = $request->file('file_credential');
+                $fileName   = time().rand(111,699).'.' .$file->getClientOriginalExtension();
+                $uploadPath = public_path('/storage/rfc_bussines/');
+                $file->move($uploadPath, $fileName);
+                $file_credential = $url = '/storage/rfc_bussines/'.$fileName;
+            }
 
-            UserRfcSupplier::create([
-                'user_id' => $user->id,
-                'rfc_suppliers_id' => $provider->id,
+            if($request->hasFile('file_credential2'))
+            {
+                $file = $request->file('file_credential2');
+                $fileName   = time().rand(111,699).'.' .$file->getClientOriginalExtension();
+                $uploadPath = public_path('/storage/rfc_bussines/');
+                $file->move($uploadPath, $fileName);
+                $file_credential2 = $url = '/storage/rfc_bussines/'.$fileName;
+            }
+
+            $bussines = RfcBussines::where('name', $request->rfc)->first();
+            $count = RfcBussines::where('name', $request->rfc)->count();
+
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'passwordshow' => $request->password,
+                'firstname' => $request->firstname,
+                'lastname' => $request->lastname,
+                'second_name' => $request->second_name,
+                'second_lastname' => $request->second_lastname,
+                'workstation' => $request->workstation,
+                'phone' => $request->phone_personal,
+                'area_work' => $request->area_work,
+                'file_gafete' => $file_gafete,
+                'file_gafete2' => $file_gafete2,
+                'file_credential' => $file_credential,
+                'file_credential2' => $file_credential2
             ]);
 
-            # Correo para notificar al usuario registrado que se ha creado su cuenta
+            $user->assignRole('Empresa-Operador');
 
-
-            # Correo para notificar al administrador que se ha registrado un nuevo usuario
-        }
-        if ($data['tipo'] == 'empresa') {
-            $data['type'] = 'business-operador';
-            $role = 'Empresa-Operador';
-
-            $user = User::create($data);
-
-            $user->assignRole($role);
-
-            $bussines = RfcBussines::where('name', $data['rfc'])->first();
 
             UserRfcBussines::create([
                 'user_id' => $user->id,
                 'rfc_bussines_id' => $bussines->id,
+                'principal' => $count == 0 ? 'Si' : 'No',
+            ]);
+
+            Notification::create([
+                'rfc_bussines_id' => $bussines->id,
+                'type' => 'Admin',
+                'user_id' => $user->id,
+                'title' => 'Nuevo Usuario Empleado',
+                'message' => 'El usuario ' . $user->name . ' de la empresa ' . $bussines->name . ' se ha registrado en el sistema',
             ]);
 
             # Correo para notificar al usuario registrado que se ha creado su cuenta
+            Mail::to($user->email)->send(new UserRegistered($user));
 
             # Correo para notificar al administrador que se ha registrado un nuevo usuario
+            Mail::to('rosanyelismendoza@gmail.com')->send(new UserRegisteredAdmin($user));
+
+        }
+        if ($request->tipo == 'proveedor') {
+            $supplier = RfcSupplier::where('name', $request->rfc)->first();
+            $count = RfcSupplier::where('name', $request->rfc)->count();
+
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'passwordshow' => $request->password,
+                'firstname' => $request->firstname,
+                'lastname' => $request->lastname,
+                'second_name' => $request->second_name,
+                'second_lastname' => $request->second_lastname,
+                'workstation' => $request->workstation,
+                'phone' => $request->phone_personal,
+                'area_work' => $request->area_work,
+                'file_gafete' => $file_gafete,
+                'file_gafete2' => $file_gafete2,
+                'file_credential' => $file_credential,
+                'file_credential2' => $file_credential2
+            ]);
+
+            $user->assignRole('Proveedor-Operador');
+
+
+            UserRfcSupplier::create([
+                'user_id' => $user->id,
+                'rfc_suppliers_id' => $supplier->id,
+                'principal' => $count == 0 ? 'Si' : 'No',
+            ]);
+
+            Notification::create([
+                'rfc_suppliers_id' => $supplier->id,
+                'type' => 'Admin',
+                'user_id' => $user->id,
+                'title' => 'Nuevo Usuario Empleado',
+                'message' => 'El usuario ' . $user->name . ' del proveedor ' . $supplier->name . ' se ha registrado en el sistema',
+            ]);
+
+            # Correo para notificar al usuario registrado que se ha creado su cuenta
+            Mail::to($user->email)->send(new UserRegistered($user));
+
+            # Correo para notificar al administrador que se ha registrado un nuevo usuario
+            Mail::to('rosanyelismendoza@gmail.com')->send(new UserRegisteredAdmin($user));
+
         }
 
         return redirect()->route('welcome')->with('success', 'Usuario creado con exito');

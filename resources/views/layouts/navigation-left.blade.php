@@ -46,7 +46,19 @@
                         </a>
                         <ul class="menu-sub">
                             <li class="menu-item
-                                @if (Route::currentRouteName() == 'business.index') active @endif">
+                                @if (Route::currentRouteName() == 'business.index' ||
+                                    Route::currentRouteName() == 'business.show' ||
+                                    Route::currentRouteName() == 'business.edit' ||
+                                    Route::currentRouteName() == 'business.create_user_bussines' ||
+                                    Route::currentRouteName() == 'business.create' ||
+                                    Route::currentRouteName() == 'business.create_user_bussines' ||
+                                    Route::currentRouteName() == 'business.store_user_bussines' ||
+                                    Route::currentRouteName() == 'business.update_users' ||
+                                    Route::currentRouteName() == 'business.destroy_users' ||
+                                    Route::currentRouteName() == 'business.ActivateUsers' ||
+                                    Route::currentRouteName() == 'business.DesactivateUsers')
+                                    active
+                                @endif">
                                 <a href="{{ route('business.index') }}" class="menu-link">
                                     <div data-i18n="Listado">Listado</div>
                                 </a>
@@ -70,10 +82,34 @@
                         @if (Route::currentRouteName() == 'supplier.index' ||
                             Route::currentRouteName() == 'supplier.create' ||
                             Route::currentRouteName() == 'supplier.edit' ||
-                            Route::currentRouteName() == 'supplier.show') active @endif">
+                            Route::currentRouteName() == 'supplier.show' ||
+                            Route::currentRouteName() == 'supplier.users.create_users' ||
+                            Route::currentRouteName() == 'supplier.users.store_users' ||
+                            Route::currentRouteName() == 'supplier.users.show_users' ||
+                            Route::currentRouteName() == 'supplier.users.edit_users')
+                            active
+                        @endif">
                         <a href="{{ route('supplier.index') }}" class="menu-link">
                             <i class="menu-icon tf-icons ri-shield-user-line"></i>
                             <div data-i18n="Proveedores">Proveedores</div>
+                            <div id="nav-proveedor" class="badge bg-danger rounded-pill ms-auto">0</div>
+                        </a>
+                    </li>
+
+                    <li class="menu-item
+                        @if (Route::currentRouteName() == 'prueba.index' ||
+                            Route::currentRouteName() == 'prueba.create' ||
+                            Route::currentRouteName() == 'prueba.edit' ||
+                            Route::currentRouteName() == 'prueba.show' ||
+                            Route::currentRouteName() == 'prueba.users.create_users' ||
+                            Route::currentRouteName() == 'prueba.users.store_users' ||
+                            Route::currentRouteName() == 'prueba.users.show_users' ||
+                            Route::currentRouteName() == 'prueba.users.edit_users' )
+                            active
+                        @endif">
+                        <a href="{{ route('prueba.index') }}" class="menu-link">
+                            <i class="menu-icon tf-icons ri-shield-user-line"></i>
+                            <div data-i18n="Empresas Prueba">Empresas Prueba</div>
                             <div id="nav-proveedor" class="badge bg-danger rounded-pill ms-auto">0</div>
                         </a>
                     </li>

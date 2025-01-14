@@ -49,7 +49,7 @@
         <!-- Page CSS -->
         <!-- Page -->
         <link rel="stylesheet" href="{{ asset('assets/vendor/css/pages/page-auth.css') }}" />
-
+        <link rel="stylesheet" href="{{ asset('assets/vendor/libs/toastr/toastr.css') }}" />
         <!-- Helpers -->
         <script src="{{ asset('assets/vendor/js/helpers.js') }}"></script>
         <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
@@ -80,7 +80,7 @@
         <script src="{{ asset('assets/vendor/libs/@form-validation/popular.js') }}"></script>
         <script src="{{ asset('assets/vendor/libs/@form-validation/bootstrap5.js') }}"></script>
         <script src="{{ asset('assets/vendor/libs/@form-validation/auto-focus.js') }}"></script>
-
+        <script src="{{ asset('assets/vendor/libs/toastr/toastr.js') }}"></script>
         <!-- Main JS -->
         <script src="{{ asset('assets/js/main.js') }}"></script>
 

@@ -16,6 +16,8 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('rfc_bussines_id')->nullable()->constrained('rfc_bussines')->onDelete('cascade');
             $table->foreignId('rfc_suppliers_id')->nullable()->constrained('rfc_suppliers')->onDelete('cascade');
+            $table->foreignId('rfc_prueba_id')->nullable()->constrained('rfc_pruebas')->onDelete('cascade');
+            $table->enum('type', ['Admin', 'Empresa', 'Proveedor', 'Prueba'])->default('Admin');
             $table->string('title');
             $table->string('message');
             $table->enum('status', ['Leido', 'No Leido'])->default('No Leido');

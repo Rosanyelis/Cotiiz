@@ -1,8 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Admin\RfcPruebaController;
 use App\Http\Controllers\Admin\SpecialtyController;
 use App\Http\Controllers\Admin\AdminUsersController;
 use App\Http\Controllers\Admin\OccupationController;
@@ -54,9 +56,9 @@ Route::middleware('auth')->group(function () {
     ####### Administrador #######
 
     Route::get('/notificaciones-de-administrador', [NotificationController::class, 'get_notifications'])->name('notifications');
-Route::get('/notificaciones-de-administrador/{notification}/read', [NotificationController::class, 'read_notification'])->name('notifications.read');
-Route::get('/notificaciones-de-administrador/marcar-leido', [NotificationController::class, 'markedAsRead'])->name('notifications.markedAsRead');
-Route::get('/notificaciones-de-administrador/{notification}/delete', [NotificationController::class, 'delete'])->name('notifications.delete');
+    Route::get('/notificaciones-de-administrador/{notification}/read', [NotificationController::class, 'read_notification'])->name('notifications.read');
+    Route::get('/notificaciones-de-administrador/marcar-leido', [NotificationController::class, 'markedAsRead'])->name('notifications.markedAsRead');
+    Route::get('/notificaciones-de-administrador/{notification}/delete', [NotificationController::class, 'delete'])->name('notifications.delete');
     # dashboard y nav
     Route::get('/metricas-admin', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
 
@@ -99,6 +101,7 @@ Route::get('/notificaciones-de-administrador/{notification}/delete', [Notificati
     Route::post('/solicitudes-de-empresa/{request}/chat', [AdminBussinesRequestController::class, 'storeChat'])->name('admin-request-bussines.storeChat');
     Route::post('/solicitudes-de-empresa/{request}/cambiar-estatus', [AdminBussinesRequestController::class, 'changeStatus'])->name('admin-request-bussines.changeStatus');
 
+    # Empresas
     Route::get('/empresas', [RfcBussinesController::class, 'index'])->name('business.index');
     Route::get('/empresas/create', [RfcBussinesController::class, 'create'])->name('business.create');
     Route::post('/empresas', [RfcBussinesController::class, 'store'])->name('business.store');
@@ -107,15 +110,23 @@ Route::get('/notificaciones-de-administrador/{notification}/delete', [Notificati
     Route::put('/empresas/{cliente}/update', [RfcBussinesController::class, 'update'])->name('business.update');
     Route::get('/empresas/{cliente}/activated', [RfcBussinesController::class, 'activated'])->name('business.activated');
     Route::get('/empresas/{cliente}/desactivated', [RfcBussinesController::class, 'desactivated'])->name('business.desactivated');
+    Route::post('/empresas/store-cashback', [RfcBussinesController::class, 'store_cashback'])->name('business.store_cashback');
+    Route::get('/empresas/{cliente}/delete', [RfcBussinesController::class, 'delete'])->name('business.delete');
+    # Empresas - Usuarios
     Route::get('/empresas/{cliente}/users', [RfcBussinesController::class, 'rfcusers'])->name('business.users');
     Route::get('/empresas/{cliente}/users/create', [RfcBussinesController::class, 'create_users'])->name('business.users.create_users');
     Route::post('/empresas/{cliente}/users/store', [RfcBussinesController::class, 'store_users'])->name('business.users.store_users');
+    Route::get('/empresas/{cliente}/users/{user}/show', [RfcBussinesController::class, 'show_users'])->name('business.users.show_users');
+    Route::get('/empresas/{cliente}/users/{user}/edit', [RfcBussinesController::class, 'edit_users'])->name('business.users.edit_users');
+    Route::put('/empresas/{cliente}/users/{user}/update', [RfcBussinesController::class, 'update_users'])->name('business.users.update_users');
+    Route::get('/empresas/{cliente}/users/{user}/delete', [RfcBussinesController::class, 'destroy_users'])->name('business.users.destroy_users');
     Route::get('/empresas/users/{user}/activated', [RfcBussinesController::class, 'ActivateUsers'])->name('business.users.activated');
     Route::get('/empresas/users/{user}/desactivated', [RfcBussinesController::class, 'DesactivateUsers'])->name('business.users.desactivated');
+    # Empresas - Usuarios - Atajos
     Route::get('/empresas/create-user', [RfcBussinesController::class, 'create_user_bussines'])->name('business.create_user_bussines');
     Route::post('/empresas/store-user', [RfcBussinesController::class, 'store_user_bussines'])->name('business.store_user_bussines');
-    Route::post('/empresas/store-cashback', [RfcBussinesController::class, 'store_cashback'])->name('business.store_cashback');
 
+    # Proveedores
     Route::get('/proveedores', [RfcSupplierController::class, 'index'])->name('supplier.index');
     Route::get('/proveedores/create', [RfcSupplierController::class, 'create'])->name('supplier.create');
     Route::post('/proveedores', [RfcSupplierController::class, 'store'])->name('supplier.store');
@@ -124,11 +135,38 @@ Route::get('/notificaciones-de-administrador/{notification}/delete', [Notificati
     Route::put('/proveedores/{cliente}/update', [RfcSupplierController::class, 'update'])->name('supplier.update');
     Route::get('/proveedores/{cliente}/activated', [RfcSupplierController::class, 'activated'])->name('supplier.activated');
     Route::get('/proveedores/{cliente}/desactivated', [RfcSupplierController::class, 'desactivated'])->name('supplier.desactivated');
+    Route::get('/proveedores/{cliente}/delete', [RfcSupplierController::class, 'delete'])->name('supplier.delete');
+    # Proveedores - Usuarios
     Route::get('/proveedores/{cliente}/users', [RfcSupplierController::class, 'rfcusers'])->name('supplier.users');
     Route::get('/proveedores/{cliente}/users/create', [RfcSupplierController::class, 'create_users'])->name('supplier.users.create_users');
     Route::post('/proveedores/{cliente}/users/store', [RfcSupplierController::class, 'store_users'])->name('supplier.users.store_users');
+    Route::get('/proveedores/{cliente}/users/{user}/show', [RfcSupplierController::class, 'show_users'])->name('supplier.users.show_users');
+    Route::get('/proveedores/{cliente}/users/{user}/edit', [RfcSupplierController::class, 'edit_users'])->name('supplier.users.edit_users');
+    Route::put('/proveedores/{cliente}/users/{user}/update', [RfcSupplierController::class, 'update_users'])->name('supplier.users.update_users');
+    Route::get('/proveedores/{cliente}/users/{user}/delete', [RfcSupplierController::class, 'destroy_users'])->name('supplier.users.destroy_users');
     Route::get('/proveedores/users/{user}/activated', [RfcSupplierController::class, 'ActivateUsers'])->name('supplier.users.activated');
     Route::get('/proveedores/users/{user}/desactivated', [RfcSupplierController::class, 'DesactivateUsers'])->name('supplier.users.desactivated');
+
+     # Pruebas
+     Route::get('/pruebas', [RfcPruebaController::class, 'index'])->name('prueba.index');
+     Route::get('/pruebas/create', [RfcPruebaController::class, 'create'])->name('prueba.create');
+     Route::post('/pruebas', [RfcPruebaController::class, 'store'])->name('prueba.store');
+     Route::get('/pruebas/{cliente}/show', [RfcPruebaController::class, 'show'])->name('prueba.show');
+     Route::get('/pruebas/{cliente}/edit', [RfcPruebaController::class, 'edit'])->name('prueba.edit');
+     Route::put('/pruebas/{cliente}/update', [RfcPruebaController::class, 'update'])->name('prueba.update');
+     Route::get('/pruebas/{cliente}/activated', [RfcPruebaController::class, 'activated'])->name('prueba.activated');
+     Route::get('/pruebas/{cliente}/desactivated', [RfcPruebaController::class, 'desactivated'])->name('prueba.desactivated');
+     Route::get('/pruebas/{cliente}/delete', [RfcPruebaController::class, 'delete'])->name('prueba.delete');
+     # Pruebas - Usuarios
+     Route::get('/pruebas/{cliente}/users', [RfcPruebaController::class, 'rfcusers'])->name('prueba.users');
+     Route::get('/pruebas/{cliente}/users/create', [RfcPruebaController::class, 'create_users'])->name('prueba.users.create_users');
+     Route::post('/pruebas/{cliente}/users/store', [RfcPruebaController::class, 'store_users'])->name('prueba.users.store_users');
+     Route::get('/pruebas/{cliente}/users/{user}/show', [RfcPruebaController::class, 'show_users'])->name('prueba.users.show_users');
+     Route::get('/pruebas/{cliente}/users/{user}/edit', [RfcPruebaController::class, 'edit_users'])->name('prueba.users.edit_users');
+     Route::put('/pruebas/{cliente}/users/{user}/update', [RfcPruebaController::class, 'update_users'])->name('prueba.users.update_users');
+     Route::get('/pruebas/{cliente}/users/{user}/delete', [RfcPruebaController::class, 'destroy_users'])->name('prueba.users.destroy_users');
+     Route::get('/pruebas/users/{user}/activated', [RfcPruebaController::class, 'ActivateUsers'])->name('prueba.users.activated');
+     Route::get('/pruebas/users/{user}/desactivated', [RfcPruebaController::class, 'DesactivateUsers'])->name('prueba.users.desactivated');
 
     # users
     Route::get('/gestion-de-usuarios', [AdminUsersController::class, 'index'])->name('admin.users.index');
@@ -269,6 +307,18 @@ Route::get('/notificaciones-de-administrador/{notification}/delete', [Notificati
     Route::get('/gestion-de-usuarios', [BussinesUsersController::class, 'index'])->name('bussines-users.index');
     ###### FIN EMPRESA ######
 
+});
+Route::get('comandos', function () {
+    Artisan::call('optimize');
+    Artisan::call('view:clear');
+    Artisan::call('cache:clear');
+    Artisan::call('route:clear');
+    Artisan::call('config:clear');
+    Artisan::call('config:cache');
+    Artisan::call('view:cache');
+    Artisan::call('route:cache');
+
+    return 'Comandos ejecutados con éxitos';
 });
 
 require __DIR__.'/auth.php';

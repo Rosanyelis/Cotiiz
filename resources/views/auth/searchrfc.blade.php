@@ -92,24 +92,20 @@
                         }
                         if (tipo == 'empresa') {
                             $("#btn_searchDiv").show();
+                            $("#btn_registerPruebaDiv").show();
                             $("#btn_search").prop('disabled', false);
                             $("#btn_search").html("Registrar Empresa");
                             $("#rfc_new").val($("#rfc").val());
                             $("#rfc_prueba").val($("#rfc").val());
-
                         }
-
-                        // $("#btn_registerPruebaDiv").show();
-                        // $("#rfc_new").val($("#rfc").val());
-                        // $("#rfc_prueba").val($("#rfc").val());
-                        // $("#btn_search").prop('disabled', false);
-                        // $("#btn_search").html("Registrar la Empresa");
                     } else {
                         $("#rfc-error").hide();
                         $("#rfc-success").text("La empresa ya se encuentra registrada");
                         $("#rfc-success").show();
+                        $("#btn_search").prop('disabled', false);
                         $('#btnSearchDiv').hide();
                         $("#btn_searchDiv").show();
+                        $("#rfc_new").val($("#rfc").val());
                         $("#btn_search").prop('disabled', false);
                         $("#btn_search").html("Registrarme como empleado de la Empresa");
                     }

@@ -3,8 +3,8 @@
  */
 
 'use strict';
-    var dt_ajax_table = $('.datatables-bussines-user');
-    var idrfc = $('.datatables-bussines-user').data('rfc');
+    var dt_ajax_table = $('.datatables-supplier-user');
+    var idrfc = $('.datatables-supplier-user').data('rfc');
     var url = "/proveedores/"+idrfc+"/users";
 $(function () {
 
@@ -102,6 +102,27 @@ function desactivarRecord(id) {
         if (result.isConfirmed) {
             window.location.href =
                 "/proveedores/users/"+id+"/desactivated";
+        }
+    })
+}
+
+function deleteRecord(id) {
+    Swal.fire({
+        title: '¿Está seguro de eliminar este Usuario?',
+        text: "No podra recuperar la información!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Si, eliminar!',
+        cancelButtonText: 'Cancelar',
+        customClass: {
+        confirmButton: 'btn btn-primary me-3 waves-effect waves-light',
+        cancelButton: 'btn btn-outline-danger waves-effect'
+        },
+        buttonsStyling: false
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href =
+                "/proveedores/"+idrfc+"/users/"+id+"/delete";
         }
     })
 }

@@ -18,6 +18,7 @@ use App\Http\Requests\StoreRfcBussinesRequest;
 use App\Http\Requests\StoreUserBussinesRequest;
 use App\Http\Requests\UpdateRfcBussinesRequest;
 use App\Http\Requests\StoreUserRfcBussinesRequest;
+use App\Http\Requests\UpdateUserRfcBussinesRequest;
 
 class RfcBussinesController extends Controller
 {
@@ -38,59 +39,6 @@ class RfcBussinesController extends Controller
         return view('admin.rfcbussines.index');
     }
 
-    public function rfcusers($rfc, Request $request)
-    {
-        if ($request->ajax()) {
-            $dato = User::join('user_rfc_bussines', 'user_rfc_bussines.user_id', '=', 'users.id')
-                ->where('user_rfc_bussines.rfc_bussines_id', $rfc)
-                ->select('users.*', 'user_rfc_bussines.principal');
-            return DataTables::of($dato)
-                ->addColumn('actions', function ($dato) {
-                    return view('admin.rfcbussines.partials.actionusers', [ 'data' => $dato]);
-                })
-                ->rawColumns(['actions'])
-                ->make(true);
-        }
-
-    }
-
-    public function create_users($rfc)
-    {
-        return view('admin.rfcbussines.users.create-user', ['rfc' => $rfc]);
-    }
-
-    public function store_users($rfc, StoreUserRfcBussinesRequest $request)
-    {
-        $data = $request->all();
-        $data['type'] = 'business-operador';
-        $user = User::create($data);
-
-        $user->assignRole('Empresa-Operador');
-
-        UserRfcBussines::create([
-            'user_id' => $user->id,
-            'rfc_bussines_id' => $rfc
-        ]);
-        return redirect()->route('business.show', $rfc)->with('success', 'Usuario creado con exito');
-    }
-
-    public function ActivateUsers($user)
-    {
-        $data = User::find($user);
-        $data->status = '1';
-        $data->save();
-
-        return redirect()->back()->with('success', 'Usuario activado con exito');
-    }
-
-    public function DesactivateUsers($user)
-    {
-        $data = User::find($user);
-        $data->status = '0';
-        $data->save();
-
-        return redirect()->back()->with('success', 'Usuario Desactivado con exito');
-    }
 
     /**
      * Show the form for creating a new resource.
@@ -206,7 +154,7 @@ class RfcBussinesController extends Controller
         $data = RfcBussines::find($id);
         return view('admin.rfcbussines.show', compact('data'));
     }
-
+    # Atajo de usuarios
     /**
      * Show the form for editing the specified resource.
      */
@@ -326,6 +274,14 @@ class RfcBussinesController extends Controller
         return redirect()->back()->with('success', 'Empresa Desactivada con exito');
     }
 
+    public function delete($user)
+    {
+        $data = RfcBussines::find($user);
+        $data->users()->delete();
+        $data->delete();
+        return redirect()->back()->with('success', 'Empresas eliminada con exito');
+    }
+
     public function store_cashback(Request $request)
     {
 
@@ -339,4 +295,205 @@ class RfcBussinesController extends Controller
         return redirect()->back()->with('success', 'Cashback Actualizado con exito');
     }
 
+#   Usuarios
+
+    public function rfcusers($rfc, Request $request)
+    {
+        if ($request->ajax()) {
+            $dato = User::join('user_rfc_bussines', 'user_rfc_bussines.user_id', '=', 'users.id')
+                ->where('user_rfc_bussines.rfc_bussines_id', $rfc)
+                ->select('users.*', 'user_rfc_bussines.principal', 'user_rfc_bussines.rfc_bussines_id');
+            return DataTables::of($dato)
+                ->addColumn('actions', function ($dato) {
+                    return view('admin.rfcbussines.partials.actionusers', [ 'data' => $dato]);
+                })
+                ->rawColumns(['actions'])
+                ->make(true);
+        }
+
+    }
+
+    public function create_users($rfc)
+    {
+        $data = RfcBussines::find($rfc);
+        return view('admin.rfcbussines.users.create-user', ['rfc' => $rfc, 'data' => $data]);
+    }
+
+    public function store_users($rfc, StoreUserRfcBussinesRequest $request)
+    {
+        $file_gafete = "";
+        $file_gafete2 = "";
+        $file_credential = "";
+        $file_credential2 = "";
+
+        if($request->hasFile('file_gafete'))
+        {
+            $file = $request->file('file_gafete');
+            $fileName   = time().rand(111,699).'.' .$file->getClientOriginalExtension();
+            $uploadPath = public_path('/storage/rfc_bussines/');
+            $file->move($uploadPath, $fileName);
+            $file_gafete = $url = '/storage/rfc_bussines/'.$fileName;
+        }
+        if($request->hasFile('file_gafete2'))
+        {
+            $file = $request->file('file_gafete2');
+            $fileName   = time().rand(111,699).'.' .$file->getClientOriginalExtension();
+            $uploadPath = public_path('/storage/rfc_bussines/');
+            $file->move($uploadPath, $fileName);
+            $file_gafete2 = $url = '/storage/rfc_bussines/'.$fileName;
+        }
+
+        if($request->hasFile('file_credential'))
+        {
+            $file = $request->file('file_credential');
+            $fileName   = time().rand(111,699).'.' .$file->getClientOriginalExtension();
+            $uploadPath = public_path('/storage/rfc_bussines/');
+            $file->move($uploadPath, $fileName);
+            $file_credential = $url = '/storage/rfc_bussines/'.$fileName;
+        }
+
+        if($request->hasFile('file_credential2'))
+        {
+            $file = $request->file('file_credential2');
+            $fileName   = time().rand(111,699).'.' .$file->getClientOriginalExtension();
+            $uploadPath = public_path('/storage/rfc_bussines/');
+            $file->move($uploadPath, $fileName);
+            $file_credential2 = $url = '/storage/rfc_bussines/'.$fileName;
+        }
+
+        $user = User::create([
+            'type' => 'business-operador',
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'passwordshow' => $request->password,
+            'firstname' => $request->firstname,
+            'lastname' => $request->lastname,
+            'second_name' => $request->second_name,
+            'second_lastname' => $request->second_lastname,
+            'workstation' => $request->workstation,
+            'phone' => $request->phone_personal,
+            'area_work' => $request->area_work,
+            'file_gafete' => $file_gafete,
+            'file_gafete2' => $file_gafete2,
+            'file_credential' => $file_credential,
+            'file_credential2' => $file_credential2
+        ]);
+
+        $user->assignRole('Empresa-Operador');
+
+        UserRfcBussines::create([
+            'user_id' => $user->id,
+            'rfc_bussines_id' => $rfc
+        ]);
+        return redirect()->route('business.show', $rfc)->with('success', 'Usuario creado con exito');
+    }
+
+    public function show_users($cliente, $user)
+    {
+        $data = RfcBussines::find($cliente);
+        $data_user = User::find($user);
+        return view('admin.rfcbussines.users.show-user', ['user' => $data_user, 'data' => $data]);
+    }
+
+    public function edit_users($rfc, $id)
+    {
+        $data = RfcBussines::find($rfc);
+        $user = User::find($id);
+        return view('admin.rfcbussines.users.edit-user', ['rfc' => $rfc, 'data' => $data, 'user' => $user]);
+    }
+
+    public function update_users($cliente, $user, UpdateUserRfcBussinesRequest $request)
+    {
+        $user = User::find($user);
+        $file_gafete = $user->file_gafete;
+        $file_gafete2 = $user->file_gafete2;
+        $file_credential = $user->file_credential;
+        $file_credential2 = $user->file_credential2;
+
+        if($request->hasFile('file_gafete'))
+        {
+            $file = $request->file('file_gafete');
+            $fileName   = time().rand(111,699).'.' .$file->getClientOriginalExtension();
+            $uploadPath = public_path('/storage/rfc_bussines/');
+            $file->move($uploadPath, $fileName);
+            $file_gafete = $url = '/storage/rfc_bussines/'.$fileName;
+        }
+        if($request->hasFile('file_gafete2'))
+        {
+            $file = $request->file('file_gafete2');
+            $fileName   = time().rand(111,699).'.' .$file->getClientOriginalExtension();
+            $uploadPath = public_path('/storage/rfc_bussines/');
+            $file->move($uploadPath, $fileName);
+            $file_gafete2 = $url = '/storage/rfc_bussines/'.$fileName;
+        }
+
+        if($request->hasFile('file_credential'))
+        {
+            $file = $request->file('file_credential');
+            $fileName   = time().rand(111,699).'.' .$file->getClientOriginalExtension();
+            $uploadPath = public_path('/storage/rfc_bussines/');
+            $file->move($uploadPath, $fileName);
+            $file_credential = $url = '/storage/rfc_bussines/'.$fileName;
+        }
+
+        if($request->hasFile('file_credential2'))
+        {
+            $file = $request->file('file_credential2');
+            $fileName   = time().rand(111,699).'.' .$file->getClientOriginalExtension();
+            $uploadPath = public_path('/storage/rfc_bussines/');
+            $file->move($uploadPath, $fileName);
+            $file_credential2 = $url = '/storage/rfc_bussines/'.$fileName;
+        }
+
+        if($request->password != null) {
+            $user->password = Hash::make($request->password);
+        }
+        $user->name             = $request->name;
+        $user->email            = $request->email;
+        $user->firstname        = $request->firstname;
+        $user->lastname         = $request->lastname;
+        $user->second_name      = $request->second_name;
+        $user->second_lastname  = $request->second_lastname;
+        $user->workstation      = $request->workstation;
+        $user->phone            = $request->phone;
+        $user->area_work        = $request->area_work;
+        $user->country          = $request->country;
+        $user->state            = $request->state;
+        $user->municipality     = $request->municipality;
+        $user->colony           = $request->colony;
+        $user->street           = $request->street;
+        $user->file_gafete      = $file_gafete;
+        $user->file_gafete2     = $file_gafete2;
+        $user->file_credential  = $file_credential;
+        $user->file_credential2 = $file_credential2;
+        $user->save();
+
+        return redirect()->route('business.show', $cliente)->with('success', 'Usuario actualizado con exito');
+    }
+
+    public function destroy_users($cliente, $user)
+    {
+        $user = User::find($user);
+        $user->delete();
+
+        return redirect()->route('business.show', $cliente)->with('success', 'Usuario eliminado con exito');
+    }
+    public function ActivateUsers($user)
+    {
+        $data = User::find($user);
+        $data->status = '1';
+        $data->save();
+
+        return redirect()->back()->with('success', 'Usuario activado con exito');
+    }
+
+    public function DesactivateUsers($user)
+    {
+        $data = User::find($user);
+        $data->status = '0';
+        $data->save();
+
+        return redirect()->back()->with('success', 'Usuario Desactivado con exito');
+    }
 }

@@ -63,6 +63,8 @@ class ProductController extends Controller
 
         $data['user_id'] = auth()->user()->id;
         $data['rfc_suppliers_id'] = Auth::user()->rfcsuppliers()->first()->id;
+
+        
         $producto = Product::create($data);
 
         Notification::create([

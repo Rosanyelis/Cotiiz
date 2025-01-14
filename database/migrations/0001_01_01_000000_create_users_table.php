@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->enum('type', ['admin', 'provider', 'business', 'provider-operador', 'business-operador'])->default('admin');
+            $table->enum('type', ['admin', 'provider', 'business', 'provider-operador', 'business-operador', 'bussines-pruebas'])->default('admin');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
@@ -35,6 +35,7 @@ return new class extends Migration
             $table->string('municipality')->nullable();
             $table->string('state')->nullable();
             $table->string('country')->nullable();
+            $table->string('workstation')->nullable();
             $table->string('area_work')->nullable();
             $table->string('file_gafete')->nullable();
             $table->string('file_gafete2')->nullable();

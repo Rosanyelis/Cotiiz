@@ -75,25 +75,41 @@
                             <div class="col-md-6">
                                 <div class="d-flex flex-column mb-4">
                                     <span class="fw-bold mx-2 mb-2">PDF Opinión Positiva:</span>
+                                    @if ($data->file_positive_opinion == null)
+                                    <span class="mx-2">No disponible</span>
+                                    @else
                                     <a class="mx-2" href="{{ asset($data->file_positive_opinion) }}" target="_blank" >Descargar</a>
+                                    @endif
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="d-flex flex-column mb-4">
                                     <span class="fw-bold mx-2 mb-2">PDF Información Bancaria:</span>
+                                    @if ($data->file_bank_information == null)
+                                    <span class="mx-2">No disponible</span>
+                                    @else
                                     <a class="mx-2" href="{{ asset($data->file_bank_information) }}" target="_blank" >Descargar</a>
+                                    @endif
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="d-flex flex-column mb-4">
                                     <span class="fw-bold mx-2 mb-2">PDF Constancia de Situación Fiscal:</span>
+                                    @if ($data->file_fiscal_constancy == null)
+                                    <span class="mx-2">No disponible</span>
+                                    @else
                                     <a class="mx-2" href="{{ asset($data->file_fiscal_constancy) }}" target="_blank" >Descargar</a>
+                                    @endif
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="d-flex flex-column mb-4">
                                     <span class="fw-bold mx-2 mb-2">PDF Registro de Domicilio Fiscal:</span>
+                                    @if ($data->file_fiscal_address == null)
+                                    <span class="mx-2">No disponible</span>
+                                    @else
                                     <a class="mx-2" href="{{ asset($data->file_fiscal_address) }}" target="_blank" >Descargar</a>
+                                    @endif
                                 </div>
                             </div>
 
@@ -149,7 +165,7 @@
                             </div>
                         </div>
                         <div class="card-datatable text-nowrap mt-2">
-                            <table class="datatables-bussines-user table table-sm" data-rfc="{{ $data->id }}">
+                            <table class="datatables-supplier-user table table-sm" data-rfc="{{ $data->id }}">
                                 <thead>
                                     <tr>
                                         <th>Usuario</th>

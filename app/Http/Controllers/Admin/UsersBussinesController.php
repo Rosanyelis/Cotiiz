@@ -15,7 +15,7 @@ class UsersBussinesController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = User::with('rfcbussines')->role('Empresa')->get();
+            $data = User::with('rfcbussines')->role(['Empresa', 'Empresa-Operador'])->get();
             return DataTables::of($data)
                 ->addColumn('actions', function ($data) {
                     return view('admin.usersbussines.partials.actions', ['data' => $data]);
@@ -73,4 +73,6 @@ class UsersBussinesController extends Controller
 
         return redirect()->back()->with('success', 'Usuario Desactivado con exito');
     }
+
+   
 }

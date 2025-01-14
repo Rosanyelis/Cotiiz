@@ -12,7 +12,7 @@ class UsersSupplierController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = User::with('rfcsuppliers')->role('Proveedor')->get();
+            $data = User::with('rfcsuppliers')->role(['Proveedor', 'Proveedor-Operador'])->get();
             return DataTables::of($data)
                 ->addColumn('actions', function ($data) {
                     return view('admin.userssuppliers.partials.actions', ['data' => $data]);

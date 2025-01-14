@@ -22,4 +22,8 @@
         </a>
         @endif
 
+        <a class="dropdown-item text-danger" href="#" onclick="deleteRecord({{ $data->id }})" >
+            <i class="ri-delete-bin-fill ri-20px"></i>
+            Eliminar Proveedor
+        </a>
 </div>

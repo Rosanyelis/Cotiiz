@@ -15,7 +15,7 @@
                     <div class="row">
                         <div class="col-md-3">
                             <div class="d-flex justify-content-center">
-                                @if($data->photo == null)
+                                @if($data->file_photo == null)
                                     <img src="{{ asset('assets/img/products/no-photo.jpg') }}"
                                         alt="user-avatar" class="d-block w-px-200 h-px-200 rounded-4"
                                         id="uploadedAvatar" />

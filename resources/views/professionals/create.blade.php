@@ -23,7 +23,7 @@
                                     <span class="d-none d-sm-block">Cargar imagen de Profesional (opcional)</span>
                                     <i class="ri-upload-2-line d-block d-sm-none"></i>
                                     <input type="file" id="upload" class="account-file-input @if($errors->has('photo')) is-invalid @endif" hidden
-                                        accept="image/png, image/jpeg" name="photo" />
+                                        accept="image/png, image/jpeg" name="file_photo" />
                                 </label>
                                 <button type="button" class="btn btn-outline-danger account-image-reset mb-4">
                                     <i class="ri-refresh-line d-block d-sm-none"></i>

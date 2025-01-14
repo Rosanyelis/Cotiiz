@@ -3,8 +3,8 @@ toastr.options = {
     "debug": false,
     "newestOnTop": false,
     "progressBar": true,
-    "positionClass": "toast-top-right",
-    "preventDuplicates": true,
+    "positionClass": "toast-bottom-right",
+    "preventDuplicates": false,
     "onclick": null,
     "showDuration": "300",
     "hideDuration": "1000",
@@ -15,6 +15,9 @@ toastr.options = {
     "showMethod": "fadeIn",
     "hideMethod": "fadeOut"
 }
+@if (session('status'))
+toastr.success('{{ session('status') }}', 'Exito!')
+@endif
 @if (session('success'))
 toastr.success('{{ session('success') }}', 'Exito!')
 @endif

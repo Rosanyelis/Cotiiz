@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      */

@@ -22,6 +22,6 @@ class RolsSeeder extends Seeder
         Role::create(['name' => 'Empresa-Operador']);
         Role::create(['name' => 'Proveedor-Operador']);
 
-        
+
     }
 }

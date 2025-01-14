@@ -107,3 +107,24 @@ function desactivarRecord(id) {
         }
     })
 }
+
+function deleteRecord(id) {
+    Swal.fire({
+        title: '¿Está seguro de Eliminar esta Empresa?',
+        text: "Cualquier información relacionada se perdera!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Si, Eliminar!',
+        cancelButtonText: 'Cancelar',
+        customClass: {
+        confirmButton: 'btn btn-primary me-3 waves-effect waves-light',
+        cancelButton: 'btn btn-outline-danger waves-effect'
+        },
+        buttonsStyling: false
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href =
+                "/empresas/"+id+"/delete";
+        }
+    })
+}

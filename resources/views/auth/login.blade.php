@@ -1,5 +1,6 @@
 @extends('auth.layouts.app')
 @section('title', 'Iniciar Sesión')
+
 @section('content')
     <div class="position-relative" style="background-image: url('{{ asset('web/images/bg-login.jpg') }}');background-repeat: no-repeat;background-size: cover;">
         <div class="authentication-wrapper authentication-basic container-p-y p-4 p-sm-0" >
@@ -58,7 +59,7 @@
                                     <input class="form-check-input" type="checkbox" name="remember" id="remember-me" />
                                     <label class="form-check-label" for="remember-me"> Recuerdame </label>
                                 </div>
-                                <a href="auth-forgot-password-basic.html" class="float-end mb-1 mt-2">
+                                <a href="{{ route('password.request') }}" class="float-end mb-1 mt-2">
                                     <span>¿Olvidate tu contraseña?</span>
                                 </a>
                             </div>
