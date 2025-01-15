@@ -19,23 +19,41 @@
                         <form id="formRequestSupplier" class="needs-validation" action="{{ route('request-supplier.store') }}" method="POST">
                             @csrf
                             <div class="row">
-                                <div class="mb-6 col-md-4">
-                                    <div class="form-floating form-floating-outline">
-                                        <select id="rfc_suppliers_id" name="rfc_suppliers_id" class="form-select select2 @if($errors->has('rfc_suppliers_id')) is-invalid @endif"
-                                        placeholder="Selecione una Proveedor">
+                                <div class="row">
+                                    <!-- Buscador de Proveedores -->
+                                    <div class="mb-3 col-md-6">
+                                        <label for="supplier-search" class="form-label">Buscar Proveedor</label>
+                                        <input
+                                            type="text"
+                                            id="supplier-search"
+                                            class="form-control"
+                                            placeholder="Escribe para buscar..."
+                                        />
+                                    </div>
+                                
+                                    <!-- Selector de Proveedores -->
+                                    <div class="mb-3 col-md-6">
+                                        <label for="rfc_suppliers_id" class="form-label">Proveedor</label>
+                                        <select
+                                            id="rfc_suppliers_id"
+                                            name="rfc_suppliers_id"
+                                            class="form-select select2 @if($errors->has('rfc_suppliers_id')) is-invalid @endif"
+                                        >
                                             <option value="">-- Seleccionar --</option>
                                             @foreach ($rfcSuppliers as $item)
-                                            <option value="{{ $item->id }}" {{ old('rfc_suppliers_id') == $item->id ? 'selected' : '' }} >{{ $item->name }}</option>
+                                                <option value="{{ $item->id }}" {{ old('rfc_suppliers_id') == $item->id ? 'selected' : '' }}>
+                                                    {{ $item->name }}
+                                                </option>
                                             @endforeach
                                         </select>
-                                        <label for="code">Proveedor</label>
                                         @if($errors->has('rfc_suppliers_id'))
-                                        <div class="invalid-feedback">
-                                            {{ $errors->first('rfc_suppliers_id') }}
-                                        </div>
+                                            <div class="invalid-feedback">
+                                                {{ $errors->first('rfc_suppliers_id') }}
+                                            </div>
                                         @endif
                                     </div>
                                 </div>
+                                
                                 <div class="mb-6 col-md-8">
                                     <div class="form-floating form-floating-outline">
                                         <input

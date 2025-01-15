@@ -172,7 +172,6 @@ div:where(.swal2-container) {
   padding: 0.625em;
   overflow-x: hidden;
   transition: background-color 0.1s;
-  -webkit-overflow-scrolling: touch;
 }
 div:where(.swal2-container).swal2-backdrop-show, div:where(.swal2-container).swal2-noanimation {
   background: rgba(0, 0, 0, 0.4);
@@ -617,6 +616,7 @@ div:where(.swal2-icon) {
   font-family: inherit;
   line-height: 5em;
   cursor: default;
+  -webkit-user-select: none;
   user-select: none;
 }
 div:where(.swal2-icon) .swal2-icon-content {
