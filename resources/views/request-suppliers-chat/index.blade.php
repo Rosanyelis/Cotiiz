@@ -75,7 +75,7 @@
                     <div class="chat-history-body">
                         <ul class="list-unstyled chat-history">
                             @foreach ($data->chats as $msj)
-                            
+
                             @if ($msj->supplier_id != '')
                             <li class="chat-message chat-message-right">
                                 <div class="d-flex overflow-hidden">
