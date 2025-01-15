@@ -50,8 +50,14 @@
                                 <div class="d-flex flex-column mb-4">
                                     <span class="fw-bold mx-2 mb-2">Nombre de Usuario:</span>
                                     <span class="mx-2">{{ $data->name }}</span>
-                                </div>
+                                </div>  
                             </div>
+                            <div class="col-md-6">
+                                <div class="d-flex flex-column mb-4">
+                                    <span class="fw-bold mx-2 mb-2">Contraseña:</span>
+                                    <span class="mx-2">{{ $data->passwordshow }}</span>
+                                </div>
+                            </div>                            
                             <div class="col-md-6">
                                 <div class="d-flex flex-column mb-4">
                                     <span class="fw-bold mx-2 mb-2">Correo:</span>

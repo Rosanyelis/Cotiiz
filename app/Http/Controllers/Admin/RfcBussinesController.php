@@ -274,13 +274,13 @@ class RfcBussinesController extends Controller
         return redirect()->back()->with('success', 'Empresa Desactivada con exito');
     }
 
-    public function delete($user)
+   public function delete($user)
     {
         $data = RfcBussines::find($user);
         $data->users()->delete();
         $data->delete();
         return redirect()->back()->with('success', 'Empresas eliminada con exito');
-    }
+    } 
 
     public function store_cashback(Request $request)
     {

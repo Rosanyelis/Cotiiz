@@ -53,6 +53,17 @@ class UsersBussinesController extends Controller
         return redirect()->back()->with('success', 'Contraseña actualizada correctamente');
     }
 
+    public function getPassword($id)
+    {
+        $user = User::find($id);
+
+        if (!$user) {
+            return response()->json(['error' => 'Usuario no encontrado.'], 404);
+        }
+
+        return response()->json(['passwordshow' => $user->passwordshow], 200);
+    }
+   
     /**
      * Remove the specified resource from storage.
      */
@@ -74,5 +85,10 @@ class UsersBussinesController extends Controller
         return redirect()->back()->with('success', 'Usuario Desactivado con exito');
     }
 
-   
+    public function delete($id)
+    {
+        $data = User::find($id);
+        $data->delete();
+        return redirect()->back()->with('success', 'Usuario eliminado con exito');
+    }
 }
