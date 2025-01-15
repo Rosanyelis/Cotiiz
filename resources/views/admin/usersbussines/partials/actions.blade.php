@@ -29,7 +29,7 @@
 
         @if ($data->status == 0 or $data->status == 1 )
         <a class="dropdown-item text-danger" href="#" onclick="deleted({{ $data->id }})" >
-            <i class="ri-delete-bin-fill ri-20px"></i>
+            <i class="ri-delete-bin-7-line ri-20px"></i>
             Eliminar Usuario
         </a>
         @endif
