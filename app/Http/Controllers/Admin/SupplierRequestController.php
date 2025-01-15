@@ -55,7 +55,7 @@ class SupplierRequestController extends Controller
     {
         $data = SupplierRequest::create([
             'rfc_suppliers_id' => $request->rfc_suppliers_id,
-            'user_id' => auth()->user()->id,
+            'user_id' => \Illuminate\Support\Facades\Auth::user()->id,
             'type' => $request->type,
             'observation' => $request->observation
         ]);
@@ -73,7 +73,7 @@ class SupplierRequestController extends Controller
         SupplierRequestChat::create([
             'rfc_suppliers_id' => $request->rfc_suppliers_id,
             'supplier_request_id' => $data->id,
-            'user_admin_id' => auth()->user()->id,
+            'user_admin_id' => \Illuminate\Support\Facades\Auth::user()->id,
             'message' => $request->message,
             'file' => $request->file
         ]);
@@ -119,7 +119,7 @@ class SupplierRequestController extends Controller
         SupplierRequestChat::create([
             'rfc_suppliers_id' => $request->rfc_suppliers_id,
             'supplier_request_id' => $supplierRequest,
-            'user_admin_id' => auth()->user()->id,
+            'user_admin_id' => \Illuminate\Support\Facades\Auth::user()->id,
             'message' => $request->message,
             'file' => $urlfile,
             'name_file' => $nameFile

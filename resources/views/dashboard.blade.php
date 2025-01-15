@@ -9,7 +9,7 @@
                 <div class="d-flex align-items-end row">
                     <div class="col-md-6 order-2 order-md-1">
                         <div class="card-body">
-                            <h4 class="card-title mb-4">Bienvenido ! <span class="fw-bold">{{ Auth::user()->name }}!</span> 🎉</h4>
+                            <h4 class="card-title mb-4">Bienvenido al increible mundo de cotiiz! <span class="fw-bold">{{ Auth::user()->name }}!</span> 🎉</h4>
                         </div>
                     </div>
                     <div class="col-md-6 text-center text-md-end order-1 order-md-2">
