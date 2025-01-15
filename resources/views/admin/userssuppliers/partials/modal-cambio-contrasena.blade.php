@@ -13,14 +13,18 @@
                     <div class="row g-3">
                         <div class=" col-md-12">
                             <div class="form-floating form-floating-outline">
-                                <input
-                                    type="password"
-                                    id="password"
-                                    name="password"
-                                    class="form-control @if($errors->has('password')) is-invalid @endif"
-                                    value="{{ old('password') }}"
-                                />
-                                <label for="code">Contraseña</label>
+                                <div class="input-group">
+                                    <input
+                                        type="password"
+                                        id="password"
+                                        name="password"
+                                        class="form-control @if($errors->has('password')) is-invalid @endif"
+                                        value="{{ old('password') }}"
+                                    />
+                                    <button type="button" class="btn btn-outline-secondary" id="toggle-password">
+                                        <i class="ri-eye-line"></i> <!-- Ícono de ojo -->
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>

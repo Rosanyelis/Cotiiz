@@ -209,6 +209,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/gestion-de-usuarios-proveedores/change-password', [UsersSupplierController::class, 'changePasword'])->name('admin.supplier-users.changePasword');
     Route::get('/gestion-de-usuarios-proveedores/{id}/activated', [UsersSupplierController::class, 'activated'])->name('admin.supplier-users.activated');
     Route::get('/gestion-de-usuarios-proveedores/{id}/desactivated', [UsersSupplierController::class, 'desactivated'])->name('admin.supplier-users.desactivated');
+    Route::get('/gestion-de-usuarios-proveedores/{id}/deleted', [UsersSupplierController::class, 'delete'])->name('admin.supplier-users.delete');
+    Route::get('/gestion-de-usuarios-proveedores/{id}/get-password', [UsersSupplierController::class, 'getPassword'])->name('admin.supplier-users.getPassword');
+
 
     # Usuarios de Prueba
     Route::get('/gestion-de-usuarios-prueba', [UsersPruebaController::class, 'index'])->name('admin.prueba-users.index');

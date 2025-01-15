@@ -60,6 +60,12 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="d-flex flex-column mb-4">
+                                    <span class="fw-bold mx-2 mb-2">Contraseña:</span>
+                                    <span class="mx-2">{{ $data->passwordshow }}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="d-flex flex-column mb-4">
                                     <span class="fw-bold mx-2 mb-2">Primer Nombre:</span>
                                     <span class="mx-2">{{ $data->firstname }}</span>
                                 </div>
