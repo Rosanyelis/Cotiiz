@@ -63,13 +63,45 @@ $(function () {
 });
 
 function changePassword(id, name) {
-
     $('#modalChangePassword').find('.modal-title').text('Cambiar contraseña de ' + name);
-
     $('#modalChangePassword').find('#id').val(id);
-    // abrir modal para cambiar contraseña
+
+    // Solicitud AJAX para obtener la contraseña actual
+    $.ajax({
+        url: '/gestion-de-usuarios-prueba/' + id + '/get-password', // Ruta para obtener la contraseña
+        type: 'GET',
+        success: function(response) {
+            // Rellena el campo de contraseña con el valor obtenido
+            $('#modalChangePassword').find('#password').val(response.passwordshow);
+        },
+        error: function(xhr) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'No se pudo obtener la contraseña actual.',
+                confirmButtonText: 'Aceptar'
+            });
+        }
+    });
+
+    // Mostrar el modal
     $('#modalChangePassword').modal('show');
 }
+
+// === Gestión de Contraseñas ===
+$(document).on('click', '#toggle-password', function() {
+    const passwordField = $('#password');
+    const passwordFieldType = passwordField.attr('type');
+
+    if (passwordFieldType === 'password') {
+        passwordField.attr('type', 'text'); // Cambiar a texto
+        $(this).html('<i class="ri-eye-off-line"></i>'); // Cambiar el ícono
+    } else {
+        passwordField.attr('type', 'password'); // Cambiar a oculto
+        $(this).html('<i class="ri-eye-line"></i>'); // Cambiar el ícono
+    }
+});
+
 
 function activated(id) {
     console.log(id);
@@ -113,4 +145,25 @@ function desactivarRecord(id) {
                 "/gestion-de-usuarios-prueba/"+id+"/desactivated";
         }
     })
+}
+
+function deleted(id) {
+    Swal.fire({
+        title: '¿Está seguro de eliminar este Usuario?',
+        text: "El usuario sera eliminado permanentemente!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Si, eliminar!',
+        cancelButtonText: 'Cancelar',
+        customClass: {
+        confirmButton: 'btn btn-primary me-3 waves-effect waves-light',
+        cancelButton: 'btn btn-outline-danger waves-effect'
+        },
+        buttonsStyling: false
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href =
+                "/gestion-de-usuarios-prueba/"+id+"/delete";
+        }
+    })
 }

@@ -209,13 +209,17 @@ Route::middleware('auth')->group(function () {
     Route::post('/gestion-de-usuarios-proveedores/change-password', [UsersSupplierController::class, 'changePasword'])->name('admin.supplier-users.changePasword');
     Route::get('/gestion-de-usuarios-proveedores/{id}/activated', [UsersSupplierController::class, 'activated'])->name('admin.supplier-users.activated');
     Route::get('/gestion-de-usuarios-proveedores/{id}/desactivated', [UsersSupplierController::class, 'desactivated'])->name('admin.supplier-users.desactivated');
-
+///////////////////////////////////////////////////////////////////
     # Usuarios de Prueba
     Route::get('/gestion-de-usuarios-prueba', [UsersPruebaController::class, 'index'])->name('admin.prueba-users.index');
     Route::get('/gestion-de-usuarios-prueba/{id}/show', [UsersPruebaController::class, 'show'])->name('admin.prueba-users.show');
-    Route::post('/gestion-de-usuarios-prueba/change-password', [UsersPruebaController::class, 'changePasword'])->name('admin.prueba-users.changePasword');
     Route::get('/gestion-de-usuarios-prueba/{id}/activated', [UsersPruebaController::class, 'activated'])->name('admin.prueba-users.activated');
     Route::get('/gestion-de-usuarios-prueba/{id}/desactivated', [UsersPruebaController::class, 'desactivated'])->name('admin.prueba-users.desactivated');
+    Route::get('/gestion-de-usuarios-prueba/{id}/delete', [UsersPruebaController::class, 'delete'])->name('admin.prueba-users.delete');
+    Route::post('/gestion-de-usuarios-prueba/change-password', [UsersPruebaController::class, 'changePasword'])->name('admin.prueba-users.changePasword');
+        Route::get('/gestion-de-usuarios-prueba/{id}/get-password', [UsersPruebaController::class, 'getPassword'])->name('admin.prueba-users.getPassword');
+
+/////////////////////////////////////////////////////////////////////////////////////////
 
     # chat con proveedores
     Route::get('/buzon-de-mensajes-proveedores', [AdminSupplierChatController::class, 'index'])->name('admin.supplier-chat.index');
