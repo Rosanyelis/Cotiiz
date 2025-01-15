@@ -85,6 +85,7 @@ Route::middleware('auth')->group(function () {
 
     # Requests Proveedores
     Route::get('/solicitudes-de-proveedor', [SupplierRequestController::class, 'index'])->name('request-supplier.index');
+    #Route::post('/solicitudes-de-proveedor/datatable', [SupplierRequestController::class, 'datatable'])->name('supplier-request.datatable');
     Route::get('/solicitudes-de-proveedor/datatable', [SupplierRequestController::class, 'datatable'])->name('request-supplier.datatable');
     Route::get('/solicitudes-de-proveedor/create', [SupplierRequestController::class, 'create'])->name('request-supplier.create');
     Route::post('/solicitudes-de-proveedor', [SupplierRequestController::class, 'store'])->name('request-supplier.store');
