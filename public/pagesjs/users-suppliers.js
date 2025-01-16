@@ -66,15 +66,28 @@ function changePassword(id, name) {
     $('#modalChangePassword').find('.modal-title').text('Cambiar contraseña de ' + name);
     $('#modalChangePassword').find('#id').val(id);
 
+    // Limpia los campos
+    $('#modalChangePassword').find('#current_password').val('');
+    $('#modalChangePassword').find('#password').val('');
+
     // Solicitud AJAX para obtener la contraseña actual
     $.ajax({
         url: '/gestion-de-usuarios-proveedores/' + id + '/get-password', // Ruta para obtener la contraseña
         type: 'GET',
-        success: function(response) {
-            // Rellena el campo de contraseña con el valor obtenido
-            $('#modalChangePassword').find('#password').val(response.passwordshow);
+        success: function (response) {
+            // Mostrar la contraseña actual en el primer campo
+            if (response.passwordshow) {
+                $('#modalChangePassword').find('#current_password').val(response.passwordshow);
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'No se pudo obtener la contraseña actual.',
+                    confirmButtonText: 'Aceptar'
+                });
+            }
         },
-        error: function(xhr) {
+        error: function (xhr) {
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
@@ -87,6 +100,17 @@ function changePassword(id, name) {
     // Mostrar el modal
     $('#modalChangePassword').modal('show');
 }
+
+// Alternar visibilidad de la nueva contraseña
+document.getElementById('toggle-password').addEventListener('click', function () {
+    const passwordField = document.getElementById('password');
+    const fieldType = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+    passwordField.setAttribute('type', fieldType);
+
+    // Cambiar el ícono
+    this.innerHTML = fieldType === 'password' ? '<i class="ri-eye-line"></i>' : '<i class="ri-eye-off-line"></i>';
+});
+
 
 $(document).on('click', '#toggle-password', function() {
     const passwordField = $('#password');
