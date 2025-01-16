@@ -14,6 +14,7 @@
             Activar Empresa Prueba
         </a>
         @endif
+        
 
         @if ($data->status == 1)
         <a class="dropdown-item text-danger" href="#" onclick="desactivarRecord({{ $data->id }})" >

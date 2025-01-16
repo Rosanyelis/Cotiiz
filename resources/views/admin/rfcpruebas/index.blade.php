@@ -38,3 +38,4 @@
     <!-- Page JS -->
     <script src="{{ asset('pagesjs/pruebas.js') }}"></script>
 @endsection
+

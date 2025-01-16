@@ -95,7 +95,7 @@ Route::middleware('auth')->group(function () {
 
     # Requests EMpresas
     Route::get('/solicitudes-de-empresa', [AdminBussinesRequestController::class, 'index'])->name('admin-request-bussines.index');
-    Route::get('/solicitudes-de-empresa/datatable', [AdminBussinesRequestController::class, 'datatable'])->name('admin-request-bussines.datatable');
+        Route::get('/solicitudes-de-empresa/datatable', [AdminBussinesRequestController::class, 'datatable'])->name('admin-request-bussines.datatable');
     Route::get('/solicitudes-de-empresa/create', [AdminBussinesRequestController::class, 'create'])->name('admin-request-bussines.create');
     Route::post('/solicitudes-de-empresa', [AdminBussinesRequestController::class, 'store'])->name('admin-request-bussines.store');
     Route::get('/solicitudes-de-empresa/{request}/show', [AdminBussinesRequestController::class, 'show'])->name('admin-request-bussines.show');

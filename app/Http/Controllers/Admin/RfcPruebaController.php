@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Yajra\DataTables\Facades\DataTables;
 use App\Http\Requests\StoreUserRfcPruebaRequest;
+use App\Http\Requests\UpdateUserRfcSupplierRequest;
 
 class RfcPruebaController extends Controller
 {
@@ -62,7 +63,7 @@ class RfcPruebaController extends Controller
 
     public function delete($id)
     {
-        $data = RfcSupplier::find($id);
+        $data = RfcPrueba::find($id);
         $data->users()->delete();
         $data->delete();
         return redirect()->back()->with('success', 'Proveedor eliminado con exito');
