@@ -58,7 +58,7 @@ class AdminSupplierChatController extends Controller
 
         SuppliersChat::create([
             'rfc_suppliers_id' => $request->rfc_suppliers_id,
-            'user_admin_id' => auth()->user()->id,
+            'user_admin_id' => \Illuminate\Support\Facades\Auth::user()->id,
             'message' => $request->message,
             'file' => $urlfile,
             'name_file' => $nameFile
@@ -109,7 +109,7 @@ class AdminSupplierChatController extends Controller
 
         SuppliersChat::create([
             'rfc_suppliers_id' => $id,
-            'user_admin_id' => auth()->user()->id,
+            'user_admin_id' => \Illuminate\Support\Facades\Auth::user()->id,
             'message' => $request->message,
             'file' => $urlfile,
             'name_file' => $nameFile
