@@ -176,7 +176,7 @@
                                         id="country" name="country"
                                         value="{{ old('country', $user->country) }}"
                                         readonly/>
-                                        <label for="country">País</label>
+                                        <label for="country">País</label>  
                                     </div>
                                 </div>
 

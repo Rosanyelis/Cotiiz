@@ -47,10 +47,9 @@ class User extends Authenticatable
         return $this->belongsToMany(RfcBussines::class, 'user_rfc_bussines', 'user_id', 'rfc_bussines_id')
         ->withPivot('principal');
     }
-
+    
     public function rfcsuppliers()
     {
         return $this->belongsToMany(RfcSupplier::class, 'user_rfc_suppliers', 'user_id', 'rfc_suppliers_id');
     }
-
 }

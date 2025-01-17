@@ -8,7 +8,7 @@
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h5 class="mb-0">Nuevo Usuario de Empresa {{ $data->name }}</h5>
 
-                        <a href="{{ route('business.users', $rfc) }}" class="btn btn-sm btn-secondary"
+                        <a href="{{ route('business.show', $rfc) }}" class="btn btn-sm btn-secondary"
                         ><i class="ri-arrow-left-line me-1"></i> Regresar</a>
                     </div>
 

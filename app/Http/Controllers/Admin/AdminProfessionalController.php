@@ -30,7 +30,20 @@ class AdminProfessionalController extends Controller
                     'rfc_suppliers.name as rfc_supplier',
                     'users.name as user'
                 )
-                ->groupBy('professionals.id', 'professionals.status', 'professionals.file_photo', 'rfc_suppliers.name', 'users.name');
+                ->groupBy(
+                    'professionals.id',
+                    'professionals.firstname',
+                    'professionals.second_name',
+                    'professionals.lastname',
+                    'professionals.second_lastname',
+                    'professionals.status',
+                    'professionals.file_photo',
+                    'rfc_suppliers.name',
+                    'users.name',
+                    'occupations.name',
+                    'specialties.name'
+                );
+                
             return DataTables::of($data)
                 ->addColumn('actions', function ($data) {
                     return view('admin.professionals.partials.actions', ['data' => $data]);
@@ -38,6 +51,7 @@ class AdminProfessionalController extends Controller
                 ->rawColumns(['actions'])
                 ->make(true);
         }
+        
         return view('admin.professionals.index');
     }
 

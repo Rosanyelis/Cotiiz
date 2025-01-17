@@ -24,7 +24,7 @@ $(function () {
             },
             columns: [
                 {
-                    data: 'rfcbussines',
+                    data: 'rfcprueba',
                     title: 'Empresa',
                     render: function (data, type, row) {
                         if (data && data.length > 0) {

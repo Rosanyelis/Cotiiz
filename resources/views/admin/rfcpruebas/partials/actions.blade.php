@@ -19,7 +19,7 @@
         <a class="dropdown-item text-danger" href="#" onclick="desactivarRecord({{ $data->id }})" >
             <i class="ri-delete-bin-fill ri-20px"></i>
             Desactivar Empresa Prueba
-        </a>
+        </a>  
         @endif
 
         <a class="dropdown-item text-danger" href="#" onclick="deleteRecord({{ $data->id }})" >

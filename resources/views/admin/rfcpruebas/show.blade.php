@@ -160,8 +160,8 @@
                     <div class="tab-pane fade" id="navs-pills-top-profile" role="tabpanel">
                         <div class="card-header header-elements border-bottom">
                             <div class="card-header-elements ms-auto">
-                                <a href="{{ route('supplier.users.create_users', $data->id) }}" class="btn btn-sm btn-primary mb-2"
-                                >Crear Usuario</a>
+                                <a href="{{ route('prueba.users.create_users', $data->id) }}" class="btn btn-sm btn-primary mb-2"
+                                >Crear Usuario</a>  
                             </div>
                         </div>
                         <div class="card-datatable text-nowrap mt-2">
