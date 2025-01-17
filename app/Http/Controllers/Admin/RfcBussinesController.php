@@ -138,7 +138,7 @@ class RfcBussinesController extends Controller
         ]);
 
         # Correo para notificar al usuario registrado que se ha creado su cuenta
-        Mail::to($user->email)->send(new UserRegistered($user));
+        #Mail::to($user->email)->send(new UserRegistered($user));
 
         # Correo para notificar al administrador que se ha registrado un nuevo usuario
         Mail::to('rosanyelismendoza@gmail.com')->send(new UserRegisteredAdmin($user));
@@ -248,7 +248,7 @@ class RfcBussinesController extends Controller
         ]);
 
         # Correo para notificar al usuario registrado que se ha creado su cuenta
-        Mail::to($user->email)->send(new UserRegistered($user));
+        #Mail::to($user->email)->send(new UserRegistered($user));
 
         # Correo para notificar al administrador que se ha registrado un nuevo usuario
         Mail::to('rosanyelismendoza@gmail.com')->send(new UserRegisteredAdmin($user));

@@ -201,9 +201,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/gestion-de-usuarios-empresas', [UsersBussinesController::class, 'index'])->name('admin.bussines-users.index');
     Route::get('/gestion-de-usuarios-empresas/{id}/show', [UsersBussinesController::class, 'show'])->name('admin.bussines-users.show');
     Route::post('/gestion-de-usuarios-empresas/change-password', [UsersBussinesController::class, 'changePasword'])->name('admin.bussines-users.changePasword');
+    Route::get('/gestion-de-usuarios-empresas/{id}/get-password', [UsersBussinesController::class, 'getPassword'])->name('admin.bussines-users.getPassword');
     Route::get('/gestion-de-usuarios-empresas/{id}/activated', [UsersBussinesController::class, 'activated'])->name('admin.bussines-users.activated');
     Route::get('/gestion-de-usuarios-empresas/{id}/desactivated', [UsersBussinesController::class, 'desactivated'])->name('admin.bussines-users.desactivated');
-
+    Route::get('/gestion-de-usuarios-empresas/{id}/delete', [UsersBussinesController::class, 'delete'])->name('admin.bussines-users.delete');
     # Usuarios de Proveedores
     Route::get('/gestion-de-usuarios-proveedores', [UsersSupplierController::class, 'index'])->name('admin.supplier-users.index');
     Route::get('/gestion-de-usuarios-proveedores/{id}/show', [UsersSupplierController::class, 'show'])->name('admin.supplier-users.show');
