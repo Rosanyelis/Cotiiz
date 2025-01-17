@@ -100,7 +100,7 @@ function desactivarRecord(id) {
 
 function deleteRecord(id) {
     Swal.fire({
-        title: '¿Está seguro de Eliminar este Proveedor?',
+        title: '¿Está seguro de Eliminar esta Empresa?',
         text: "Cualquier información relacionada se perdera!",
         icon: 'warning',
         showCancelButton: true,

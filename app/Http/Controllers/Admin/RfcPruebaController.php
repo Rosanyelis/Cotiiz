@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Yajra\DataTables\Facades\DataTables;
 use App\Http\Requests\StoreUserRfcPruebaRequest;
+use App\Http\Requests\UpdateUserRfcPruebaRequest;
 
 class RfcPruebaController extends Controller
 {
@@ -48,7 +49,7 @@ class RfcPruebaController extends Controller
         $data->status = '1';
         $data->save();
 
-        return redirect()->back()->with('success', 'Empresa Pruebas Aprobado con exito');
+        return redirect()->back()->with('success', 'Empresa Prueba Aprobado con exito');
     }
 
     public function desactivated($user)
@@ -57,15 +58,15 @@ class RfcPruebaController extends Controller
         $data->status = '0';
         $data->save();
 
-        return redirect()->back()->with('success', 'Empresa Pruebas Desactivado con exito');
+        return redirect()->back()->with('success', 'Empresa Prueba Desactivado con exito');
     }
 
     public function delete($id)
     {
-        $data = RfcSupplier::find($id);
+        $data = RfcPrueba::find($id);
         $data->users()->delete();
         $data->delete();
-        return redirect()->back()->with('success', 'Proveedor eliminado con exito');
+        return redirect()->back()->with('success', 'Empresa Prueba eliminada con exito');
     }
 
     public function rfcusers($rfc, Request $request)
@@ -159,7 +160,7 @@ class RfcPruebaController extends Controller
 
         UserRfcPrueba::create([
             'user_id' => $user->id,
-            'rfc_pruebas_id' => $rfc,
+            'rfc_prueba_id' => $rfc,
             'principal' => 'No'
         ]);
         return redirect()->route('prueba.show', $rfc)->with('success', 'Usuario creado con exito');
@@ -179,7 +180,7 @@ class RfcPruebaController extends Controller
         return view('admin.rfcpruebas.users.edit-user', ['rfc' => $rfc, 'data' => $data, 'user' => $user]);
     }
 
-    public function update_users($cliente, $user, UpdateUserRfcSupplierRequest $request)
+    public function update_users($cliente, $user, UpdateUserRfcPruebaRequest $request)
     {
         $user = User::find($user);
         $file_gafete = $user->file_gafete;
