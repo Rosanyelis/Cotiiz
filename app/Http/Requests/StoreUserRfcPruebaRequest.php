@@ -11,10 +11,10 @@ class StoreUserRfcPruebaRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
-    /**
+     /**
      * Get the validation rules that apply to the request.
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
@@ -22,7 +22,18 @@ class StoreUserRfcPruebaRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'string'],
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'name.required' => 'El nombre es requerido.',
+            'email.required' => 'El correo electrónico es requerido.',
+            'password.required' => 'La contraseña es requerida.',
         ];
     }
 }
