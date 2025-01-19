@@ -219,7 +219,7 @@
                                     </div>
                                 </div>
                                 <hr class="my-6 mx-n4">
-                                <h6>2. Información de Direccion de Empresa</h6>
+                                <h6>2. Información de Direccion Personal</h6>
                                 <div class="col-md-4">
                                     <div class="form-floating form-floating-outline mb-5">
                                         <input type="text"
@@ -285,6 +285,34 @@
                                         @if($errors->has('street'))
                                             <div class="invalid-feedback">
                                                 {{ $errors->first('street') }}
+                                            </div>
+                                        @endif
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-floating form-floating-outline mb-5">
+                                        <input type="text"
+                                        class="form-control @if($errors->has('street_number')) is-invalid @endif"
+                                        id="street_number" name="street_number"  value="{{ old('street_number') }}" />
+                                        <label for="street_number">Numero de Calle</label>
+                                        @if($errors->has('street_number'))
+                                            <div class="invalid-feedback">
+                                                {{ $errors->first('street_number') }}
+                                            </div>
+                                        @endif
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-floating form-floating-outline mb-5">
+                                        <input type="text"
+                                        class="form-control @if($errors->has('postal_code')) is-invalid @endif"
+                                        id="postal_code" name="postal_code"  value="{{ old('postal_code') }}" />
+                                        <label for="postal_code">Codigo Postal</label>
+                                        @if($errors->has('postal_code'))
+                                            <div class="invalid-feedback">
+                                                {{ $errors->first('postal_code') }}
                                             </div>
                                         @endif
                                     </div>

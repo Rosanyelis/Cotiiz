@@ -64,7 +64,7 @@
                         </div>
                         <div class="row justify-content-end">
                             <div class="mb-6 col-md-1">
-                                <button type="button" id="saveRequest"  class="btn btn-primary float-end">
+                                <button type="submit" id="saveRequest"  class="btn btn-primary float-end">
                                     <i class="ri-save-2-line me-1"></i>
                                     Guardar
                                 </button>
@@ -83,29 +83,36 @@
 <script>
     $(document).ready(function() {
 
-        $('#saveRequest').click(function (e) {
-            e.preventDefault();
-            if ($('#file').val() == '') {
-                Swal.fire({
-                    title: '¿Está seguro de enviar el mensaje sin archivo?',
-                    text: "No podra modificar el mensaje!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonText: 'Si, estoy seguro!',
-                    cancelButtonText: 'Cancelar',
-                    customClass: {
+    $('#saveRequest').click(function (e) {
+        e.preventDefault();
+        
+        // Si no hay archivo, confirma la acción
+        if ($('#file').val() == '') {
+            Swal.fire({
+                title: '¿Está seguro de enviar el mensaje sin archivo?',
+                text: "No podra modificar el mensaje!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Sí, estoy seguro!',
+                cancelButtonText: 'Cancelar',
+                customClass: {
                     confirmButton: 'btn btn-primary me-3 waves-effect waves-light',
                     cancelButton: 'btn btn-outline-danger waves-effect'
-                    },
-                    buttonsStyling: false
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        var form = document.getElementById('formChat');
-                        form.submit();
-                    }
-                })
-            }
-        });
-    });
+                },
+                buttonsStyling: false
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Enviar el formulario
+                    var form = document.getElementById('formChat');
+                    form.submit();
+                }
+            });
+        } else {
+            // Enviar el formulario directamente si hay un archivo seleccionado
+            var form = document.getElementById('formChat');
+            form.submit();
+        }
+    });  
+});
 </script>
 @endsection
