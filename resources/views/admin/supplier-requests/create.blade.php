@@ -11,7 +11,7 @@
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h5 class="mb-0">Nueva Solicitud a Proveedor</h5>
 
-                        <a href="{{ route('supplier.index') }}" class="btn btn-sm btn-secondary"
+                        <a href="{{ route('request-supplier.index') }}" class="btn btn-sm btn-secondary"
                         ><i class="ri-arrow-left-line me-1"></i> Regresar</a>
                     </div>
 

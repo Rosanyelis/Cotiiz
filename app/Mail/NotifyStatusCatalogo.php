@@ -29,7 +29,7 @@ class NotifyStatusCatalogo extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'El Producto/Servicio/Profesional ha sido '.$data->status,
+            subject: 'El Producto/Servicio/Profesional ha sido ' . $this->data->status,
         );
     }
 

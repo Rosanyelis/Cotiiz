@@ -2,7 +2,7 @@
 
 namespace App\Mail;
 
-use App\Mail\UserRegistered;
+#use App\Mail\UserRegistered;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Support\Facades\Mail;

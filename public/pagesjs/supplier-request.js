@@ -5,7 +5,7 @@
 'use strict';
     var dt_ajax_table = $('.datatables-request-supplier');
 
-$(function () {
+$(function () { 
 
     if (dt_ajax_table.length) {
         var dt_ajax = dt_ajax_table.dataTable({
@@ -59,29 +59,37 @@ $(function () {
 
     $('#saveRequest').click(function (e) {
         e.preventDefault();
+        
+        // Si no hay archivo, confirma la acción
         if ($('#file').val() == '') {
             Swal.fire({
                 title: '¿Está seguro de enviar la Solicitud sin archivo?',
-                text: "No podra modificar la solicitud!",
+                text: "No podrá modificar la solicitud!",
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonText: 'Si, estoy seguro!',
+                confirmButtonText: 'Sí, estoy seguro!',
                 cancelButtonText: 'Cancelar',
                 customClass: {
-                confirmButton: 'btn btn-primary me-3 waves-effect waves-light',
-                cancelButton: 'btn btn-outline-danger waves-effect'
+                    confirmButton: 'btn btn-primary me-3 waves-effect waves-light',
+                    cancelButton: 'btn btn-outline-danger waves-effect'
                 },
                 buttonsStyling: false
             }).then((result) => {
                 if (result.isConfirmed) {
+                    // Enviar el formulario
                     var form = document.getElementById('formRequestSupplier');
                     form.submit();
                 }
-            })
+            });
+        } else {
+            // Enviar el formulario directamente si hay un archivo seleccionado
+            var form = document.getElementById('formRequestSupplier');
+            form.submit();
         }
-    });
+    });  
 
 });
+
 function deleteRecord(id) {
     Swal.fire({
         title: '¿Está seguro de eliminar esta Especialidad?',
