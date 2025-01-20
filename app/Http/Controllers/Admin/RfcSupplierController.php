@@ -152,6 +152,8 @@ class RfcSupplierController extends Controller
             'municipality'              => $request->municipality,
             'colony'                    => $request->colony,
             'street'                    => $request->street,
+            'street_number'             => $request->street_number,
+            'postal_code'               => $request->postal_code,
             'file_gafete'               => $file_gafete,
             'file_gafete2'              => $file_gafete2,
             'file_credential'           => $file_credential,
@@ -242,6 +244,8 @@ class RfcSupplierController extends Controller
         $user->municipality     = $request->municipality;
         $user->colony           = $request->colony;
         $user->street           = $request->street;
+        $user->street_number    = $request->street_number;
+        $user->postal_code      = $request->postal_code;
         $user->file_gafete      = $file_gafete;
         $user->file_gafete2     = $file_gafete2;
         $user->file_credential  = $file_credential;

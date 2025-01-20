@@ -17,7 +17,7 @@
 
                     <div class="card-body">
                         <form id="formCategory" class="needs-validation" action="{{ route('business.store_user_bussines') }}"
-                        encType="multipart/form-data" method="POST">
+                        encType="multipart/form-data" method="POST"> supplier.users.store_users
                             @csrf
                             <div class="row">
                             <h6>1. Información de Empleado</h6>
@@ -221,6 +221,28 @@
                                         value="{{ old('street', $user->street) }}"
                                         readonly/>
                                         <label for="street">Calle</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-floating form-floating-outline mb-5">
+                                        <input type="text"
+                                        class="form-control @if($errors->has('street_number')) is-invalid @endif"
+                                        id="street_number" name="street_number"
+                                        value="{{ old('street_number', $user->street_number) }}"
+                                        readonly/>
+                                        <label for="street_number">Numero de Calle</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-floating form-floating-outline mb-5">
+                                        <input type="text"
+                                        class="form-control @if($errors->has('postal_code')) is-invalid @endif"
+                                        id="postal_code" name="postal_code"
+                                        value="{{ old('postal_code', $user->postal_code) }}"
+                                        readonly/>
+                                        <label for="postal_code">Codigo Postal</label>
                                     </div>
                                 </div>
 
