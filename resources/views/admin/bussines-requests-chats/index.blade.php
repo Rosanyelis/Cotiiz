@@ -136,6 +136,10 @@
                             action="{{ route('admin-request-bussines.storeChat', $data->id) }}"
                             enctype="multipart/form-data" method="POST">
                             @csrf
+                            <div class="file-preview" id="file-preview-container" style="display: none;">
+
+                                <div id="file-preview"></div>
+                            </div>
                             <input type="hidden" name="rfc_bussines_id" value="{{$data->rfc_bussines_id}}">
                             <input class="form-control message-input me-4 shadow-none @if ($errors->has('message'))) is-invalid @endif" name="message" type="text"
                                 placeholder="Escribe tu mensaje" />

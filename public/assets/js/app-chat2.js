@@ -4,6 +4,44 @@
 
 'use strict';
 
+
+document.addEventListener('DOMContentLoaded', () => {
+    const fileInput = document.getElementById('attach-doc');
+    const previewContainer = document.getElementById('file-preview-container');
+    const previewElement = document.getElementById('file-preview');
+
+    fileInput.addEventListener('change', () => {
+        const file = fileInput.files[0];
+        if (file) {
+            // Mostrar el contenedor de la vista previa
+            previewContainer.style.display = 'block';
+
+            // Limpiar vista previa anterior
+            previewElement.innerHTML = '';
+
+            if (file.type.startsWith('image/')) {
+                // Mostrar vista previa de imágenes
+                const imgPreview = document.createElement('img');
+                imgPreview.src = URL.createObjectURL(file);
+                imgPreview.style.maxWidth = '200px';
+                imgPreview.style.maxHeight = '200px';
+                imgPreview.alt = 'Vista previa de la imagen';
+                previewElement.appendChild(imgPreview);
+            } else if (file.type === 'application/pdf') {
+                // Mostrar mensaje para archivos PDF
+                previewElement.textContent = `Archivo seleccionado: ${file.name}`;
+            } else {
+                // Mostrar nombre del archivo para otros formatos
+                previewElement.textContent = `Archivo seleccionado: ${file.name}`;
+            }
+        } else {
+            // Si no hay archivo seleccionado, ocultar la vista previa
+            previewContainer.style.display = 'none';
+        }
+    });
+});
+
+
 document.addEventListener('DOMContentLoaded', function () {
   (function () {
     const chatContactsBody = document.querySelector('.app-chat-contacts .sidebar-body'),

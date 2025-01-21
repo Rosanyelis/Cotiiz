@@ -56,11 +56,11 @@ class AdminBussinesRequestController extends Controller
         if($request->hasFile('file'))
         {
             $file = $request->file('file');
-            $nameFile = $file->getClientOriginalName();
             $fileName   = time().rand(111,699).'.' .$file->getClientOriginalExtension();
             $uploadPath = public_path('/storage/rfc_bussines/requests/');
             $file->move($uploadPath, $fileName);
             $urlfile = '/storage/rfc_bussines/requests/'.$fileName;
+            $nameFile = $file->getClientOriginalName();
 
         }
 
