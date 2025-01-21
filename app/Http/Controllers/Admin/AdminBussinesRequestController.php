@@ -31,6 +31,7 @@ class AdminBussinesRequestController extends Controller
                 ->make(true);
         }
     }
+
     /**
      * Display a listing of the resource.
      */
@@ -53,29 +54,30 @@ class AdminBussinesRequestController extends Controller
     {
         $urlfile = null;
         $nameFile = null;
-        if($request->hasFile('file'))
-        {
+
+        // Manejo del archivo adjunto
+        if ($request->hasFile('file')) {
             $file = $request->file('file');
-            $nameFile = $file->getClientOriginalName();
-            $fileName   = time().rand(111,699).'.' .$file->getClientOriginalExtension();
+            $nameFile = $file->getClientOriginalName(); // Obtener nombre original del archivo
+            $fileName = time() . rand(111, 699) . '.' . $file->getClientOriginalExtension();
             $uploadPath = public_path('/storage/rfc_bussines/requests/');
             $file->move($uploadPath, $fileName);
-            $urlfile = '/storage/rfc_bussines/requests/'.$fileName;
-
+            $urlfile = '/storage/rfc_bussines/requests/' . $fileName;
         }
 
+        // Crear mensaje de chat
         BussinesRequestChat::create([
             'rfc_bussines_id' => $request->rfc_bussines_id,
             'bussines_request_id' => $bussinesRequest,
-            'user_admin_id' => auth()->user()->id,
+            'user_admin_id' => auth()->user()->id, // ID del administrador que envía el mensaje
             'message' => $request->message,
             'file' => $urlfile,
-            'name_file' => $nameFile
+            'name_file' => $nameFile, // Guardar el nombre del archivo
         ]);
 
         $data = BussinesRequest::with('user')->find($bussinesRequest);
 
-        # enviar el correo de notificacion
+        // Enviar correo de notificación
         Mail::to($data->user->email)->send(new SendMessageRequestBussines($data));
 
         Notification::create([
@@ -83,19 +85,20 @@ class AdminBussinesRequestController extends Controller
             'type' => 'Empresa',
             'user_id' => $data->user->id,
             'title' => 'Nuevo mensaje en solicitud',
-            'message' => 'La solicitud ' . $data->type . ' tiene un nuevo mensaje.'
+            'message' => 'La solicitud ' . $data->type . ' tiene un nuevo mensaje.',
         ]);
-        return redirect()->back()->with('success', 'Mensaje enviado con exito');
+
+        return redirect()->back()->with('success', 'Mensaje enviado con éxito');
     }
 
     public function changeStatus(Request $request, $bussinesRequest)
     {
         $data = BussinesRequest::with('user')->find($bussinesRequest);
         $data->update([
-            'status' => $request->status
+            'status' => $request->status,
         ]);
 
-        # enviar el correo de notificacion
+        // Enviar correo de notificación sobre el cambio de estatus
         Mail::to($data->user->email)->send(new ChangeStatusRequestBussines($data));
 
         Notification::create([
@@ -103,7 +106,7 @@ class AdminBussinesRequestController extends Controller
             'type' => 'Admin',
             'user_id' => $data->user->id,
             'title' => 'Cambio de estatus de solicitud',
-            'message' => 'La solicitud ' . $data->type . ' ha cambiado de estatus.'
+            'message' => 'La solicitud ' . $data->type . ' ha cambiado de estatus.',
         ]);
 
         Notification::create([
@@ -111,9 +114,9 @@ class AdminBussinesRequestController extends Controller
             'type' => 'Empresa',
             'user_id' => $data->user->id,
             'title' => 'Cambio de estatus de solicitud',
-            'message' => 'La solicitud ' . $data->type . ' ha cambiado de estatus.'
+            'message' => 'La solicitud ' . $data->type . ' ha cambiado de estatus.',
         ]);
 
-        return redirect()->back()->with('success', 'Estatus cambiado con exito');
+        return redirect()->back()->with('success', 'Estatus cambiado con éxito');
     }
 }

@@ -103,30 +103,33 @@
                             </li>
                             @endif
                             @if ($msj->bussines_id != '')
-                            <li class="chat-message">
-                                <div class="d-flex overflow-hidden">
-                                    <div class="user-avatar flex-shrink-0 me-4">
-                                        <div class="avatar avatar-sm">
-                                            <img src="{{asset('assets/img/avatars/5.png')}}" alt="Avatar"
-                                                class="rounded-circle" />
-                                        </div>
-                                    </div>
-                                    <div class="chat-message-wrapper flex-grow-1">
-                                        <div class="chat-message-text">
-                                            <p class="mb-0">{{ $msj->message }}</p>
-                                        </div>
-                                        @if ($msj->file != '')
-                                        <div class="chat-message-text mt-2">
-                                            <a href="{{asset($msj->file)}}" target="_blank" class="mb-0 text-white">{{ $msj->name_file }}</a>
-                                        </div>
-                                        @endif
-                                        <div class="text-muted mt-1">
-                                            <small>{{ $msj->created_at->diffForHumans() }}</small>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            @endif
+    <li class="chat-message">
+        <div class="d-flex overflow-hidden">
+            <div class="user-avatar flex-shrink-0 me-4">
+                <div class="avatar avatar-sm">
+                    <img src="{{asset('assets/img/avatars/5.png')}}" alt="Avatar"
+                        class="rounded-circle" />
+                </div>
+            </div>
+            <div class="chat-message-wrapper flex-grow-1">
+                <div class="chat-message-text">
+                    <p class="mb-0">{{ $msj->message }}</p>
+                </div>
+                @if ($msj->file != '')
+                    <div class="chat-message-text mt-2">
+                        <a href="{{ asset($msj->file) }}" target="_blank" class="mb-0 text-white">
+                            {{ $msj->name_file ?? 'Archivo adjunto' }}
+                        </a>
+                    </div>
+                @endif
+                <div class="text-muted mt-1">
+                    <small>{{ $msj->created_at->diffForHumans() }}</small>
+                </div>
+            </div>
+        </div>
+    </li>
+@endif
+
                             @endforeach
                         </ul>
                     </div>
@@ -139,11 +142,13 @@
                             <input type="hidden" name="rfc_bussines_id" value="{{$data->rfc_bussines_id}}">
                             <input class="form-control message-input me-4 shadow-none @if ($errors->has('message'))) is-invalid @endif" name="message" type="text"
                                 placeholder="Escribe tu mensaje" />
+                            <div id="file-preview" class="text-muted mt-2" style="display: none;"></div>
                             <div class="message-actions d-flex align-items-center">
                                 <label for="attach-doc" class="form-label mb-0">
                                     <i
                                         class="ri-attachment-2 ri-20px cursor-pointer btn btn-sm btn-text-secondary btn-icon rounded-pill me-2 ms-1 text-heading"></i>
-                                    <input type="file" id="attach-doc" hidden name="file" accept="image/png, image/jpeg,image/gif, image/jpg, application/pdf" />
+                                    {{-- <input type="file" id="attach-doc" hidden name="file" accept="image/png, image/jpeg,image/gif, image/jpg, application/pdf" /> --}}
+                                    <input type="file" id="attach-doc" hidden name="file" accept="image/png, image/jpeg, image/gif, image/jpg, application/pdf" onchange="showFileName(this)" />
                                 </label>
                                 <button type="submit" id="send-message" class="btn btn-primary d-flex send-msg-btn">
                                     <span class="align-middle">Enviar</span>
@@ -340,3 +345,11 @@
 <!-- Page JS -->
 <script src="{{asset('assets/js/app-chat2.js')}}"></script>
 @endsection
+
+
+
+
+
+msj->bussines_id
+
+name_file

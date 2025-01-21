@@ -158,6 +158,19 @@ document.addEventListener('DOMContentLoaded', function () {
         listItem0.classList.add('d-none');
       }
     }
+//////////////////////////////////////////////////////////////////////////////////////////////////
+    function showFileName(input) {
+      const filePreview = document.getElementById('file-preview');
+      if (input.files && input.files[0]) {
+          const fileName = input.files[0].name;
+          filePreview.style.display = 'block';
+          filePreview.innerHTML = `<i class="ri-file-line"></i> Archivo cargado: ${fileName}`;
+      } else {
+          filePreview.style.display = 'none';
+          filePreview.innerHTML = '';
+      }
+  }
+//////////////////////////////////////////////////////////////////////////////////////////////////
 
     // Send Message
     formSendMessage.addEventListener('submit', e => {
@@ -227,3 +240,16 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   })();
 });
+
+
+function showFileName(input) {
+  const filePreview = document.getElementById('file-preview');
+  if (input.files && input.files[0]) {
+      const fileName = input.files[0].name;
+      filePreview.style.display = 'block';
+      filePreview.innerHTML = `<i class="ri-file-line"></i> Archivo cargado: ${fileName}`;
+  } else {
+      filePreview.style.display = 'none';
+      filePreview.innerHTML = '';
+  }
+}

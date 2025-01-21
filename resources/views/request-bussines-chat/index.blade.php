@@ -143,12 +143,16 @@
                             <input type="hidden" name="bussines_request_id" value="{{ $data->id }}">
                             <input class="form-control message-input me-4 shadow-none @if ($errors->has('message'))) is-invalid @endif" name="message" type="text"
                                 placeholder="Escribe tu mensaje" />
+                                <div id="file-preview" class="text-muted mt-2" style="display: none;"></div>
                             <div class="message-actions d-flex align-items-center">
                                 <label for="attach-doc" class="form-label mb-0">
                                     <i
                                         class="ri-attachment-2 ri-20px cursor-pointer btn btn-sm btn-text-secondary btn-icon rounded-pill me-2 ms-1 text-heading"></i>
-                                    <input type="file" id="attach-doc" hidden name="file" accept="image/png, image/jpeg,image/gif, image/jpg, application/pdf" />
+                                    {{-- <input type="file" id="attach-doc" hidden name="file" accept="image/png, image/jpeg,image/gif, image/jpg, application/pdf" /> --}}
+                                    <input type="file" id="attach-doc" hidden name="file" accept="image/png, image/jpeg, image/gif, image/jpg, application/pdf" onchange="showFileName(this)" />
+                                    <!-- Contenedor para mostrar el archivo cargado -->
                                 </label>
+                                {{-- <div id="file-preview" class="text-muted mt-2" style="display: none;"></div> --}}
                                 <button type="submit" id="send-message" class="btn btn-primary d-flex send-msg-btn">
                                     <span class="align-middle">Enviar</span>
                                     <i class="ri-send-plane-line ri-16px ms-md-2 ms-0"></i>
