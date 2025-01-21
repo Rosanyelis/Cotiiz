@@ -33,3 +33,4 @@ class StoreBussinesRequestChatRequest extends FormRequest
         ];
     }
 }
+

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\BussinesRequestProfessional; // Ensure this class exists in the specified namespace
 
 class BussinesRequest extends Model
 {
@@ -38,6 +39,7 @@ class BussinesRequest extends Model
 
     public function chats()
     {
-        return $this->hasMany(BussinesRequestChat::class, 'bussines_request_id', 'id');
+        #return $this->hasMany(BussinesRequestChat::class, 'bussines_request_id', 'id');
+         return $this->hasMany(BussinesRequestChat::class, 'bussines_request_id', 'id');
     }
 }

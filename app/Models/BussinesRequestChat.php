@@ -15,7 +15,8 @@ class BussinesRequestChat extends Model
 
     public function bussinesRequest()
     {
-        return $this->belongsTo(BussinesRequest::class, 'rfc_bussines_id', 'id');
+        #return $this->belongsTo(BussinesRequest::class, 'rfc_bussines_id', 'id');
+         return $this->belongsTo(BussinesRequest::class, 'bussines_request_id', 'id');
     }
 
     public function bussines()
@@ -28,3 +29,4 @@ class BussinesRequestChat extends Model
         return $this->belongsTo(User::class, 'user_admin_id', 'id');
     }
 }
+

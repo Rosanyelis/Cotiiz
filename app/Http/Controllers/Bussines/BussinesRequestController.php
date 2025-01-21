@@ -67,7 +67,7 @@ class BussinesRequestController extends Controller
             'urgency'               => $request->urgency,
             'description'           => $request->description,
             'link_drive'            => $request->link_drive,
-            'file'                  => $this->saveFile($request->file('file')),
+            'file' => $request->hasFile('file') ? $this->saveFile($request->file('file')) : null,
         ]);
         # Inicializamos el chat con la solicitud para el administrador
         BussinesRequestChat::create([

@@ -13,10 +13,27 @@ return new class extends Migration
     {
         Schema::create('bussines_request_chats', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('rfc_bussines_id')->constrained('rfc_bussines')->onDelete('cascade');
-            $table->foreignId('bussines_request_id')->constrained('bussines_requests')->onDelete('cascade');
-            $table->foreignId('bussines_id')->nullable()->constrained('users')->onDelete('cascade');
-            $table->foreignId('user_admin_id')->nullable()->constrained('users')->onDelete('cascade');
+
+            // Relaciones con las claves foráneas
+            $table->foreignId('rfc_bussines_id')
+                ->constrained('rfc_bussines')
+                ->onDelete('cascade'); // Si se elimina la empresa, se eliminan los chats relacionados
+
+            $table->foreignId('bussines_request_id')
+                ->constrained('bussines_requests')
+                ->onDelete('cascade'); // Si se elimina la solicitud, se eliminan los chats relacionados
+
+            $table->foreignId('bussines_id')
+                ->nullable()
+                ->constrained('users')
+                ->onDelete('set null'); // Si se elimina el usuario, se pone en null
+
+            $table->foreignId('user_admin_id')
+                ->nullable()
+                ->constrained('users')
+                ->onDelete('set null'); // Si se elimina el administrador, se pone en null
+
+            // Campos adicionales
             $table->string('message');
             $table->string('file')->nullable();
             $table->string('name_file')->nullable();

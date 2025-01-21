@@ -19,21 +19,22 @@ class StoreRequestProductRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-    public function rules(): array
+    public function rules()
     {
         return [
-            'type'          => 'required',
-            'product_name'  => 'required',
-            'model'         => 'required',
-            'brand'         => 'required',
-            'quantity'      => 'required',
-            'budget'        => 'required',
-            'urgency'       => 'required',
-            'description'   => 'required',
-            'link_drive'    => 'required',
-            'file' => 'nullable|mimes:pdf|max:2048',
+            'type' => 'required|string|max:255',
+            'product_name' => 'required|string|max:255',
+            'model' => 'nullable|string|max:255',
+            'brand' => 'nullable|string|max:255',
+            'quantity' => 'required|integer|min:1',
+            'budget' => 'required|numeric|min:0',
+            'urgency' => 'required|string|in:Normal,Urgente',
+            'description' => 'nullable|string|max:1000',
+            'link_drive' => 'nullable|url|max:255',
+            'file' => 'nullable|mimes:pdf|max:2048', // Valida que sea un archivo PDF y máximo de 2MB
         ];
     }
+
 
     public function messages()
     {
