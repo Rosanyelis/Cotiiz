@@ -108,35 +108,54 @@ class BussinesRequestController extends Controller
 
     public function storeService(StoreRequestServiceRequest $request)
     {
-        # se crea la solicitud
-        $solicitud = BussinesRequest::create([
-            'user_id'           => Auth::user()->id,
-            'rfc_bussines_id'   => Auth::user()->rfcbussines()->first()->id,
-            'type'              => $request->type,
-            'type_solicitude'   => 'Servicio',
-            'file'              => $this->saveFile($request->file),
-        ]);
-        # formalizamos los datos de la solicitud del productos
-        $data = BussineRequestService::create([
-            'bussines_request_id'   => $solicitud->id,
-            'service_name'          => $request->service_name,
-            'description'           => $request->description,
-            'budget'                => $request->budget,
-            'urgency'               => $request->urgency,
-            'description_problem'   => $request->description_problem,
-            'link_drive'            => $request->link_drive,
-            'file'                  => $this->saveFile($request->file('file')),
-        ]);
-        # Inicializamos el chat con la solicitud para el administrador
-        BussinesRequestChat::create([
-            'rfc_bussines_id'       => Auth::user()->rfcbussines()->first()->id,
-            'bussines_request_id'   => $solicitud->id,
-            'bussines_id'           => Auth::user()->id,
-            'message'               => 'Solicitud de Servicio',
-        ]);
-
-        return redirect()->route('bussines-request.index')->with('success', 'Solicitud de Servicio creada con exito');
+        // Obtén el RFC Bussines asociado al usuario autenticado
+        $rfcBussines = Auth::user()->rfcbussines()->first();
+    
+        // Si no se encuentra un RFC Bussines, regresa con un error
+        if (!$rfcBussines) {
+            return redirect()->back()->withErrors('No se encontró un RFC Bussines asociado al usuario.');
+        }
+    
+        try {
+            // Guarda el archivo si se proporciona y captura la URL
+            $fileUrl = $this->saveFile($request->file('file'));
+    
+            // Crea la solicitud de servicio
+            $solicitud = BussinesRequest::create([
+                'user_id'           => Auth::user()->id,
+                'rfc_bussines_id'   => $rfcBussines->id,
+                'type'              => $request->type,
+                'type_solicitude'   => 'Servicio',
+                'file'              => $fileUrl,
+            ]);
+    
+            // Guarda los datos adicionales de la solicitud
+            BussineRequestService::create([
+                'bussines_request_id'   => $solicitud->id,
+                'service_name'          => $request->service_name,
+                'description'           => $request->description,
+                'budget'                => $request->budget,
+                'urgency'               => $request->urgency,
+                'description_problem'   => $request->description_problem,
+                'link_drive'            => $request->link_drive,
+                'file'                  => $fileUrl,
+            ]);
+    
+            // Crea el chat inicial
+            BussinesRequestChat::create([
+                'rfc_bussines_id'       => $rfcBussines->id,
+                'bussines_request_id'   => $solicitud->id,
+                'bussines_id'           => Auth::user()->id,
+                'message'               => 'Solicitud de Servicio',
+            ]);
+    
+            return redirect()->route('bussines-request.index')->with('success', 'Solicitud de Servicio creada con éxito');
+        } catch (\Exception $e) {
+            // Manejo de errores
+            return redirect()->back()->withErrors(['error' => 'Hubo un problema al procesar tu solicitud: ' . $e->getMessage()]);
+        }
     }
+    
 
     public function createProfessional()
     {

@@ -366,13 +366,4 @@
 [dir=rtl] .app-chat .ps--active-y > .ps__rail-y {
   right: inherit !important;
 }
-.file-preview {
-    background-color: #f5f5f5; 
-    border: 2px solid #ccc; 
-    padding: 3px; 
-    border-radius: 10px; 
-    font-weight: bold; 
-    color: #333; 
-    display: inline-block; 
-    margin-right: 3px; 
-}
+

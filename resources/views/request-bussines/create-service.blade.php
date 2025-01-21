@@ -17,7 +17,7 @@
             </div>
 
             <div class="card-body">
-                <form id="formCategory" class="needs-validation" action="{{ route('bussines-request.storeService') }}" method="POST">
+                <form id="formCategory" class="needs-validation" action="{{ route('bussines-request.storeService') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="row gy-5">
                         <div class=" col-md-12">
