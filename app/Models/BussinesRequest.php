@@ -33,7 +33,7 @@ class BussinesRequest extends Model
 
     public function professionals()
     {
-        return $this->hasMany(BussinesRequestProfessional::class, 'bussines_request_id', 'id');
+        return $this->hasMany(BussineRequestProfessional::class, 'bussines_request_id', 'id');
     }
 
     public function chats()

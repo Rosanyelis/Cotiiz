@@ -76,7 +76,6 @@ class BussinesRequestController extends Controller
             'bussines_id'           => Auth::user()->id,
             'message'               => 'Solicitud de Producto',
         ]);
-
         return redirect()->route('bussines-request.index')->with('success', 'Solicitud de Producto creada con exito');
     }
 
