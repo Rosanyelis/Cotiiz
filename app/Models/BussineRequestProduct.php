@@ -8,9 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class BussineRequestProduct extends Model
 {
     use HasFactory;
-
-    protecte
-
     protected $guarded = [];
 
     public function product()

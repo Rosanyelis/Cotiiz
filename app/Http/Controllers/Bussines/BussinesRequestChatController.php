@@ -24,6 +24,8 @@ class BussinesRequestChatController extends Controller
      */
     public function storeChat(StoreBussinesRequestChatRequest $request)
     {
+
+        
         $urlfile = null;
         $nameFile = null;
         if($request->hasFile('file'))

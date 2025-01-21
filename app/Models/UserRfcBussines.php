@@ -16,8 +16,11 @@ class UserRfcBussines extends Model
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
-    public function rfcBussines()
+    public function rfcbussines()
     {
-        return $this->belongsTo(RfcBussines::class, 'rfc_bussines_id', 'id');
+        return $this->belongsToMany(RfcBussines::class, 'user_rfc_bussines', 'user_id', 'rfc_bussines_id')
+                    ->withPivot('principal', 'status', 'observation');
     }
+
+
 }

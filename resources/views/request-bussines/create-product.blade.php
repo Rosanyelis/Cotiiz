@@ -17,7 +17,7 @@
             </div>
 
             <div class="card-body">
-                <form id="formCategory" class="needs-validation" action="{{ route('bussines-request.storeProduct') }}" method="POST">
+                <form id="formCategory" class="needs-validation" action="{{ route('bussines-request.storeProduct') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="row gy-5">
                         <div class=" col-md-12">
@@ -191,7 +191,7 @@
                         <div class=" col-md-12">
                             <div class="form-floating form-floating-outline">
                                 <input class="form-control @error('file') is-invalid @enderror" name="file" type="file" id="file">
-                                <label for="code">Adjunta información importante</label>
+                                <label for="file">Adjunta información importante</label>
                                 @if($errors->has('file'))
                                 <div class="invalid-feedback">
                                     {{ $errors->first('file') }}

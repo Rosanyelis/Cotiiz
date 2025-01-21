@@ -139,7 +139,7 @@
                             <input type="hidden" name="user_admin" value="{{$data->user_id}}">
                             <input type="hidden" name="supplier_request_id" value="{{$data->rfc_suppliers_id}}">
                             <input class="form-control message-input me-4 shadow-none @if ($errors->has('message'))) is-invalid @endif" name="message" type="text"
-                                placeholder="Escribe tu mensaje" />
+                                placeholder="Escribe tu mensajeee" />
                             <div class="message-actions d-flex align-items-center">
                                 <label for="attach-doc" class="form-label mb-0">
                                     <i

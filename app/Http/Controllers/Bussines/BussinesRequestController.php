@@ -16,6 +16,7 @@ use App\Http\Requests\StoreRequestServiceRequest;
 use App\Http\Requests\StoreBussinesRequestRequest;
 use App\Http\Requests\UpdateBussinesRequestRequest;
 use App\Http\Requests\StoreRequestProfessionalRequest;
+use Illuminate\Support\Facades\Storage;
 
 
 
@@ -23,6 +24,7 @@ class BussinesRequestController extends Controller
 {
     public function datatable(Request $request)
     {
+
         if ($request->ajax()) {
             $data = BussinesRequest::where('rfc_bussines_id', Auth::user()->rfcbussines()->first()->id);
             return DataTables::of($data)
@@ -48,37 +50,56 @@ class BussinesRequestController extends Controller
 
     public function storeProduct(StoreRequestProductRequest $request)
     {
-        # se crea la solicitud
-        $solicitud = BussinesRequest::create([
-            'user_id'           => Auth::user()->id,
-            'rfc_bussines_id'   => Auth::user()->rfcbussines()->first()->id,
-            'type'              => $request->type,
-            'type_solicitude'   => 'Producto',
-            'file'              => $this->saveFile($request->file),
-        ]);
-        # formalizamos los datos de la solicitud del productos
-        $data = BussineRequestProduct::create([
-            'bussines_request_id'   => $solicitud->id,
-            'product_name'          => $request->product_name,
-            'model'                 => $request->model,
-            'brand'                 => $request->brand,
-            'quantity'              => $request->quantity,
-            'budget'                => $request->budget,
-            'urgency'               => $request->urgency,
-            'description'           => $request->description,
-            'link_drive'            => $request->link_drive,
-            'file'                  => $this->saveFile($request->file('file')),
-        ]);
-        # Inicializamos el chat con la solicitud para el administrador
-        BussinesRequestChat::create([
-            'rfc_bussines_id'       => Auth::user()->rfcbussines()->first()->id,
-            'bussines_request_id'   => $solicitud->id,
-            'bussines_id'           => Auth::user()->id,
-            'message'               => 'Solicitud de Producto',
-        ]);
+        // Obtén el RFC Bussines asociado al usuario autenticado
+        $rfcBussines = Auth::user()->rfcbussines()->first();
 
-        return redirect()->route('bussines-request.index')->with('success', 'Solicitud de Producto creada con exito');
+        // Si no se encuentra un RFC Bussines, regresa con un error
+        if (!$rfcBussines) {
+            return redirect()->back()->withErrors('No se encontró un RFC Bussines asociado al usuario.');
+        }
+
+        try {
+            // Guarda el archivo y captura la URL
+            $fileUrl = $this->saveFile($request->file('file'));
+
+            // Crea la solicitud
+            $solicitud = BussinesRequest::create([
+                'user_id'           => Auth::user()->id,
+                'rfc_bussines_id'   => $rfcBussines->id,
+                'type'              => $request->type,
+                'type_solicitude'   => 'Producto',
+                'file'              => $fileUrl,
+            ]);
+
+            // Crea los datos del producto asociados a la solicitud
+            $data = BussineRequestProduct::create([
+                'bussines_request_id'   => $solicitud->id,
+                'product_name'          => $request->product_name,
+                'model'                 => $request->model,
+                'brand'                 => $request->brand,
+                'quantity'              => $request->quantity,
+                'budget'                => $request->budget,
+                'urgency'               => $request->urgency,
+                'description'           => $request->description,
+                'link_drive'            => $request->link_drive,
+                'file'                  => $fileUrl,
+            ]);
+
+            // Crea el chat con la solicitud para el administrador
+            BussinesRequestChat::create([
+                'rfc_bussines_id'       => $rfcBussines->id,
+                'bussines_request_id'   => $solicitud->id,
+                'bussines_id'           => Auth::user()->id,
+                'message'               => 'Solicitud de Producto',
+            ]);
+
+            return redirect()->route('bussines-request.index')->with('success', 'Solicitud de Producto creada con éxito');
+        } catch (\Exception $e) {
+            // Manejo de errores generales
+            return redirect()->back()->withErrors(['error' => 'Hubo un problema al procesar tu solicitud: ' . $e->getMessage()]);
+        }
     }
+
 
     public function createService()
     {
@@ -159,18 +180,37 @@ class BussinesRequestController extends Controller
 
     public function saveFile($archivo)
     {
-        $url = '';
-        if ($archivo != null) {
-            $fileName = time() . '.' . $archivo->getClientOriginalExtension();
-            $uploadPath = public_path('/storage/rfc_bussines/requests/');
-            $archivo->move($uploadPath, $fileName);
-            $url = '/storage/rfc_bussines/requests/'.$fileName;
+        try {
+            // Verifica si el archivo es válido y es una instancia de UploadedFile
+            if ($archivo && $archivo instanceof \Illuminate\Http\UploadedFile && $archivo->isValid()) {
+                // Genera un nombre único para el archivo
+                $fileName = time() . '.' . $archivo->getClientOriginalExtension();
 
-            return $url;
-        } else {
-            return $url;
+                // Define la ruta de almacenamiento
+                $uploadPath = public_path('/storage/rfc_bussines/requests/');
+
+                // Crea el directorio si no existe
+                if (!file_exists($uploadPath)) {
+                    mkdir($uploadPath, 0777, true);
+                }
+
+                // Usa almacenamiento alternativo (almacenamiento en memoria temporal)
+                $content = file_get_contents($archivo->getRealPath());
+                file_put_contents($uploadPath . $fileName, $content);
+
+                // Retorna la URL del archivo
+                return '/storage/rfc_bussines/requests/' . $fileName;
+            } else {
+                throw new \Exception('El archivo no es válido o no fue subido correctamente.');
+            }
+        } catch (\Exception $e) {
+            // Manejo de errores en el almacenamiento del archivo
+            report($e); // Registra el error en los logs de Laravel
+            return redirect()->back()->withErrors(['file' => 'Error al guardar el archivo: ' . $e->getMessage()]);
         }
     }
+
+
     /**
      * Store a newly created resource in storage.
      */

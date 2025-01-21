@@ -139,7 +139,7 @@
                             enctype="multipart/form-data" method="POST">
                             @csrf
                             <input type="hidden" name="rfc_bussines_id" value="{{$data->rfc_bussines_id}}">
-                            <input type="hidden" name="bussines_request_id" value="{{$data->rfc_bussines_id}}">
+                            <input type="hidden" name="bussines_request_id" value="{{$data->id}}">
                             <input class="form-control message-input me-4 shadow-none @if ($errors->has('message'))) is-invalid @endif" name="message" type="text"
                                 placeholder="Escribe tu mensaje" />
                             <div class="message-actions d-flex align-items-center">

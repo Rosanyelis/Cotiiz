@@ -44,10 +44,14 @@ class User extends Authenticatable
 
     public function rfcbussines()
     {
-        return $this->belongsToMany(RfcBussines::class, 'user_rfc_bussines', 'user_id', 'rfc_bussines_id')
-        ->withPivot('principal');
+        return $this->belongsToMany(
+            RfcBussines::class,          // Modelo relacionado
+            'user_rfc_bussines',         // Nombre de la tabla pivote
+            'user_id',                   // Llave foránea del usuario
+            'rfc_bussines_id'            // Llave foránea de la relación
+        )->withPivot('principal');       // Campos adicionales de la tabla pivote
     }
-    
+
     public function rfcsuppliers()
     {
         return $this->belongsToMany(RfcSupplier::class, 'user_rfc_suppliers', 'user_id', 'rfc_suppliers_id');
