@@ -4,7 +4,7 @@
     <div class="container-xxl flex-grow-1 container-p-y">
         <div class="row">
             <div class="col-md-12">
-                <div class="card mb-4">
+                <div class="card mb-4">  
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h5 class="mb-0">Nuevo Usuario</h5>
 
@@ -15,7 +15,7 @@
                     <div class="card-body">
                         <form id="formCategory" class="needs-validation"
                             action="{{ route('supplier.users.store_users', $rfc) }}" method="POST"
-                            entype="multipart/form-data">
+                            enctype="multipart/form-data">
                             @csrf
                             <div class="row">
                                 <h6>1. Información de Empleado</h6>
@@ -106,7 +106,7 @@
                                         @endif
                                     </div>
                                 </div>
-
+                                
                                 <div class="col-md-6">
                                     <div class="form-floating form-floating-outline mb-5">
                                         <input type="file"
@@ -267,6 +267,34 @@
                                         @if($errors->has('street'))
                                             <div class="invalid-feedback">
                                                 {{ $errors->first('street') }}
+                                            </div>
+                                        @endif
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-floating form-floating-outline mb-5">
+                                        <input type="text"
+                                        class="form-control @if($errors->has('street_number')) is-invalid @endif"
+                                        id="street_number" name="street_number"  value="{{ old('street_number') }}" />
+                                        <label for="street_number">Numero de Calle</label>
+                                        @if($errors->has('street_number'))
+                                            <div class="invalid-feedback">
+                                                {{ $errors->first('street_number') }}
+                                            </div>
+                                        @endif
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-floating form-floating-outline mb-5">
+                                        <input type="text"
+                                        class="form-control @if($errors->has('postal_code')) is-invalid @endif"
+                                        id="postal_code" name="postal_code"  value="{{ old('postal_code') }}" />
+                                        <label for="postal_code">Codigo Postal</label>
+                                        @if($errors->has('postal_code'))
+                                            <div class="invalid-feedback">
+                                                {{ $errors->first('postal_code') }}
                                             </div>
                                         @endif
                                     </div>

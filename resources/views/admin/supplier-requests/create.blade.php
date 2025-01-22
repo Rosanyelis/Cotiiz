@@ -11,12 +11,12 @@
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h5 class="mb-0">Nueva Solicitud a Proveedor</h5>
 
-                        <a href="{{ route('supplier.index') }}" class="btn btn-sm btn-secondary"
+                        <a href="{{ route('request-supplier.index') }}" class="btn btn-sm btn-secondary"
                         ><i class="ri-arrow-left-line me-1"></i> Regresar</a>
                     </div>
 
                     <div class="card-body">
-                        <form id="formRequestSupplier" class="needs-validation" action="{{ route('request-supplier.store') }}" method="POST">
+                        <form id="formRequestSupplier" class="needs-validation" action="{{ route('request-supplier.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="row">
                                 <div class="mb-6 col-md-4">

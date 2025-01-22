@@ -12,6 +12,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Mail;
 use Yajra\DataTables\Facades\DataTables;
 use App\Http\Requests\StoreChatSupplierRequest;
+use App\Models\Supplier;
 
 class AdminSupplierChatController extends Controller
 {
@@ -45,43 +46,56 @@ class AdminSupplierChatController extends Controller
     {
         $urlfile = null;
         $nameFile = null;
-        if($request->hasFile('file'))
-        {
+    
+        // Subir archivo si existe
+        if ($request->hasFile('file') && $request->file('file')->isValid()) {
             $file = $request->file('file');
             $nameFile = $file->getClientOriginalName();
-            $fileName   = time().rand(111,699).'.' .$file->getClientOriginalExtension();
+            $fileName = time() . rand(111, 699) . '.' . $file->getClientOriginalExtension();
             $uploadPath = public_path('/storage/rfc_supplier/chats/');
+            if (!file_exists($uploadPath)) {
+                mkdir($uploadPath, 0775, true);
+            }
             $file->move($uploadPath, $fileName);
-            $urlfile = '/storage/rfc_supplier/chats/'.$fileName;
-
+            $urlfile = '/storage/rfc_supplier/chats/' . $fileName;
         }
-
+    
+        // Obtener el supplier_id desde la relación
+        $supplierData = UserRfcSupplier::with(['user'])
+            ->where('rfc_suppliers_id', $request->rfc_suppliers_id)
+            ->first();
+    
+        if (!$supplierData) {
+            return redirect()->back()->withErrors(['error' => 'No se encontró información del proveedor relacionado.']);
+        }
+    
+        $supplierId = $supplierData->user_id;
+    
+        // Crear el registro en suppliers_chats
         SuppliersChat::create([
             'rfc_suppliers_id' => $request->rfc_suppliers_id,
+            //'supplier_id' => $supplierId,
             'user_admin_id' => auth()->user()->id,
             'message' => $request->message,
             'file' => $urlfile,
             'name_file' => $nameFile
         ]);
-
-        $data = UserRfcSupplier::with(['user'])
-            ->where('rfc_suppliers_id', $request->rfc_suppliers_id)
-            ->first();
-
-        $username = $data->user->name;
-        # enviar el correo de notificacion
-        Mail::to($data->user->email)->send(new NotifyMessageSupplier($username));
-
+    
+        // Enviar correo de notificación
+        $username = $supplierData->user->name;
+        Mail::to($supplierData->user->email)->send(new NotifyMessageSupplier($username));
+    
+        // Crear notificación
         Notification::create([
             'rfc_suppliers_id' => $request->rfc_suppliers_id,
             'type' => 'Proveedor',
-            'user_id' => $data->user->id,
+            'user_id' => $supplierData->user->id,
             'title' => 'Nuevo mensaje en Buzón',
             'message' => 'En Buzón tiene un nuevo mensaje.'
         ]);
-
-        return redirect()->route('admin.supplier-chat.index')->with('success', 'Mensaje enviado con exito');
-    }
+    
+        return redirect()->route('admin.supplier-chat.index')->with('success', 'Mensaje enviado con éxito');
+    } 
 
     /**
      * Display the specified resource.
@@ -116,9 +130,9 @@ class AdminSupplierChatController extends Controller
         ]);
 
         $data = SuppliersChat::with(['supplier'])
-            ->where('rfc_suppliers_id', $id)
-            ->where('supplier_id', '!=', 'null')
-            ->first();
+        ->where('rfc_suppliers_id', $id)
+        ->where('supplier_id', '!=', 'null') 
+        ->first();
 
         $username = $data->supplier->name;
         # enviar el correo de notificacion
