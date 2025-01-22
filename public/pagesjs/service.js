@@ -6,7 +6,7 @@
     var dt_ajax_table = $('.datatables-product');
     var category = $('#category_id');
     const numberFormat2 = new Intl.NumberFormat('de-DE');
-    const baseStorage = "http://newcotiiz.test/";
+    const baseStorage = document.querySelector('html').getAttribute('data-base-url');
 $(function () {
 
     if (dt_ajax_table.length) {
@@ -61,6 +61,7 @@ $(function () {
             {
                 targets: [0],
                 render: function (data) {
+                    console.log('Ruta de la imagen:', data);
                     if (data === null || data === "") {
                         return '<img src="'+ baseStorage +'/assets/img/products/no-photo.jpg" alt="" class="rounded-circle avatar-sm" />';
                     } else {

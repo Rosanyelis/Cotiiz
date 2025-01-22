@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use Yajra\DataTables\Facades\DataTables;
 use App\Http\Requests\StoreServiceRequest;
 use App\Http\Requests\UpdateServiceRequest;
+use Illuminate\Support\Facades\Auth;
 
 class ServiceController extends Controller
 {
@@ -23,7 +24,7 @@ class ServiceController extends Controller
     public function datatable(Request $request)
     {
         if ($request->ajax()) {
-            $data = Service::where('user_id', auth()->user()->id)
+            $data = Service::where('user_id', Auth::user()->id)
                 ->get();
             return DataTables::of($data)
                 ->addColumn('actions', function ($data) {
@@ -58,17 +59,17 @@ class ServiceController extends Controller
             $data['photo'] = $url = '/storage/rfc_supplier/services/'.$fileName;
         }
 
-        $data['user_id'] = auth()->user()->id;
-        $data['rfc_suppliers_id'] = auth()->user()->rfcsuppliers()->first()->id;
+        $data['user_id'] = Auth::user()->id;
+        $data['rfc_suppliers_id'] = Auth::user()->rfcSuppliers()->first()->id;
         $producto = Service::create($data);
 
         Notification::create([
-            'rfc_suppliers_id' => auth()->user()->rfcsuppliers()->first()->id,
+            'rfc_suppliers_id' => Auth::user()->rfcsuppliers()->first()->id,
             'type' => 'Admin',
-            'user_id' => auth()->user()->id,
+            'user_id' => Auth::user()->id,
             'title' => 'Nuevo Servicio de Proveedor ',
-            'message' => 'El usuario ' . auth()->user()->name . '
-            del proveedor ' . auth()->user()->rfcsuppliers()->first()->name . '
+            'message' => 'El usuario ' . Auth::user()->name . '
+            del proveedor ' . Auth::user()->rfcsuppliers()->first()->name . '
              se ha registrado un servicio en el sistema',
         ]);
 
@@ -107,8 +108,8 @@ class ServiceController extends Controller
             $file->move($uploadPath, $fileName);
             $data['photo'] = $url = '/storage/rfc_supplier/services/'.$fileName;
         }
-        $data['user_id'] = auth()->user()->id;
-        $data['rfc_suppliers_id'] = auth()->user()->rfcsuppliers()->first()->id;
+        $data['user_id'] = Auth::user()->id;
+        $data['rfc_suppliers_id'] = Auth::user()->rfcsuppliers()->first()->id;
         $service = Service::find($service);
         $service->update($data);
 

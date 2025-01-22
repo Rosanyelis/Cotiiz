@@ -12,6 +12,7 @@ use App\Http\Controllers\Controller;
 use Yajra\DataTables\Facades\DataTables;
 use App\Http\Requests\StoreProfessionalRequest;
 use App\Http\Requests\UpdateProfessionalRequest;
+use Illuminate\Support\Facades\Auth;
 
 class ProfessionalController extends Controller
 {
@@ -31,7 +32,7 @@ class ProfessionalController extends Controller
                 ->select('professionals.id', 'professionals.status', 'professionals.file_photo as photo',
                         DB::raw('CONCAT(professionals.firstname, " ", professionals.second_name, " ", professionals.lastname, " ", professionals.second_lastname) as fullname'),
                         'occupations.name as occupation', 'specialties.name as specialty')
-                ->where('professionals.user_id', auth()->user()->id);
+                ->where('professionals.user_id', Auth::user()->id);
             return DataTables::of($data)
                 ->addColumn('actions', function ($data) {
                     return view('professionals.partials.actions', ['id' => $data->id]);
@@ -106,16 +107,16 @@ class ProfessionalController extends Controller
         }
 
 
-        $data['user_id'] = auth()->user()->id;
+        $data['user_id'] = Auth::user()->id;
         $data['rfc_suppliers_id'] = auth()->user()->rfcsuppliers()->first()->id;
         $producto = Professional::create($data);
 
         Notification::create([
             'rfc_suppliers_id' => auth()->user()->rfcsuppliers()->first()->id,
             'type' => 'Admin',
-            'user_id' => auth()->user()->id,
+            'user_id' => Auth::user()->id,
             'title' => 'Nuevo Profesional de Proveedor ',
-            'message' => 'El usuario ' . auth()->user()->name . ' del proveedor ' . auth()->user()->rfcsuppliers()->first()->name . ' ha registrado un Profesional en el sistema',
+            'message' => 'El usuario ' . Auth::user()->name . ' del proveedor ' . Auth::user()->rfcsuppliers()->first()->name . ' ha registrado un Profesional en el sistema',
         ]);
 
         return redirect()->route('professional.index')->with('success', 'Profesional creado con exito');
@@ -196,7 +197,7 @@ class ProfessionalController extends Controller
             $file->move($uploadPath, $fileName);
             $data['file_photo'] = $url = '/storage/rfc_supplier/professionals/'.$fileName;
         }
-        $data['user_id'] = auth()->user()->id;
+        $data['user_id'] = Auth::user()->id;
         $data['rfc_suppliers_id'] = auth()->user()->rfcsuppliers()->first()->id;
         Professional::find($professional)->update($data);
         return redirect()->route('professional.index')->with('success', 'Profesional actualizado con exito');
