@@ -231,7 +231,6 @@ Route::middleware('auth')->group(function () {
     Route::post('/buzon-de-mensajes-proveedores/{id}/store', [AdminSupplierChatController::class, 'store'])->name('admin.supplier-chat.store');
 
 
-
     #### FIN ADMINISTRADOR ####
 
 
