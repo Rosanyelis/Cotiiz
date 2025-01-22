@@ -39,11 +39,13 @@ class SupplierChatController extends Controller
 
         SuppliersChat::create([
             'rfc_suppliers_id' => auth()->user()->rfcsuppliers()->first()->id,
-            'supplier_id' => auth()->user()->id,
+            'supplier_id' => auth()->user()->id, // Asegúrate de asignar correctamente el ID del proveedor.
+            'user_admin_id' => null, // Garantiza que el mensaje no se asigne como del administrador.
             'message' => $request->message,
             'file' => $urlfile,
-            'name_file' => $nameFile
+            'name_file' => $nameFile,
         ]);
+        
 
         Notification::create([
             'rfc_suppliers_id' => auth()->user()->rfcsuppliers()->first()->id,

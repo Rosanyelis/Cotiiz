@@ -42,16 +42,16 @@
                     <div class="chat-history-body">
                         <ul class="list-unstyled chat-history">
                             @foreach ($data->chats as $msj)
-                            @if ($msj->user_admin_id != '')
+                            @if ($msj->user_admin_id)
                             <li class="chat-message chat-message-right">
                                 <div class="d-flex overflow-hidden">
                                     <div class="chat-message-wrapper flex-grow-1">
                                         <div class="chat-message-text">
                                             <p class="mb-0">{{ $msj->message }}</p>
                                         </div>
-                                        @if ($msj->file != '')
+                                        @if ($msj->file)
                                         <div class="chat-message-text mt-2">
-                                            <a href="{{asset($msj->file)}}" target="_blank" class="mb-0 text-white">{{ $msj->name_file }}</a>
+                                            <a href="{{ asset($msj->file) }}" target="_blank" class="mb-0 text-white">{{ $msj->name_file }}</a>
                                         </div>
                                         @endif
                                         <div class="text-end text-muted mt-1">
@@ -61,19 +61,18 @@
                                     </div>
                                     <div class="user-avatar flex-shrink-0 ms-4">
                                         <div class="avatar avatar-sm">
-                                            <img src="{{asset('assets/img/avatars/1.png')}}" alt="Avatar"
+                                            <img src="{{ asset('assets/img/avatars/1.png') }}" alt="Avatar"
                                                 class="rounded-circle" />
                                         </div>
                                     </div>
                                 </div>
                             </li>
-                            @endif
-                            @if ($msj->supplier_id != '')
+                            @else
                             <li class="chat-message">
                                 <div class="d-flex overflow-hidden">
                                     <div class="user-avatar flex-shrink-0 me-4">
                                         <div class="avatar avatar-sm">
-                                            <img src="{{asset('assets/img/avatars/5.png')}}" alt="Avatar"
+                                            <img src="{{ asset('assets/img/avatars/5.png') }}" alt="Avatar"
                                                 class="rounded-circle" />
                                         </div>
                                     </div>
@@ -81,9 +80,9 @@
                                         <div class="chat-message-text">
                                             <p class="mb-0">{{ $msj->message }}</p>
                                         </div>
-                                        @if ($msj->file != '')
+                                        @if ($msj->file)
                                         <div class="chat-message-text mt-2">
-                                            <a href="{{asset($msj->file)}}" target="_blank" class="mb-0 ">{{ $msj->name_file }}</a>
+                                            <a href="{{ asset($msj->file) }}" target="_blank" class="mb-0 ">{{ $msj->name_file }}</a>
                                         </div>
                                         @endif
                                         <div class="text-muted mt-1">
@@ -95,27 +94,31 @@
                             @endif
                             @endforeach
                         </ul>
-                    </div>
+                    </div>                    
                     <!-- Chat message form -->
                     <div class="chat-history-footer">
-                        <form class="form-send-message d-flex justify-content-between align-items-center"
-                            action="{{ route('admin.supplier-chat.store', $data->id) }}"
-                            enctype="multipart/form-data" method="POST">
-                            @csrf
-                            <input class="form-control message-input me-4 shadow-none @if ($errors->has('message'))) is-invalid @endif" name="message" type="text"
-                                placeholder="Escribe tu mensaje" />
-                            <div class="message-actions d-flex align-items-center">
-                                <label for="attach-doc" class="form-label mb-0">
-                                    <i
-                                        class="ri-attachment-2 ri-20px cursor-pointer btn btn-sm btn-text-secondary btn-icon rounded-pill me-2 ms-1 text-heading"></i>
-                                    <input type="file" id="attach-doc" hidden name="file" accept="image/png, image/jpeg,image/gif, image/jpg, application/pdf" />
-                                </label>
-                                <button type="submit" id="send-message" class="btn btn-primary d-flex send-msg-btn">
-                                    <span class="align-middle">Enviar</span>
-                                    <i class="ri-send-plane-line ri-16px ms-md-2 ms-0"></i>
-                                </button>
-                            </div>
-                        </form>
+                    <form class="form-send-message d-flex justify-content-between align-items-center"
+                        action="{{ route('admin.supplier-chat.store', $data->id) }}"
+                        enctype="multipart/form-data" method="POST">
+                        @csrf
+                        <div id="file-preview-container" style="display: none;">
+                            <div id="file-preview" style="margin-top: 1px;"></div>
+                        </div>
+                        <input type="hidden" name="rfc_suppliers_id" value="{{ $data->id }}">
+                        <input class="form-control message-input me-4 shadow-none @if ($errors->has('message'))) is-invalid @endif" name="message" type="text"
+                            placeholder="Escribe tu mensaje" />
+                        <div class="message-actions d-flex align-items-center">
+                            <label for="attach-doc" class="form-label mb-0">
+                                <i
+                                    class="ri-attachment-2 ri-20px cursor-pointer btn btn-sm btn-text-secondary btn-icon rounded-pill me-2 ms-1 text-heading"></i>
+                                <input type="file" id="attach-doc" hidden name="file" accept="image/png, image/jpeg,image/gif, image/jpg, application/pdf" />
+                            </label>
+                            <button type="submit" id="send-message" class="btn btn-primary d-flex send-msg-btn">
+                                <span class="align-middle">Enviar</span>
+                                <i class="ri-send-plane-line ri-16px ms-md-2 ms-0"></i>
+                            </button>
+                        </div>
+                    </form>
                     </div>
                 </div>
             </div>

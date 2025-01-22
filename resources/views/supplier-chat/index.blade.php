@@ -50,59 +50,58 @@
                     </div>
                     <div class="chat-history-body">
                         <ul class="list-unstyled chat-history">
-                        @foreach ($data as $msj)
-                            @if ($msj->supplier_id != '')
-                            <li class="chat-message chat-message-right">
-                                <div class="d-flex overflow-hidden">
-                                    <div class="chat-message-wrapper flex-grow-1">
-                                        <div class="chat-message-text">
-                                            <p class="mb-0">{{ $msj->message }}</p>
+                            @foreach ($data as $msj)
+                            @if ($msj->sender_type === 'supplier')
+                                <!-- Mensaje del proveedor -->
+                                <li class="chat-message chat-message-right">
+                                    <div class="d-flex overflow-hidden">
+                                        <div class="chat-message-wrapper flex-grow-1">
+                                            <div class="chat-message-text">
+                                                <p class="mb-0">{{ $msj->message }}</p>
+                                            </div>
+                                            @if ($msj->file)
+                                            <div class="chat-message-text mt-2">
+                                                <a href="{{ asset($msj->file) }}" target="_blank" class="mb-0 text-white">{{ $msj->name_file }}</a>
+                                            </div>
+                                            @endif
+                                            <div class="text-end text-muted mt-1">
+                                                <i class="ri-check-double-line ri-14px text-success me-1"></i>
+                                                <small>{{ $msj->created_at->diffForHumans() }}</small>
+                                            </div>
                                         </div>
-                                        @if ($msj->file != '')
-                                        <div class="chat-message-text mt-2">
-                                            <a href="{{asset($msj->file)}}" target="_blank" class="mb-0 text-white ">{{ $msj->name_file }}</a>
-                                        </div>
-                                        @endif
-                                        <div class="text-end text-muted mt-1">
-                                            <i class="ri-check-double-line ri-14px text-success me-1"></i>
-                                            <small>{{ $msj->created_at->diffForHumans() }}</small>
+                                        <div class="user-avatar flex-shrink-0 ms-4">
+                                            <div class="avatar avatar-sm">
+                                                <img src="{{ asset('assets/img/avatars/4.png') }}" alt="Avatar" class="rounded-circle" />
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="user-avatar flex-shrink-0 ms-4">
-                                        <div class="avatar avatar-sm">
-                                            <img src="{{asset('assets/img/avatars/4.png')}}" alt="Avatar"
-                                                class="rounded-circle" />
+                                </li>
+                            @elseif ($msj->sender_type === 'admin')
+                                <!-- Mensaje del administrador -->
+                                <li class="chat-message">
+                                    <div class="d-flex overflow-hidden">
+                                        <div class="user-avatar flex-shrink-0 me-4">
+                                            <div class="avatar avatar-sm">
+                                                <img src="{{ asset('assets/img/avatars/1.png') }}" alt="Avatar" class="rounded-circle" />
+                                            </div>
+                                        </div>
+                                        <div class="chat-message-wrapper flex-grow-1">
+                                            <div class="chat-message-text">
+                                                <p class="mb-0">{{ $msj->message }}</p>
+                                            </div>
+                                            @if ($msj->file)
+                                            <div class="chat-message-text mt-2">
+                                                <a href="{{ asset($msj->file) }}" target="_blank" class="mb-0">{{ $msj->name_file }}</a>
+                                            </div>
+                                            @endif
+                                            <div class="text-muted mt-1">
+                                                <small>{{ $msj->created_at->diffForHumans() }}</small>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </li>
+                                </li>
                             @endif
-                            @if ($msj->user_admin_id != '')
-                            <li class="chat-message">
-                                <div class="d-flex overflow-hidden">
-                                    <div class="user-avatar flex-shrink-0 me-4">
-                                        <div class="avatar avatar-sm">
-                                            <img src="{{asset('assets/img/avatars/1.png')}}" alt="Avatar"
-                                                class="rounded-circle" />
-                                        </div>
-                                    </div>
-                                    <div class="chat-message-wrapper flex-grow-1">
-                                        <div class="chat-message-text">
-                                            <p class="mb-0">{{ $msj->message }}</p>
-                                        </div>
-                                        @if ($msj->file != '')
-                                        <div class="chat-message-text mt-2">
-                                            <a href="{{asset($msj->file)}}" target="_blank" class="mb-0 ">{{ $msj->name_file }}</a>
-                                        </div>
-                                        @endif
-                                        <div class="text-muted mt-1">
-                                            <small>{{ $msj->created_at->diffForHumans() }}</small>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            @endif
-                            @endforeach
+                        @endforeach                        
                         </ul>
                     </div>
                     <!-- Chat message form -->
@@ -111,6 +110,9 @@
                             action="{{ route('supplier-chat.store') }}"
                             enctype="multipart/form-data" method="POST">
                             @csrf
+                            <div id="file-preview-container" style="display: none;">
+                                <div id="file-preview" style="margin-top: 1px;"></div>
+                            </div>
                             <input class="form-control message-input me-4 shadow-none @if ($errors->has('message'))) is-invalid @endif" name="message" type="text"
                                 placeholder="Escribe tu mensaje a la administración" />
                             <div class="message-actions d-flex align-items-center">

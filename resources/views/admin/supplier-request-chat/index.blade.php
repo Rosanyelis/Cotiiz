@@ -133,7 +133,7 @@
                     <!-- Chat message form -->
                     <div class="chat-history-footer">
                         <form class="form-send-message d-flex justify-content-between align-items-center"
-                            action="{{ route('request-supplier.storeChat', $data->rfc_suppliers_id) }}"
+                            action="{{ route('request-supplier.storeChat', $data->id) }}"
                             enctype="multipart/form-data" method="POST">
                             @csrf
                             <input type="hidden" name="rfc_suppliers_id" value="{{$data->rfc_suppliers_id}}">

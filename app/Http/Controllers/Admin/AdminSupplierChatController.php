@@ -60,7 +60,7 @@ class AdminSupplierChatController extends Controller
             $urlfile = '/storage/rfc_supplier/chats/' . $fileName;
         }
     
-        // Obtener el supplier_id desde la relación
+        // Obtener el supplier_id desde el rfc_suppliers_id
         $supplierData = UserRfcSupplier::with(['user'])
             ->where('rfc_suppliers_id', $request->rfc_suppliers_id)
             ->first();
@@ -70,15 +70,16 @@ class AdminSupplierChatController extends Controller
         }
     
         $supplierId = $supplierData->user_id;
-    
+        // dd($supplierId, $request->all());    
         // Crear el registro en suppliers_chats
         SuppliersChat::create([
             'rfc_suppliers_id' => $request->rfc_suppliers_id,
-            //'supplier_id' => $supplierId,
+            'supplier_id' => $supplierId, // Ahora estamos asignando correctamente el supplier_id
             'user_admin_id' => auth()->user()->id,
             'message' => $request->message,
             'file' => $urlfile,
-            'name_file' => $nameFile
+            'name_file' => $nameFile,
+            'sender_type' => 'admin'
         ]);
     
         // Enviar correo de notificación
@@ -89,13 +90,14 @@ class AdminSupplierChatController extends Controller
         Notification::create([
             'rfc_suppliers_id' => $request->rfc_suppliers_id,
             'type' => 'Proveedor',
-            'user_id' => $supplierData->user->id,
+            'user_id' => $supplierId,
             'title' => 'Nuevo mensaje en Buzón',
             'message' => 'En Buzón tiene un nuevo mensaje.'
         ]);
     
         return redirect()->route('admin.supplier-chat.index')->with('success', 'Mensaje enviado con éxito');
-    } 
+    }
+     
 
     /**
      * Display the specified resource.
@@ -110,42 +112,40 @@ class AdminSupplierChatController extends Controller
     {
         $urlfile = null;
         $nameFile = null;
-        if($request->hasFile('file'))
-        {
+    
+        // Subir archivo si existe
+        if ($request->hasFile('file')) {
             $file = $request->file('file');
             $nameFile = $file->getClientOriginalName();
-            $fileName   = time().rand(111,699).'.' .$file->getClientOriginalExtension();
+            $fileName = time() . rand(111, 699) . '.' . $file->getClientOriginalExtension();
             $uploadPath = public_path('/storage/rfc_supplier/chats/');
             $file->move($uploadPath, $fileName);
-            $urlfile = '/storage/rfc_supplier/chats/'.$fileName;
-
+            $urlfile = '/storage/rfc_supplier/chats/' . $fileName;
         }
-
+    
+        // Buscar supplier_id basado en el rfc_suppliers_id
+        $supplierData = UserRfcSupplier::with('user')
+            ->where('rfc_suppliers_id', $id)
+            ->first();
+    
+        if (!$supplierData) {
+            return redirect()->back()->withErrors(['error' => 'No se encontró información del proveedor relacionado.']);
+        }
+    
+        $supplierId = $supplierData->user_id;
+    
+        // Crear el mensaje
         SuppliersChat::create([
             'rfc_suppliers_id' => $id,
+            'supplier_id' => $supplierId,
             'user_admin_id' => auth()->user()->id,
             'message' => $request->message,
             'file' => $urlfile,
-            'name_file' => $nameFile
+            'name_file' => $nameFile,
+            'sender_type' => 'admin',
         ]);
-
-        $data = SuppliersChat::with(['supplier'])
-        ->where('rfc_suppliers_id', $id)
-        ->where('supplier_id', '!=', 'null') 
-        ->first();
-
-        $username = $data->supplier->name;
-        # enviar el correo de notificacion
-        Mail::to($data->supplier->email)->send(new NotifyMessageSupplier($username));
-
-        Notification::create([
-            'rfc_suppliers_id' => $data->id,
-            'type' => 'Proveedor',
-            'user_id' => $data->supplier->id,
-            'title' => 'Nuevo mensaje en Buzón',
-            'message' => 'En Buzón de proveedores tiene un nuevo mensaje.'
-        ]);
-
-        return redirect()->back()->with('success', 'Mensaje enviado con exito');
+    
+        return redirect()->back()->with('success', 'Mensaje enviado con éxito');
     }
+        
 }

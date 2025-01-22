@@ -2,7 +2,79 @@
  * App Chat
  */
 
+document.addEventListener('DOMContentLoaded', () => {
+    const fileInput = document.getElementById('attach-doc');
+    const previewContainer = document.getElementById('file-preview-container');
+    const previewElement = document.getElementById('file-preview');
+
+    fileInput.addEventListener('change', () => {
+        const file = fileInput.files[0];
+        if (file) {
+            // Mostrar el contenedor de la vista previa
+            previewContainer.style.display = 'block';
+
+            // Limpiar vista previa anterior
+            previewElement.innerHTML = '';
+
+            if (file.type.startsWith('image/')) {
+                // Mostrar vista previa de imágenes
+                const imgPreview = document.createElement('img');
+                imgPreview.src = URL.createObjectURL(file);
+                imgPreview.style.maxWidth = '200px';
+                imgPreview.style.maxHeight = '200px';
+                imgPreview.alt = 'Vista previa de la imagen';
+                previewElement.appendChild(imgPreview);
+            } else if (file.type === 'application/pdf') {
+                // Mostrar mensaje para archivos PDF
+                previewElement.textContent = `Archivo seleccionado: ${file.name}`;
+            } else {
+                // Mostrar nombre del archivo para otros formatos
+                previewElement.textContent = `Archivo seleccionado: ${file.name}`;
+            }
+        } else {
+            // Si no hay archivo seleccionado, ocultar la vista previa
+            previewContainer.style.display = 'none';
+        }
+    });
+});
+
 'use strict';
+document.addEventListener('DOMContentLoaded', () => {
+    const fileInput = document.getElementById('attach-doc');
+    const previewContainer = document.getElementById('file-preview-container');
+    const previewElement = document.getElementById('file-preview');
+
+    fileInput.addEventListener('change', () => {
+        const file = fileInput.files[0];
+        if (file) {
+            // Mostrar el contenedor de la vista previa
+            previewContainer.style.display = 'block';
+
+            // Limpiar vista previa anterior
+            previewElement.innerHTML = '';
+
+            if (file.type.startsWith('image/')) {
+                // Mostrar vista previa de imágenes
+                const imgPreview = document.createElement('img');
+                imgPreview.src = URL.createObjectURL(file);
+                imgPreview.style.maxWidth = '200px';
+                imgPreview.style.maxHeight = '200px';
+                imgPreview.alt = 'Vista previa de la imagen';
+                previewElement.appendChild(imgPreview);
+            } else if (file.type === 'application/pdf') {
+                // Mostrar mensaje para archivos PDF
+                previewElement.textContent = `Archivo seleccionado: ${file.name}`;
+            } else {
+                // Mostrar nombre del archivo para otros formatos
+                previewElement.textContent = `Archivo seleccionado: ${file.name}`;
+            }
+        } else {
+            // Si no hay archivo seleccionado, ocultar la vista previa
+            previewContainer.style.display = 'none';
+        }
+    });
+});
+
 
 document.addEventListener('DOMContentLoaded', function () {
   (function () {
@@ -161,31 +233,33 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Send Message
     formSendMessage.addEventListener('submit', e => {
-      e.preventDefault();
-      if (messageInput.value) {
-        if (messageFile.value == '') {
-            Swal.fire({
-                title: '¿Está seguro de enviar la Solicitud sin archivo?',
-                text: "No podra modificar la solicitud!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Si, estoy seguro!',
-                cancelButtonText: 'Cancelar',
-                customClass: {
-                confirmButton: 'btn btn-primary me-3 waves-effect waves-light',
-                cancelButton: 'btn btn-outline-danger waves-effect'
-                },
-                buttonsStyling: false
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // send form
-                    formSendMessage.submit();
-                }
-            })
+        e.preventDefault(); // Evita el envío automático del formulario
+    
+        if (messageInput.value) { // Verifica si hay mensaje en el campo
+            if (messageFile.value === '') { // Si no hay archivo adjunto
+                Swal.fire({
+                    title: '¿Está seguro de enviar la Solicitud sin archivo?',
+                    text: "No podrá modificar la solicitud!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Sí, estoy seguro!',
+                    cancelButtonText: 'Cancelar',
+                    customClass: {
+                        confirmButton: 'btn btn-primary me-3 waves-effect waves-light',
+                        cancelButton: 'btn btn-outline-danger waves-effect'
+                    },
+                    buttonsStyling: false
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        formSendMessage.submit(); // Envía el formulario después de confirmar
+                    }
+                });
+            } else {
+                formSendMessage.submit(); // Envía el formulario si hay archivo
+            }
         }
-        formSendMessage.submit();
-      }
     });
+    
 
     // on click of chatHistoryHeaderMenu, Remove data-overlay attribute from chatSidebarLeftClose to resolve overlay overlapping issue for two sidebar
     let chatHistoryHeaderMenu = document.querySelector(".chat-history-header [data-target='#app-chat-contacts']"),

@@ -42,6 +42,8 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
+
+
 document.addEventListener('DOMContentLoaded', function () {
   (function () {
     const chatContactsBody = document.querySelector('.app-chat-contacts .sidebar-body'),
