@@ -38,42 +38,54 @@ class AdminProductController extends Controller
     public function aprove(Request $request)
     {
         $product = Product::find($request->id);
+
+        // Validar si el producto ya está aprobado
+        if ($product->status === 'Aprobado') {
+            return redirect()->back()->with('error', 'El producto ya está aprobado.');
+        }
+
         $product->status = 'Aprobado';
         $product->save();
 
-        $data = Product::find($request->id);
-        # enviar el correo de notificacion
-        Mail::to($data->user->email)->send(new NotifyStatusCatalogo($data));
+        // Enviar notificación por correo
+        Mail::to($product->user->email)->send(new NotifyStatusCatalogo($product));
 
         Notification::create([
-            'rfc_suppliers_id' => $data->rfc_suppliers_id,
+            'rfc_suppliers_id' => $product->rfc_suppliers_id,
             'type' => 'Proveedor',
-            'user_id' => $data->user->id,
-            'title' => 'Producto Aprobada',
-            'message' => 'El producto ' . $data->name . ' ha sido aprobada.'
+            'user_id' => $product->user->id,
+            'title' => 'Producto Aprobado',
+            'message' => 'El producto ' . $product->name . ' ha sido aprobado.',
         ]);
 
-        return redirect()->back()->with('success', 'Producto aprobado con exito');
+        return redirect()->back()->with('success', 'Producto aprobado con éxito.');
     }
+
 
     public function reject(Request $request)
-    {
-        $product = Product::find($request->id);
-        $product->status = 'Rechazado';
-        $product->save();
+{
+    $product = Product::find($request->id);
 
-        $data = Product::find($request->id);
-        # enviar el correo de notificacion
-        Mail::to($data->user->email)->send(new NotifyStatusCatalogo($data));
-
-        Notification::create([
-            'rfc_suppliers_id' => $data->rfc_suppliers_id,
-            'type' => 'Proveedor',
-            'user_id' => $data->user->id,
-            'title' => 'Producto Rechazado',
-            'message' => 'El producto ' . $data->name . ' ha sido rechazada.'
-        ]);
-
-        return redirect()->back()->with('success', 'Producto rechazado con exito');
+    // Validar si el producto ya está rechazado
+    if ($product->status === 'Rechazado') {
+        return redirect()->back()->with('error', 'El producto ya está rechazado.');
     }
+
+    $product->status = 'Rechazado';
+    $product->save();
+
+    // Enviar notificación por correo
+    Mail::to($product->user->email)->send(new NotifyStatusCatalogo($product));
+
+    Notification::create([
+        'rfc_suppliers_id' => $product->rfc_suppliers_id,
+        'type' => 'Proveedor',
+        'user_id' => $product->user->id,
+        'title' => 'Producto Rechazado',
+        'message' => 'El producto ' . $product->name . ' ha sido rechazado.',
+    ]);
+
+    return redirect()->back()->with('success', 'Producto rechazado con éxito.');
+}
+
 }
