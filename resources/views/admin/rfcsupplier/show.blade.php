@@ -66,12 +66,12 @@
                                     <span class="mx-2">{{ $data->phone }}</span>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+{{--                             <div class="col-md-6">
                                 <div class="d-flex flex-column mb-4">
                                     <span class="fw-bold mx-2 mb-2">Numero de Planta Industrial:</span>
                                     <span class="mx-2">{{ $data->number_plant }}</span>
                                 </div>
-                            </div>
+                            </div> --}}
                             <div class="col-md-6">
                                 <div class="d-flex flex-column mb-4">
                                     <span class="fw-bold mx-2 mb-2">PDF Opinión Positiva:</span>
