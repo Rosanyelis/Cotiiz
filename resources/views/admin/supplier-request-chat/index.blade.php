@@ -117,7 +117,7 @@
                                         </div>
                                         @if ($msj->file != '')
                                         <div class="chat-message-text mt-2">
-                                            <a href="{{asset($msj->file)}}" target="_blank" class="mb-0 text-white">{{ $msj->name_file }}</a>
+                                            <a href="{{asset($msj->file)}}" target="_blank" class="mb-0 text-blue-700">{{ $msj->name_file }}</a>
                                         </div>
                                         @endif
                                         <div class="text-muted mt-1">
@@ -136,9 +136,12 @@
                             action="{{ route('request-supplier.storeChat', $data->id) }}"
                             enctype="multipart/form-data" method="POST">
                             @csrf
+                            <div id="file-preview-container" style="display: none;">
+                                <div id="file-preview" style="margin-top: 1px;"></div>
+                            </div>
                             <input type="hidden" name="rfc_suppliers_id" value="{{$data->rfc_suppliers_id}}">
                             <input class="form-control message-input me-4 shadow-none @if ($errors->has('message'))) is-invalid @endif" name="message" type="text"
-                                placeholder="Escribe tu mensajejiji" />
+                                placeholder="Escribe tu mensaje" />
                             <div class="message-actions d-flex align-items-center">
                                 <label for="attach-doc" class="form-label mb-0">
                                     <i

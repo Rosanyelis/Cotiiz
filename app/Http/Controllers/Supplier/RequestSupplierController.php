@@ -45,6 +45,12 @@ class RequestSupplierController extends Controller
     {
         $urlfile = null;
         $nameFile = null;
+
+        $supplierRequest = SupplierRequest::find($request->supplier_request_id);
+        if (!$supplierRequest) {
+            return redirect()->back()->withErrors(['error' => 'La solicitud no existe o no es válida.']);
+        }
+        
         if($request->hasFile('file'))
         {
             $file = $request->file('file');

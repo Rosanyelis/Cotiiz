@@ -136,10 +136,13 @@
                             action="{{ route('supplier-request.storeChat', $data->rfc_suppliers_id) }}"
                             enctype="multipart/form-data" method="POST">
                             @csrf
+                            <div id="file-preview-container" style="display: none;">
+                                <div id="file-preview" style="margin-top: 1px;"></div>
+                            </div>
                             <input type="hidden" name="user_admin" value="{{$data->user_id}}">
-                            <input type="hidden" name="supplier_request_id" value="{{$data->rfc_suppliers_id}}">
+                            <input type="hidden" name="supplier_request_id" value="{{$data->id}}">
                             <input class="form-control message-input me-4 shadow-none @if ($errors->has('message'))) is-invalid @endif" name="message" type="text"
-                                placeholder="Escribe tu mensajeee" />
+                                placeholder="Escribe tu mensaje" />
                             <div class="message-actions d-flex align-items-center">
                                 <label for="attach-doc" class="form-label mb-0">
                                     <i
