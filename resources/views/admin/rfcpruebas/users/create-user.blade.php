@@ -15,7 +15,7 @@
                     <div class="card-body">
                         <form id="formCategory" class="needs-validation"
                             action="{{ route('prueba.users.store_users', $rfc) }}" method="POST"
-                            entype="multipart/form-data">
+                            enctype="multipart/form-data">
                             @csrf
                             <div class="row">
                                 <h6>1. Información de Empleado</h6>

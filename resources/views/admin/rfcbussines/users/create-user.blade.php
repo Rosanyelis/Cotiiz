@@ -10,7 +10,7 @@
 
                         <a href="{{ route('business.show', $rfc) }}" class="btn btn-sm btn-secondary"
                         ><i class="ri-arrow-left-line me-1"></i> Regresar</a>
-                    </div>
+                    </div> 
 
                     <div class="card-body">
                         <form id="formCategory" class="needs-validation" action="{{ route('business.users.store_users', $rfc) }}" method="POST"

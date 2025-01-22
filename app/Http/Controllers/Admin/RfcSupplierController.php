@@ -132,7 +132,7 @@ class RfcSupplierController extends Controller
             $uploadPath = public_path('/storage/rfc_suppliers/');
             $file->move($uploadPath, $fileName);
             $file_credential2 = $url = '/storage/rfc_suppliers/'.$fileName;
-        }
+        } 
 
         $user = User::create([
             'type'                      => 'provider-operador',
@@ -196,35 +196,35 @@ class RfcSupplierController extends Controller
         {
             $file = $request->file('file_gafete');
             $fileName   = time().rand(111,699).'.' .$file->getClientOriginalExtension();
-            $uploadPath = public_path('/storage/rfc_bussines/');
+            $uploadPath = public_path('/storage/rfc_suppliers/');
             $file->move($uploadPath, $fileName);
-            $file_gafete = $url = '/storage/rfc_bussines/'.$fileName;
+            $file_gafete = $url = '/storage/rfc_suppliers/'.$fileName;
         }
         if($request->hasFile('file_gafete2'))
         {
             $file = $request->file('file_gafete2');
             $fileName   = time().rand(111,699).'.' .$file->getClientOriginalExtension();
-            $uploadPath = public_path('/storage/rfc_bussines/');
+            $uploadPath = public_path('/storage/rfc_suppliers/');
             $file->move($uploadPath, $fileName);
-            $file_gafete2 = $url = '/storage/rfc_bussines/'.$fileName;
+            $file_gafete2 = $url = '/storage/rfc_suppliers/'.$fileName;
         }
 
         if($request->hasFile('file_credential'))
         {
             $file = $request->file('file_credential');
             $fileName   = time().rand(111,699).'.' .$file->getClientOriginalExtension();
-            $uploadPath = public_path('/storage/rfc_bussines/');
+            $uploadPath = public_path('/storage/rfc_suppliers/');
             $file->move($uploadPath, $fileName);
-            $file_credential = $url = '/storage/rfc_bussines/'.$fileName;
+            $file_credential = $url = '/storage/rfc_suppliers/'.$fileName;
         }
 
         if($request->hasFile('file_credential2'))
         {
             $file = $request->file('file_credential2');
             $fileName   = time().rand(111,699).'.' .$file->getClientOriginalExtension();
-            $uploadPath = public_path('/storage/rfc_bussines/');
+            $uploadPath = public_path('/storage/rfc_suppliers/');
             $file->move($uploadPath, $fileName);
-            $file_credential2 = $url = '/storage/rfc_bussines/'.$fileName;
+            $file_credential2 = $url = '/storage/rfc_suppliers/'.$fileName;
         }
 
         if($request->password != null) {
