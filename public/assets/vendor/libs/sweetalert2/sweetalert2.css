@@ -9,6 +9,19 @@
   box-shadow: 0 0 1px hsla(0, 0%, 0%, 0.075), 0 1px 2px hsla(0, 0%, 0%, 0.075), 1px 2px 4px hsla(0, 0%, 0%, 0.075), 1px 3px 8px hsla(0, 0%, 0%, 0.075), 2px 4px 16px hsla(0, 0%, 0%, 0.075);
   pointer-events: all;
 }
+#custom-pagination-controls {
+  margin-bottom: 10px;
+}
+#custom-pagination-controls .btn {
+  font-size: 0.875rem;
+  padding: 0.375rem 0.75rem;
+}
+#go-to-first,
+#go-to-last {
+    margin-left: 5px;
+    font-size: 0.875rem;
+    padding: 0.375rem 0.75rem;
+}
 .swal2-popup.swal2-toast > * {
   grid-column: 2;
 }
@@ -172,7 +185,6 @@ div:where(.swal2-container) {
   padding: 0.625em;
   overflow-x: hidden;
   transition: background-color 0.1s;
-  -webkit-overflow-scrolling: touch;
 }
 div:where(.swal2-container).swal2-backdrop-show, div:where(.swal2-container).swal2-noanimation {
   background: rgba(0, 0, 0, 0.4);
@@ -617,6 +629,7 @@ div:where(.swal2-icon) {
   font-family: inherit;
   line-height: 5em;
   cursor: default;
+  -webkit-user-select: none;
   user-select: none;
 }
 div:where(.swal2-icon) .swal2-icon-content {
