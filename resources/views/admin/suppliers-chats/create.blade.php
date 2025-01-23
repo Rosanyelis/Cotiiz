@@ -86,7 +86,7 @@
     $('#saveRequest').click(function (e) {
         e.preventDefault();
         
-        // Si no hay archivo, confirma la acció
+        // Si no hay archivo, confirma la acción
         if ($('#file').val() == '') {
             Swal.fire({
                 title: '¿Está seguro de enviar el mensaje sin archivo?',

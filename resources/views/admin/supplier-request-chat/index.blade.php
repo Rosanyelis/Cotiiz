@@ -117,7 +117,7 @@
                                         </div>
                                         @if ($msj->file != '')
                                         <div class="chat-message-text mt-2">
-                                            <a href="{{asset($msj->file)}}" target="_blank" class="mb-0 text-white">{{ $msj->name_file }}</a>
+                                            <a href="{{asset($msj->file)}}" target="_blank" class="mb-0 text-blue-700">{{ $msj->name_file }}</a>
                                         </div>
                                         @endif
                                         <div class="text-muted mt-1">
@@ -133,7 +133,7 @@
                     <!-- Chat message form -->
                     <div class="chat-history-footer">
                         <form class="form-send-message d-flex justify-content-between align-items-center"
-                            action="{{ route('request-supplier.storeChat', $data->rfc_suppliers_id) }}"
+                            action="{{ route('request-supplier.storeChat', $data->id) }}"
                             enctype="multipart/form-data" method="POST">
                             @csrf
                             <input type="hidden" name="rfc_suppliers_id" value="{{$data->rfc_suppliers_id}}">

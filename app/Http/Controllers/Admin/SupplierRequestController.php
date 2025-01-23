@@ -56,37 +56,37 @@ class SupplierRequestController extends Controller
         $urlfile = null;
         $nameFile = null;
     
-        // Manejar archivo
         if ($request->hasFile('file')) {
             $file = $request->file('file');
             $fileName = time() . rand(111, 699) . '.' . $file->getClientOriginalExtension();
             $uploadPath = public_path('/storage/rfc_supplier/requests/');
             $file->move($uploadPath, $fileName);
             $urlfile = '/storage/rfc_supplier/requests/' . $fileName;
-            $nameFile = $file->getClientOriginalName(); // Guardar nombre original
+            $nameFile = $file->getClientOriginalName();
         }
     
-        // Crear solicitud con la ruta del archivo
         $data = SupplierRequest::create([
             'rfc_suppliers_id' => $request->rfc_suppliers_id,
             'user_id' => auth()->user()->id,
             'type' => $request->type,
             'observation' => $request->observation,
-            'file' => $urlfile, // Guardar ruta del archivo
-            'name_file' => $nameFile // Guardar nombre original del archivo
+            'file' => $urlfile,
+            'name_file' => $nameFile,
         ]);
     
-        // Crear chat relacionado con la solicitud
+        if (!$data) {
+            return redirect()->back()->with('error', 'No se pudo crear la solicitud.');
+        }
+    
         SupplierRequestChat::create([
             'rfc_suppliers_id' => $request->rfc_suppliers_id,
             'supplier_request_id' => $data->id,
             'user_admin_id' => auth()->user()->id,
             'message' => $request->message,
-            'file' => $urlfile, // Puedes agregar la ruta también aquí si es necesario
-            'name_file' => $nameFile 
+            'file' => $urlfile,
+            'name_file' => $nameFile,
         ]);
     
-        # enviar el correo de notificacion
         Mail::to($data->user->email)->send(new SendNotifyRequestSupplier($data));
     
         Notification::create([
@@ -94,11 +94,11 @@ class SupplierRequestController extends Controller
             'type' => 'Proveedor',
             'user_id' => $data->user->id,
             'title' => 'Nueva Solicitud',
-            'message' => 'Ha recibido una nueva solicitud de ' . $data->type . '.'
+            'message' => 'Ha recibido una nueva solicitud de ' . $data->type . '.',
         ]);
     
         return redirect()->route('request-supplier.index')->with('success', 'Solicitud creada con éxito');
-    }    
+    }      
 
     /**
      * Display the specified resource.
@@ -111,44 +111,49 @@ class SupplierRequestController extends Controller
 
     public function storeChat(StoreSupplierRequestChatRequest $request, $supplierRequest)
     {
+        // Busca la solicitud con el ID proporcionado
+        $data = SupplierRequest::find($supplierRequest);
+    
+        if (!$data) {
+            return redirect()->back()->with('error', 'No se encontró la solicitud para asociar el mensaje.');
+        }
+    
+        // Manejo del archivo
         $urlfile = null;
         $nameFile = null;
-        if($request->hasFile('file'))
-        {
+    
+        if ($request->hasFile('file')) {
             $file = $request->file('file');
             $nameFile = $file->getClientOriginalName();
-            $fileName   = time().rand(111,699).'.' .$file->getClientOriginalExtension();
+            $fileName = time() . rand(111, 699) . '.' . $file->getClientOriginalExtension();
             $uploadPath = public_path('/storage/rfc_supplier/requests/');
             $file->move($uploadPath, $fileName);
-            $urlfile = '/storage/rfc_supplier/requests/'.$fileName;
-
+            $urlfile = '/storage/rfc_supplier/requests/' . $fileName;
         }
-
+    
+        // Crea el mensaje en el chat con el ID correcto de la solicitud
         SupplierRequestChat::create([
-            'rfc_suppliers_id' => $request->rfc_suppliers_id,
-            'supplier_request_id' => $supplierRequest,
-            'user_admin_id' => auth()->user()->id,
+            'rfc_suppliers_id' => $data->rfc_suppliers_id, // Relación con el proveedor
+            'supplier_request_id' => $data->id, // Relación con la solicitud
+            'user_admin_id' => auth()->user()->id, // Usuario que envió el mensaje
             'message' => $request->message,
             'file' => $urlfile,
-            'name_file' => $nameFile
+            'name_file' => $nameFile,
         ]);
-
-        $data = SupplierRequest::with('user')->find($supplierRequest);
-
-        # enviar el correo de notificacion
+    
+        // Enviar notificación por correo
         Mail::to($data->user->email)->send(new SendMessageRequestSupplier($data));
-
+    
         Notification::create([
             'rfc_suppliers_id' => $data->rfc_suppliers_id,
             'type' => 'Proveedor',
             'user_id' => $data->user->id,
             'title' => 'Nuevo mensaje en solicitud',
-            'message' => 'La solicitud ' . $data->type . ' tiene un nuevo mensaje.'
+            'message' => 'La solicitud ' . $data->type . ' tiene un nuevo mensaje.',
         ]);
-
-        return redirect()->back()->with('success', 'Mensaje enviado con exito');
-    }
-
+    
+        return redirect()->back()->with('success', 'Mensaje enviado con éxito');
+    }    
 
     public function changeStatus(Request $request, $supplierRequest)
     {

@@ -313,14 +313,16 @@ class RegisteredUserController extends Controller
             'state'                     => $request->state,
             'municipality'              => $request->municipality,
             'colony'                    => $request->colony,
-            'street'                    => $request->street
+            'street'                    => $request->street,
+            'street_number'             => $request->street_number,
+            'postal_code'              => $request->postal_code,
         ]);
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'passwordshow' => $request->password,
+            'passwordshow' => $request->password,  
             'firstname' => $request->firstname,
             'lastname' => $request->lastname,
             'second_name' => $request->second_name,
@@ -328,6 +330,13 @@ class RegisteredUserController extends Controller
             'workstation' => $request->workstation,
             'phone' => $request->phone_personal,
             'area_work' => $request->area_work,
+            'country' => $request->country,
+            'state' => $request->state,
+            'municipality' => $request->municipality,
+            'colony' => $request->colony,
+            'street' => $request->street,
+            'street_number' => $request->street_number,
+            'postal_code' => $request->postal_code,
             'file_gafete' => $file_gafete,
             'file_gafete2' => $file_gafete2,
             'file_credential' => $file_credential,

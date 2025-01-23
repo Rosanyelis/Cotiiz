@@ -61,13 +61,13 @@ class AdminSupplierChatController extends Controller
         }
     
         // Obtener el supplier_id desde la relación
-        $supplierData = UserRfcSupplier::with(['user'])
+         $supplierData = UserRfcSupplier::with(['user'])
             ->where('rfc_suppliers_id', $request->rfc_suppliers_id)
             ->first();
     
         if (!$supplierData) {
             return redirect()->back()->withErrors(['error' => 'No se encontró información del proveedor relacionado.']);
-        }
+        } 
     
         $supplierId = $supplierData->user_id;
     

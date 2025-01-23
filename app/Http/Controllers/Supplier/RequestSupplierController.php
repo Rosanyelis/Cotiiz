@@ -9,6 +9,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\Facades\DataTables;
 use App\Http\Requests\StoreSupplierRequestChatRequest;
+use App\Models\RfcSupplier;
+use App\Models\Supplier;
 
 class RequestSupplierController extends Controller
 {
@@ -41,31 +43,33 @@ class RequestSupplierController extends Controller
         return view('request-suppliers-chat.index', compact('data'));
     }
 
-    public function storeChat(StoreSupplierRequestChatRequest $request, $id)
+    public function storeChat(StoreSupplierRequestChatRequest $request, $rfc_suppliers_id)
     {
         $urlfile = null;
         $nameFile = null;
-        if($request->hasFile('file'))
-        {
+    
+        if ($request->hasFile('file')) {
             $file = $request->file('file');
-            $nameFile = $file->getClientOriginalName();
-            $fileName   = time().rand(111,699).'.' .$file->getClientOriginalExtension();
+            $fileName = time().rand(111,699).'.' .$file->getClientOriginalExtension();
             $uploadPath = public_path('/storage/rfc_supplier/requests/');
             $file->move($uploadPath, $fileName);
             $urlfile = '/storage/rfc_supplier/requests/'.$fileName;
-
+            $nameFile = $file->getClientOriginalName();           
         }
-
+    
+        // Asegúrate de que el supplier_request_id es el correcto
         SupplierRequestChat::create([
-            'rfc_suppliers_id' => $id,
-            'supplier_request_id' => $request->supplier_request_id,
+            'rfc_suppliers_id' => $rfc_suppliers_id,
+            'supplier_request_id' => $request->supplier_request_id, // Usamos el supplier_request_id recibido
             'supplier_id' => Auth::user()->id,
             'message' => $request->message,
             'file' => $urlfile,
             'name_file' => $nameFile
         ]);
-        return redirect()->back()->with('success', 'Mensaje enviado con exito');
-    }
+    
+        return redirect()->back()->with('success', 'Mensaje enviado con éxito');
+    }    
+    
     /**
      * Show the form for editing the specified resource.
      */
