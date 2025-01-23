@@ -30,7 +30,6 @@ class SendNotifyRequestSupplier extends Mailable
     {
         return new Envelope(
             subject: 'Nueva Solicitud',
-            with: ['data' => $this->data],
         );
     }
 

@@ -54,7 +54,7 @@
                                     </div>
                                 </div>
                                 
-                                <div class="mb-6 col-md-8">
+                                <div class="mb-6 col-md-12">
                                     <div class="form-floating form-floating-outline">
                                         <input
                                             type="text"
