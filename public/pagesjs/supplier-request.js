@@ -5,7 +5,7 @@
 'use strict';
     var dt_ajax_table = $('.datatables-request-supplier');
 
-$(function () {
+$(function () { 
 
     if (dt_ajax_table.length) {
         var dt_ajax = dt_ajax_table.dataTable({
@@ -59,44 +59,36 @@ $(function () {
 
     $('#saveRequest').click(function (e) {
         e.preventDefault();
+        
+        // Si no hay archivo, confirma la acción
         if ($('#file').val() == '') {
             Swal.fire({
                 title: '¿Está seguro de enviar la Solicitud sin archivo?',
-                text: "No podra modificar la solicitud!",
+                text: "No podrá modificar la solicitud!",
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonText: 'Si, estoy seguro!',
+                confirmButtonText: 'Sí, estoy seguro!',
                 cancelButtonText: 'Cancelar',
                 customClass: {
-                confirmButton: 'btn btn-primary me-3 waves-effect waves-light',
-                cancelButton: 'btn btn-outline-danger waves-effect'
+                    confirmButton: 'btn btn-primary me-3 waves-effect waves-light',
+                    cancelButton: 'btn btn-outline-danger waves-effect'
                 },
                 buttonsStyling: false
             }).then((result) => {
                 if (result.isConfirmed) {
+                    // Enviar el formulario
                     var form = document.getElementById('formRequestSupplier');
                     form.submit();
                 }
-            })
+            });
+        } else {
+            // Enviar el formulario directamente si hay un archivo seleccionado
+            var form = document.getElementById('formRequestSupplier');
+            form.submit();
         }
-    });
+    });  
 
 });
-
-document.getElementById('supplier-search').addEventListener('input', function () {
-        const searchQuery = this.value.toLowerCase(); // Convierte el texto de búsqueda a minúsculas
-        const supplierList = document.getElementById('rfc_suppliers_id');
-
-        // Itera a través de las opciones del select y oculta/muestra según la búsqueda
-        Array.from(supplierList.options).forEach(option => {
-            const supplierName = option.text.toLowerCase(); // Convierte el texto del proveedor a minúsculas
-            if (supplierName.includes(searchQuery)) {
-                option.style.display = ''; // Muestra la opción si coincide con la búsqueda
-            } else {
-                option.style.display = 'none'; // Oculta la opción si no coincide
-            }
-        });
-    });
 
 function deleteRecord(id) {
     Swal.fire({

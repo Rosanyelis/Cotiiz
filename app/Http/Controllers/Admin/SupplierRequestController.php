@@ -9,6 +9,7 @@ use App\Models\SupplierRequest;
 use App\Models\SupplierRequestChat;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Auth;
 use App\Mail\SendNotifyRequestSupplier;
 use App\Mail\SendMessageRequestSupplier;
 use Yajra\DataTables\Facades\DataTables;
@@ -43,7 +44,7 @@ class SupplierRequestController extends Controller
      * Show the form for creating a new resource.
      */
     public function create()
-    {
+    { 
         $rfcSuppliers = RfcSupplier::all();
         return view('admin.supplier-requests.create', compact('rfcSuppliers'));
     }
@@ -53,44 +54,52 @@ class SupplierRequestController extends Controller
      */
     public function store(StoreSupplierRequestRequest $request)
     {
-        $data = SupplierRequest::create([
-            'rfc_suppliers_id' => $request->rfc_suppliers_id,
-            'user_id' => \Illuminate\Support\Facades\Auth::user()->id,
-            'type' => $request->type,
-            'observation' => $request->observation
-        ]);
-
         $urlfile = null;
-        if($request->hasFile('file'))
-        {
+        $nameFile = null;
+    
+        // Manejar archivo
+        if ($request->hasFile('file')) {
             $file = $request->file('file');
-            $fileName   = time().rand(111,699).'.' .$file->getClientOriginalExtension();
+            $fileName = time() . rand(111, 699) . '.' . $file->getClientOriginalExtension();
             $uploadPath = public_path('/storage/rfc_supplier/requests/');
             $file->move($uploadPath, $fileName);
-            $urlfile = '/storage/rfc_supplier/requests/'.$fileName;
+            $urlfile = '/storage/rfc_supplier/requests/' . $fileName;
+            $nameFile = $file->getClientOriginalName(); // Guardar nombre original
         }
-
+    
+        // Crear solicitud con la ruta del archivo
+        $data = SupplierRequest::create([
+            'rfc_suppliers_id' => $request->rfc_suppliers_id,
+            'user_id' => Auth::user()->id,
+            'type' => $request->type,
+            'observation' => $request->observation,
+            'file' => $urlfile, // Guardar ruta del archivo
+            'name_file' => $nameFile // Guardar nombre original del archivo
+        ]);
+    
+        // Crear chat relacionado con la solicitud
         SupplierRequestChat::create([
             'rfc_suppliers_id' => $request->rfc_suppliers_id,
             'supplier_request_id' => $data->id,
-            'user_admin_id' => \Illuminate\Support\Facades\Auth::user()->id,
+            'user_admin_id' => Auth::user()->id,
             'message' => $request->message,
-            'file' => $request->file
+            'file' => $urlfile, // Puedes agregar la ruta también aquí si es necesario
+            'name_file' => $nameFile 
         ]);
-
+    
         # enviar el correo de notificacion
         Mail::to($data->user->email)->send(new SendNotifyRequestSupplier($data));
-
+    
         Notification::create([
             'rfc_suppliers_id' => $data->rfc_suppliers_id,
             'type' => 'Proveedor',
             'user_id' => $data->user->id,
             'title' => 'Nueva Solicitud',
-            'message' => 'Ha recibido una nueva solicitud de ' . $data->type.'.'
+            'message' => 'Ha recibido una nueva solicitud de ' . $data->type . '.'
         ]);
-
-        return redirect()->route('request-supplier.index')->with('success', 'Solicitud creada con exito');
-    }
+    
+        return redirect()->route('request-supplier.index')->with('success', 'Solicitud creada con éxito');
+    }    
 
     /**
      * Display the specified resource.
@@ -119,7 +128,7 @@ class SupplierRequestController extends Controller
         SupplierRequestChat::create([
             'rfc_suppliers_id' => $request->rfc_suppliers_id,
             'supplier_request_id' => $supplierRequest,
-            'user_admin_id' => \Illuminate\Support\Facades\Auth::user()->id,
+            'user_admin_id' => Auth::user()->id,
             'message' => $request->message,
             'file' => $urlfile,
             'name_file' => $nameFile
