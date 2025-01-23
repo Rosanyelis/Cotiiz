@@ -16,6 +16,7 @@ use App\Mail\ChangeStatusRequestSupplier;
 use App\Http\Requests\StoreSupplierRequestRequest;
 use App\Http\Requests\UpdateSupplierRequestRequest;
 use App\Http\Requests\StoreSupplierRequestChatRequest;
+use App\Http\Controllers\Admin\Log;
 
 class SupplierRequestController extends Controller
 {
@@ -55,7 +56,9 @@ class SupplierRequestController extends Controller
     {
         $urlfile = null;
         $nameFile = null;
-    
+
+        
+        
         // Manejar archivo
         if ($request->hasFile('file')) {
             $file = $request->file('file');

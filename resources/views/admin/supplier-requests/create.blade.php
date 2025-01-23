@@ -16,7 +16,7 @@
                     </div>
 
                     <div class="card-body">
-                        <form id="formRequestSupplier" class="needs-validation" action="{{ route('request-supplier.store') }}" method="POST">
+                        <form id="formRequestSupplier" class="needs-validation" action="{{ route('request-supplier.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="row">
                                 <div class="row">
@@ -54,7 +54,7 @@
                                     </div>
                                 </div>
                                 
-                                <div class="mb-6 col-md-8">
+                                <div class="mb-6 col-md-12">
                                     <div class="form-floating form-floating-outline">
                                         <input
                                             type="text"
@@ -64,7 +64,7 @@
                                             placeholder="Ingrese titulo de solicitud"
                                             value="{{ old('type') }}"
                                         />
-                                        <label for="code">Titulo de Solicitud</label>
+                                        <label for="file">Titulo de Solicitud</label>
                                         @if($errors->has('type'))
                                         <div class="invalid-feedback">
                                             {{ $errors->first('type') }}
@@ -75,7 +75,7 @@
                                 <div class="mb-6 col-md-12">
                                     <div class="form-floating form-floating-outline">
                                         <input class="form-control @if($errors->has('file')) is-invalid @endif" type="file" name="file" id="file">
-                                        <label for="code">Archivo de solicitud (opcional)</label>
+                                        <label for="file">Archivo de solicitud (opcional)</label>
                                         @if($errors->has('file'))
                                         <div class="invalid-feedback">
                                             {{ $errors->first('file') }}
@@ -88,7 +88,7 @@
                                         <textarea class="form-control h-px-100 "
                                         id="observation" placeholder="Descripción de solicitud"
                                         name="observation">{{ old('observation') }}</textarea>
-                                        <label for="code">Descripción de solicitud (opcional)</label>
+                                        <label for="file">Descripción de solicitud (opcional)</label>
                                         @if($errors->has('observation'))
                                         <div class="invalid-feedback">
                                             {{ $errors->first('observation') }}
@@ -101,7 +101,7 @@
                                         <textarea class="form-control h-px-100 @if($errors->has('message')) is-invalid @endif "
                                         id="message"
                                         placeholder="Mensaje de solicitud" name="message">{{ old('message') }}</textarea>
-                                        <label for="code">Mensaje al proveedor</label>
+                                        <label for="file">Mensaje al proveedor</label>
                                         @if($errors->has('message'))
                                         <div class="invalid-feedback">
                                             {{ $errors->first('message') }}
