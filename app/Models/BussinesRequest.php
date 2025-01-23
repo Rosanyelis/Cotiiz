@@ -15,6 +15,7 @@ class BussinesRequest extends Model
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
+        #return $this->hasMany(Rfcbussines::class, 'user_id'); // Asegúrate de usar las claves correctas
     }
 
     public function bussines()

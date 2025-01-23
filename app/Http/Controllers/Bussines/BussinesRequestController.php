@@ -24,7 +24,16 @@ class BussinesRequestController extends Controller
     public function datatable(Request $request)
     {
         if ($request->ajax()) {
-            $data = BussinesRequest::where('rfc_bussines_id', Auth::user()->rfcbussines()->first()->id);
+            $rfcbussines = Auth::user()->rfcbussines()->first();
+
+            if (!$rfcbussines) {
+                return response()->json([
+                    'error' => 'El usuario no tiene un RFC de negocio relacionado.'
+                ], 422);
+            }
+
+            $data = BussinesRequest::where('rfc_bussines_id', $rfcbussines->id);
+
             return DataTables::of($data)
                 ->addColumn('actions', function ($data) {
                     return view('request-bussines.partials.actions', ['data' => $data]);
@@ -33,6 +42,7 @@ class BussinesRequestController extends Controller
                 ->make(true);
         }
     }
+
     /**
      * Display a listing of the resource.
      */
@@ -48,16 +58,21 @@ class BussinesRequestController extends Controller
 
     public function storeProduct(StoreRequestProductRequest $request)
     {
-        # se crea la solicitud
+        $rfcbussines = Auth::user()->rfcbussines()->first();
+
+        if (!$rfcbussines) {
+            return redirect()->back()->withErrors(['error' => 'No se encontró un RFC relacionado con este usuario.']);
+        }
+
         $solicitud = BussinesRequest::create([
             'user_id'           => Auth::user()->id,
-            'rfc_bussines_id'   => Auth::user()->rfcbussines()->first()->id,
+            'rfc_bussines_id'   => $rfcbussines->id,
             'type'              => $request->type,
             'type_solicitude'   => 'Producto',
             'file'              => $this->saveFile($request->file),
         ]);
-        # formalizamos los datos de la solicitud del productos
-        $data = BussineRequestProduct::create([
+
+        BussineRequestProduct::create([
             'bussines_request_id'   => $solicitud->id,
             'product_name'          => $request->product_name,
             'model'                 => $request->model,
@@ -67,18 +82,19 @@ class BussinesRequestController extends Controller
             'urgency'               => $request->urgency,
             'description'           => $request->description,
             'link_drive'            => $request->link_drive,
-            'file' => $request->hasFile('file') ? $this->saveFile($request->file('file')) : null,
+            'file'                  => $request->hasFile('file') ? $this->saveFile($request->file('file')) : null,
         ]);
-        # Inicializamos el chat con la solicitud para el administrador
+
         BussinesRequestChat::create([
-            'rfc_bussines_id'       => Auth::user()->rfcbussines()->first()->id,
+            'rfc_bussines_id'       => $rfcbussines->id,
             'bussines_request_id'   => $solicitud->id,
             'bussines_id'           => Auth::user()->id,
             'message'               => 'Solicitud de Producto',
         ]);
 
-        return redirect()->route('bussines-request.index')->with('success', 'Solicitud de Producto creada con exito');
+        return redirect()->route('bussines-request.index')->with('success', 'Solicitud de Producto creada con éxito');
     }
+
 
     public function createService()
     {
@@ -87,6 +103,12 @@ class BussinesRequestController extends Controller
 
     public function storeService(StoreRequestServiceRequest $request)
     {
+        $rfcbussines = Auth::user()->rfcbussines()->first();
+
+        if (!$rfcbussines) {
+            return redirect()->back()->withErrors(['error' => 'No se encontró un RFC relacionado con este usuario.']);
+        }
+
         # se crea la solicitud
         $solicitud = BussinesRequest::create([
             'user_id'           => Auth::user()->id,
@@ -164,7 +186,7 @@ class BussinesRequestController extends Controller
             $fileName = time() . '.' . $archivo->getClientOriginalExtension();
             $uploadPath = public_path('/storage/rfc_bussines/requests/');
             $archivo->move($uploadPath, $fileName);
-            $url = '/storage/rfc_bussines/requests/'.$fileName;
+            $url = '/storage/rfc_bussines/requests/' . $fileName;
 
             return $url;
         } else {
@@ -210,6 +232,4 @@ class BussinesRequestController extends Controller
     {
         //
     }
-
-
 }
