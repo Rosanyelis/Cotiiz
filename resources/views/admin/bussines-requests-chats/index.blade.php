@@ -65,7 +65,9 @@
                                         data-bs-toggle="sidebar" data-overlay data-target="#app-chat-sidebar-right" />
                                 </div>
                                 <div class="chat-contact-info flex-grow-1 ms-4">
-                                    <h4 class="m-0 fw-bold">{{ $data->bussines->name  }}</h4>
+                                    <h4 class="m-0 fw-bold">
+                                        {{ $data->bussines ? $data->bussines->name : ($data->rfcPrueba ? $data->rfcPrueba->name : 'Sin nombre') }}
+                                    </h4>
                                 </div>
                             </div>
                             <div class="d-flex align-items-center">
@@ -117,7 +119,7 @@
                                         </div>
                                         @if ($msj->file != '')
                                         <div class="chat-message-text mt-2">
-                                            <a href="{{asset($msj->file)}}" target="_blank" class="mb-0 text-white">{{ $msj->name_file }}</a>
+                                            <a href="{{asset($msj->file)}}" target="_blank" class="mb-0 text-blue-700">{{ $msj->name_file }}</a>
                                         </div>
                                         @endif
                                         <div class="text-muted mt-1">
@@ -213,7 +215,7 @@
                             <div class="d-flex align-items-center" >
                                 <div class="flex-grow-1">
                                     <h6 class="m-0 fw-bold">Empresa</h6>
-                                    <p class="text-body">{{ $data->bussines->name  }}</p>
+                                    <p class="text-body"> {{ $data->bussines ? $data->bussines->name : ($data->rfcPrueba ? $data->rfcPrueba->name : 'Sin nombre') }}</p>
                                 </div>
                             </div>
                         </div>
