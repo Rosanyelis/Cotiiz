@@ -16,6 +16,7 @@ class BussinesRequestChat extends Model
         'bussines_id',
         'rfc_bussines_id',
         'rfc_prueba_id',
+        'user_admin_id',
         'message',
         'file',
         'name_file',
@@ -50,4 +51,5 @@ class BussinesRequestChat extends Model
     {
         return $this->belongsTo(User::class, 'user_admin_id', 'id');
     }
+
 }

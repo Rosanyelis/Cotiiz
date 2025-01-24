@@ -44,10 +44,20 @@ class AdminBussinesRequestController extends Controller
      */
     public function show(string $id)
     {
-        $data = BussinesRequest::with('chats')->find($id);
-        $msjs = BussinesRequestChat::where('bussines_request_id', $id)->get();
-        return view('admin.bussines-requests-chats.index', compact('data', 'msjs'));
+        $data = BussinesRequest::with(['chats.userAdmin', 'chats.bussines', 'chats.rfcBussines', 'chats.rfcPrueba'])
+            ->find($id);
+
+        if (!$data) {
+            return redirect()->route('admin.bussines-requests.index')->withErrors('Solicitud no encontrada.');
+        }
+
+        // Debug para verificar los datos
+
+        return view('admin.bussines-requests-chats.index', compact('data'));
     }
+
+
+
 
     public function storeChat(StoreBussinesRequestChatRequest $request, $bussinesRequest)
     {
