@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\BussinesRequestProfessional; // Ensure this class exists in the specified namespace
 
 class BussinesRequest extends Model
 {
@@ -15,12 +14,16 @@ class BussinesRequest extends Model
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
-        #return $this->hasMany(Rfcbussines::class, 'user_id'); // Asegúrate de usar las claves correctas
     }
 
     public function bussines()
     {
         return $this->belongsTo(RfcBussines::class, 'rfc_bussines_id', 'id');
+    }
+
+    public function rfcPrueba()
+    {
+        return $this->belongsTo(RfcPrueba::class, 'rfc_prueba_id', 'id');
     }
 
     public function products()
@@ -39,8 +42,12 @@ class BussinesRequest extends Model
     }
 
     public function chats()
-    {
-        #return $this->hasMany(BussinesRequestChat::class, 'bussines_request_id', 'id');
-        return $this->hasMany(BussinesRequestChat::class, 'bussines_request_id', 'id');
-    }
+{
+    return $this->hasMany(BussinesRequestChat::class, 'bussines_request_id', 'id');
+}
+
+
+
+
+
 }

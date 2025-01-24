@@ -65,7 +65,9 @@
                                         data-bs-toggle="sidebar" data-overlay data-target="#app-chat-sidebar-right" />
                                 </div>
                                 <div class="chat-contact-info flex-grow-1 ms-4">
-                                    <h4 class="m-0 fw-bold">{{ $data->bussines->name  }}</h4>
+                                    <h4 class="m-0 fw-bold">
+                                        {{ $data->bussines ? $data->bussines->name : ($data->rfcPrueba ? $data->rfcPrueba->name : 'Sin nombre') }}
+                                    </h4>
                                 </div>
                             </div>
                             <div class="d-flex align-items-center">
@@ -76,62 +78,58 @@
                     <div class="chat-history-body">
                         <ul class="list-unstyled chat-history">
                             @foreach ($data->chats as $msj)
-                            @if ($msj->user_admin_id != '')
-                            <li class="chat-message chat-message-right">
-                                <div class="d-flex overflow-hidden">
-                                    <div class="chat-message-wrapper flex-grow-1">
-                                        <div class="chat-message-text">
-                                            <p class="mb-0">{{ $msj->message }}</p>
+                                <!-- Mensajes enviados por el Administrador -->
+                                @if ($msj->user_admin_id)
+                                    <li class="chat-message chat-message-right">
+                                        <div class="d-flex overflow-hidden">
+                                            <div class="chat-message-wrapper flex-grow-1">
+                                                <div class="chat-message-text">
+                                                    <p class="mb-0">{{ $msj->message }}</p>
+                                                </div>
+                                                @if ($msj->file)
+                                                    <div class="chat-message-text mt-2">
+                                                        <a href="{{ asset($msj->file) }}" target="_blank">{{ $msj->name_file }}</a>
+                                                    </div>
+                                                @endif
+                                                <div class="text-end text-muted mt-1">
+                                                    <small>{{ $msj->created_at->diffForHumans() }}</small>
+                                                </div>
+                                            </div>
+                                            <div class="user-avatar flex-shrink-0 ms-4">
+                                                <div class="avatar avatar-sm">
+                                                    <img src="{{ asset('assets/img/avatars/1.png') }}" alt="Avatar" class="rounded-circle" />
+                                                </div>
+                                            </div>
                                         </div>
-                                        @if ($msj->file != '')
-                                        <div class="chat-message-text mt-2">
-                                            <a href="{{asset($msj->file)}}" target="_blank" class="mb-0 text-white ">{{ $msj->name_file }}</a>
+                                    </li>
+                                @elseif ($msj->bussines_id)
+                                    <!-- Mensajes enviados por la Empresa -->
+                                    <li class="chat-message">
+                                        <div class="d-flex overflow-hidden">
+                                            <div class="user-avatar flex-shrink-0 me-4">
+                                                <div class="avatar avatar-sm">
+                                                    <img src="{{ asset('assets/img/avatars/5.png') }}" alt="Avatar" class="rounded-circle" />
+                                                </div>
+                                            </div>
+                                            <div class="chat-message-wrapper flex-grow-1">
+                                                <div class="chat-message-text">
+                                                    <p class="mb-0">{{ $msj->message }}</p>
+                                                </div>
+                                                @if ($msj->file)
+                                                    <div class="chat-message-text mt-2">
+                                                        <a href="{{ asset($msj->file) }}" target="_blank">{{ $msj->name_file }}</a>
+                                                    </div>
+                                                @endif
+                                                <div class="text-muted mt-1">
+                                                    <small>{{ $msj->created_at->diffForHumans() }}</small>
+                                                </div>
+                                            </div>
                                         </div>
-                                        @endif
-                                        <div class="text-end text-muted mt-1">
-                                            <i class="ri-check-double-line ri-14px text-success me-1"></i>
-                                            <small>{{ $msj->created_at->diffForHumans() }}</small>
-                                        </div>
-                                    </div>
-                                    <div class="user-avatar flex-shrink-0 ms-4">
-                                        <div class="avatar avatar-sm">
-                                            <img src="{{asset('assets/img/avatars/1.png')}}" alt="Avatar"
-                                                class="rounded-circle" />
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            @endif
-                            @if ($msj->bussines_id != '')
-    <li class="chat-message">
-        <div class="d-flex overflow-hidden">
-            <div class="user-avatar flex-shrink-0 me-4">
-                <div class="avatar avatar-sm">
-                    <img src="{{asset('assets/img/avatars/5.png')}}" alt="Avatar"
-                        class="rounded-circle" />
-                </div>
-            </div>
-            <div class="chat-message-wrapper flex-grow-1">
-                <div class="chat-message-text">
-                    <p class="mb-0">{{ $msj->message }}</p>
-                </div>
-                @if ($msj->file != '')
-                    <div class="chat-message-text mt-2">
-                        <a href="{{ asset($msj->file) }}" target="_blank" class="mb-0 text-white">
-                            {{ $msj->name_file ?? 'Archivo adjunto' }}
-                        </a>
-                    </div>
-                @endif
-                <div class="text-muted mt-1">
-                    <small>{{ $msj->created_at->diffForHumans() }}</small>
-                </div>
-            </div>
-        </div>
-    </li>
-@endif
-
+                                    </li>
+                                @endif
                             @endforeach
                         </ul>
+
                     </div>
                     <!-- Chat message form -->
                     <div class="chat-history-footer">
@@ -139,16 +137,18 @@
                             action="{{ route('admin-request-bussines.storeChat', $data->id) }}"
                             enctype="multipart/form-data" method="POST">
                             @csrf
+                            <div class="file-preview" id="file-preview-container" style="display: none;">
+
+                                <div id="file-preview"></div>
+                            </div>
                             <input type="hidden" name="rfc_bussines_id" value="{{$data->rfc_bussines_id}}">
                             <input class="form-control message-input me-4 shadow-none @if ($errors->has('message'))) is-invalid @endif" name="message" type="text"
                                 placeholder="Escribe tu mensaje" />
-                            <div id="file-preview" class="text-muted mt-2" style="display: none;"></div>
                             <div class="message-actions d-flex align-items-center">
                                 <label for="attach-doc" class="form-label mb-0">
                                     <i
                                         class="ri-attachment-2 ri-20px cursor-pointer btn btn-sm btn-text-secondary btn-icon rounded-pill me-2 ms-1 text-heading"></i>
-                                    {{-- <input type="file" id="attach-doc" hidden name="file" accept="image/png, image/jpeg,image/gif, image/jpg, application/pdf" /> --}}
-                                    <input type="file" id="attach-doc" hidden name="file" accept="image/png, image/jpeg, image/gif, image/jpg, application/pdf" onchange="showFileName(this)" />
+                                    <input type="file" id="attach-doc" hidden name="file" accept="image/png, image/jpeg,image/gif, image/jpg, application/pdf" />
                                 </label>
                                 <button type="submit" id="send-message" class="btn btn-primary d-flex send-msg-btn">
                                     <span class="align-middle">Enviar</span>
@@ -214,7 +214,7 @@
                             <div class="d-flex align-items-center" >
                                 <div class="flex-grow-1">
                                     <h6 class="m-0 fw-bold">Empresa</h6>
-                                    <p class="text-body">{{ $data->bussines->name  }}</p>
+                                    <p class="text-body"> {{ $data->bussines ? $data->bussines->name : ($data->rfcPrueba ? $data->rfcPrueba->name : 'Sin nombre') }}</p>
                                 </div>
                             </div>
                         </div>
@@ -345,11 +345,3 @@
 <!-- Page JS -->
 <script src="{{asset('assets/js/app-chat2.js')}}"></script>
 @endsection
-
-
-
-
-
-msj->bussines_id
-
-name_file
