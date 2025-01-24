@@ -21,6 +21,11 @@ class BussinesRequest extends Model
         return $this->belongsTo(RfcBussines::class, 'rfc_bussines_id', 'id');
     }
 
+    public function rfcPrueba()
+    {
+        return $this->belongsTo(RfcPrueba::class, 'rfc_prueba_id', 'id');
+    }
+
     public function products()
     {
         return $this->hasOne(BussineRequestProduct::class, 'bussines_request_id', 'id');

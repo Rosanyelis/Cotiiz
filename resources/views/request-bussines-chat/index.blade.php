@@ -135,13 +135,13 @@
                     <!-- Chat message form -->
                     <div class="chat-history-footer">
                         <form class="form-send-message d-flex justify-content-between align-items-center"
-                            action="{{ route('bussines-request.storeChat', $data->rfc_bussines_id) }}"
+                            action="{{ route('bussines-request.storeChat', $data->id) }}"
                             enctype="multipart/form-data" method="POST">
                             @csrf
-                            <input type="hidden" name="rfc_bussines_id" value="{{$data->rfc_bussines_id}}">
+                            <input type="hidden" name="rfc_id" value="{{ $data->rfc_bussines_id ?? $data->rfc_prueba_id }}">
                             <input type="hidden" name="bussines_request_id" value="{{$data->id}}">
                             <div id="file-preview-container" style="display: none;">
-                                
+
                                 <div id="file-preview"></div>
                             </div>
                             <input class="form-control message-input me-4 shadow-none @if ($errors->has('message'))) is-invalid @endif" name="message" type="text"
@@ -175,7 +175,7 @@
                     <h4 class="modal-title" id="modalToggleLabel2">Cambiar Estatus</h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form action="{{ route('bussines-request.changeStatus', $data->rfc_bussines_id) }}" method="POST">
+                <form action="{{ route('bussines-request.changeStatus', $data->id) }}" method="POST">
                     @csrf
                 <div class="modal-body">
                     <div class="mb-3 form-floating form-floating-outline">
@@ -216,7 +216,15 @@
                             <div class="d-flex align-items-center" >
                                 <div class="flex-grow-1">
                                     <h6 class="m-0 fw-bold">Empresa</h6>
-                                    <p class="text-body">{{ $data->bussines->name  }}</p>
+                                    <p class="text-body">
+                                        @if ($data->bussines)
+                                            {{ $data->bussines->name }}
+                                        @elseif ($data->rfcPrueba)
+                                            {{ $data->rfcPrueba->name }}
+                                        @else
+                                            Sin información disponible
+                                        @endif
+                                    </p>
                                 </div>
                             </div>
                         </div>
