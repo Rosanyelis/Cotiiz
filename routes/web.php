@@ -95,7 +95,7 @@ Route::middleware('auth')->group(function () {
 
     # Requests EMpresas
     Route::get('/solicitudes-de-empresa', [AdminBussinesRequestController::class, 'index'])->name('admin-request-bussines.index');
-        Route::get('/solicitudes-de-empresa/datatable', [AdminBussinesRequestController::class, 'datatable'])->name('admin-request-bussines.datatable');
+    Route::get('/solicitudes-de-empresa/datatable', [AdminBussinesRequestController::class, 'datatable'])->name('admin-request-bussines.datatable');
     Route::get('/solicitudes-de-empresa/create', [AdminBussinesRequestController::class, 'create'])->name('admin-request-bussines.create');
     Route::post('/solicitudes-de-empresa', [AdminBussinesRequestController::class, 'store'])->name('admin-request-bussines.store');
     Route::get('/solicitudes-de-empresa/{request}/show', [AdminBussinesRequestController::class, 'show'])->name('admin-request-bussines.show');
@@ -148,26 +148,26 @@ Route::middleware('auth')->group(function () {
     Route::get('/proveedores/users/{user}/activated', [RfcSupplierController::class, 'ActivateUsers'])->name('supplier.users.activated');
     Route::get('/proveedores/users/{user}/desactivated', [RfcSupplierController::class, 'DesactivateUsers'])->name('supplier.users.desactivated');
 
-     # Pruebas
-     Route::get('/pruebas', [RfcPruebaController::class, 'index'])->name('prueba.index');
-     Route::get('/pruebas/create', [RfcPruebaController::class, 'create'])->name('prueba.create');
-     Route::post('/pruebas', [RfcPruebaController::class, 'store'])->name('prueba.store');
-     Route::get('/pruebas/{cliente}/show', [RfcPruebaController::class, 'show'])->name('prueba.show');
-     Route::get('/pruebas/{cliente}/edit', [RfcPruebaController::class, 'edit'])->name('prueba.edit');
-     Route::put('/pruebas/{cliente}/update', [RfcPruebaController::class, 'update'])->name('prueba.update');
-     Route::get('/pruebas/{cliente}/activated', [RfcPruebaController::class, 'activated'])->name('prueba.activated');
-     Route::get('/pruebas/{cliente}/desactivated', [RfcPruebaController::class, 'desactivated'])->name('prueba.desactivated');
-     Route::get('/pruebas/{cliente}/delete', [RfcPruebaController::class, 'delete'])->name('prueba.delete');
-     # Pruebas - Usuarios
-     Route::get('/pruebas/{cliente}/users', [RfcPruebaController::class, 'rfcusers'])->name('prueba.users');
-     Route::get('/pruebas/{cliente}/users/create', [RfcPruebaController::class, 'create_users'])->name('prueba.users.create_users');
-     Route::post('/pruebas/{cliente}/users/store', [RfcPruebaController::class, 'store_users'])->name('prueba.users.store_users');
-     Route::get('/pruebas/{cliente}/users/{user}/show', [RfcPruebaController::class, 'show_users'])->name('prueba.users.show_users');
-     Route::get('/pruebas/{cliente}/users/{user}/edit', [RfcPruebaController::class, 'edit_users'])->name('prueba.users.edit_users');
-     Route::put('/pruebas/{cliente}/users/{user}/update', [RfcPruebaController::class, 'update_users'])->name('prueba.users.update_users');
-     Route::get('/pruebas/{cliente}/users/{user}/delete', [RfcPruebaController::class, 'destroy_users'])->name('prueba.users.destroy_users');
-     Route::get('/pruebas/users/{user}/activated', [RfcPruebaController::class, 'ActivateUsers'])->name('prueba.users.activated');
-     Route::get('/pruebas/users/{user}/desactivated', [RfcPruebaController::class, 'DesactivateUsers'])->name('prueba.users.desactivated');
+    # Pruebas
+    Route::get('/pruebas', [RfcPruebaController::class, 'index'])->name('prueba.index');
+    Route::get('/pruebas/create', [RfcPruebaController::class, 'create'])->name('prueba.create');
+    Route::post('/pruebas', [RfcPruebaController::class, 'store'])->name('prueba.store');
+    Route::get('/pruebas/{cliente}/show', [RfcPruebaController::class, 'show'])->name('prueba.show');
+    Route::get('/pruebas/{cliente}/edit', [RfcPruebaController::class, 'edit'])->name('prueba.edit');
+    Route::put('/pruebas/{cliente}/update', [RfcPruebaController::class, 'update'])->name('prueba.update');
+    Route::get('/pruebas/{cliente}/activated', [RfcPruebaController::class, 'activated'])->name('prueba.activated');
+    Route::get('/pruebas/{cliente}/desactivated', [RfcPruebaController::class, 'desactivated'])->name('prueba.desactivated');
+    Route::get('/pruebas/{cliente}/delete', [RfcPruebaController::class, 'delete'])->name('prueba.delete');
+    # Pruebas - Usuarios
+    Route::get('/pruebas/{cliente}/users', [RfcPruebaController::class, 'rfcusers'])->name('prueba.users');
+    Route::get('/pruebas/{cliente}/users/create', [RfcPruebaController::class, 'create_users'])->name('prueba.users.create_users');
+    Route::post('/pruebas/{cliente}/users/store', [RfcPruebaController::class, 'store_users'])->name('prueba.users.store_users');
+    Route::get('/pruebas/{cliente}/users/{user}/show', [RfcPruebaController::class, 'show_users'])->name('prueba.users.show_users');
+    Route::get('/pruebas/{cliente}/users/{user}/edit', [RfcPruebaController::class, 'edit_users'])->name('prueba.users.edit_users');
+    Route::put('/pruebas/{cliente}/users/{user}/update', [RfcPruebaController::class, 'update_users'])->name('prueba.users.update_users');
+    Route::get('/pruebas/{cliente}/users/{user}/delete', [RfcPruebaController::class, 'destroy_users'])->name('prueba.users.destroy_users');
+    Route::get('/pruebas/users/{user}/activated', [RfcPruebaController::class, 'ActivateUsers'])->name('prueba.users.activated');
+    Route::get('/pruebas/users/{user}/desactivated', [RfcPruebaController::class, 'DesactivateUsers'])->name('prueba.users.desactivated');
 
     # users
     Route::get('/gestion-de-usuarios', [AdminUsersController::class, 'index'])->name('admin.users.index');
@@ -211,7 +211,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/gestion-de-usuarios-proveedores/change-password', [UsersSupplierController::class, 'changePasword'])->name('admin.supplier-users.changePasword');
     Route::get('/gestion-de-usuarios-proveedores/{id}/activated', [UsersSupplierController::class, 'activated'])->name('admin.supplier-users.activated');
     Route::get('/gestion-de-usuarios-proveedores/{id}/desactivated', [UsersSupplierController::class, 'desactivated'])->name('admin.supplier-users.desactivated');
-///////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     # Usuarios de Prueba
     Route::get('/gestion-de-usuarios-prueba', [UsersPruebaController::class, 'index'])->name('admin.prueba-users.index');
     Route::get('/gestion-de-usuarios-prueba/{id}/show', [UsersPruebaController::class, 'show'])->name('admin.prueba-users.show');
@@ -219,9 +219,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/gestion-de-usuarios-prueba/{id}/desactivated', [UsersPruebaController::class, 'desactivated'])->name('admin.prueba-users.desactivated');
     Route::get('/gestion-de-usuarios-prueba/{id}/delete', [UsersPruebaController::class, 'delete'])->name('admin.prueba-users.delete');
     Route::post('/gestion-de-usuarios-prueba/change-password', [UsersPruebaController::class, 'changePasword'])->name('admin.prueba-users.changePasword');
-        Route::get('/gestion-de-usuarios-prueba/{id}/get-password', [UsersPruebaController::class, 'getPassword'])->name('admin.prueba-users.getPassword');
+    Route::get('/gestion-de-usuarios-prueba/{id}/get-password', [UsersPruebaController::class, 'getPassword'])->name('admin.prueba-users.getPassword');
 
-/////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////
 
     # chat con proveedores
     Route::get('/buzon-de-mensajes-proveedores', [AdminSupplierChatController::class, 'index'])->name('admin.supplier-chat.index');

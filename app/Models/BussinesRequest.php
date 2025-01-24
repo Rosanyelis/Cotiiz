@@ -41,6 +41,6 @@ class BussinesRequest extends Model
     public function chats()
     {
         #return $this->hasMany(BussinesRequestChat::class, 'bussines_request_id', 'id');
-         return $this->hasMany(BussinesRequestChat::class, 'bussines_request_id', 'id');
+        return $this->hasMany(BussinesRequestChat::class, 'bussines_request_id', 'id');
     }
 }
